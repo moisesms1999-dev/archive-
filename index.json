@@ -1,0 +1,42 @@
+[
+ {
+  "path": "everything/index.html",
+  "title": "Everything",
+  "about": "All posts: call-outs, the coinedbank anons, the evidence chain, threads, gallery, videos, posts."
+ },
+ {
+  "path": "coinedbank-complete/index.html",
+  "title": "Coinedbank complete",
+  "about": "The full call-out and every coinedbank anon answered."
+ },
+ {
+  "path": "other-callouts/index.html",
+  "title": "Other call-outs",
+  "about": "Mayday, Gravekandy, stratogalerap3able, the documents."
+ },
+ {
+  "path": "export-1oct/index.html",
+  "title": "Export 1 oct",
+  "about": "The 1 October posts."
+ },
+ {
+  "path": "lying-about-the-law/index.html",
+  "title": "Lying about the law",
+  "about": "The police and Interpol posts, with the official citations."
+ },
+ {
+  "path": "callout/index.html",
+  "title": "Call-out, one button",
+  "about": "The coinedbank call-out on its own."
+ },
+ {
+  "path": "official-citations/index.html",
+  "title": "Official citations",
+  "about": "INTERPOL, UK Home Office, FBI, PSNI, Google. Plus junkersdane as published."
+ },
+ {
+  "path": "last-blog/index.html",
+  "title": "Last blog, screenshots",
+  "about": "The last blog's posts as published, cropped, no metadata."
+ }
+]
