@@ -65,6 +65,12 @@ bA.onclick=()=>{ain.innerHTML='';
     im('header.png','Cabecera'),im('avatar.png','Foto de perfil'),
     $('a',{href:'https://www.tumblr.com/settings/blog/'+sel.value,textContent:'➜ Abrir la apariencia de '+sel.value,style:'display:block;margin-top:10px;color:#ff9a3c;font-weight:800'}));};
 const list=$('div');box.append(list,st,log);
+
+const imgOK=u=>new Promise(res=>{const im=new Image();let done=false;const t=setTimeout(()=>{if(!done){done=true;res(false);}},9000);im.onload=()=>{if(!done){done=true;clearTimeout(t);res(im.naturalWidth>0);}};im.onerror=()=>{if(!done){done=true;clearTimeout(t);res(false);}};im.src=u;});
+async function cleanImgs(h){const us=[...new Set([...h.matchAll(/<img src="([^"]+)"/g)].map(m=>m[1]))];const bad=[];
+  for(let k=0;k<us.length;k+=8){const part=us.slice(k,k+8);const r=await Promise.all(part.map(imgOK));part.forEach((u,j)=>{if(!r[j])bad.push(u);});}
+  let out=h;for(const u of bad){out=out.split('<p><img src="'+u+'"></p>').join('').split('<img src="'+u+'">').join('');}
+  return {html:out,bad:bad.length};}
 function inline(node,acc){
   for(const n of node.childNodes){
     if(n.nodeType===3){acc.text+=n.nodeValue;continue;}
@@ -140,14 +146,14 @@ function showPosts(it,D,TAGS,labs){
     const why=x=>{const e=(x&&x.body&&x.body.errors&&x.body.errors[0])||{};return (e.code||'')+' '+(e.detail||e.title||x&&x.error||'');};
     for(let n=0;n<picks.length;n++){
       const i=+picks[n].dataset.i;st.textContent='Publicando '+(n+1)+' de '+picks.length+'…';
-      const content=toNPF(D[i]);const tags=TAGS.slice(0,30).join(',');
+      const ci=await cleanImgs(D[i]);const Hh=ci.html;if(ci.bad)log.textContent+='  ('+ci.bad+' imagen(es) caída(s), quitada(s))\n';const content=toNPF(Hh);const tags=TAGS.slice(0,30).join(',');
       const isRe=chk.checked&&prev&&prev.next===i&&uuid;
       const body={content,tags,state:'published'};
       if(isRe){body.parent_tumblelog_uuid=uuid;body.parent_post_id=prev.id;body.reblog_key=prev.key;}
-      let r=await api('/blog/'+blog+'/posts',{method:'POST',body});
+      let r=await api('/blog/'+blog+'/posts',{method:'POST',body});if(r&&r.error&&isRe&&/404|not found/i.test(why(r)+String(r.error))){log.textContent+='  (el post anterior de la cadena ya no existe: empiezo cadena nueva)\n';delete body.parent_tumblelog_uuid;delete body.parent_post_id;delete body.reblog_key;prev=null;r=await api('/blog/'+blog+'/posts',{method:'POST',body});}
       if(r&&r.error){log.textContent+='  · nativo: '+why(r)+'\n';
-        const x=isRe?await api('/blog/'+blog+'/post/reblog',{method:'POST',body:{id:prev.id,reblog_key:prev.key,comment:D[i],tags}})
-                    :await api('/blog/'+blog+'/post',{method:'POST',body:{type:'text',format:'html',body:D[i],tags}});
+        const x=isRe?await api('/blog/'+blog+'/post/reblog',{method:'POST',body:{id:prev.id,reblog_key:prev.key,comment:Hh,tags}})
+                    :await api('/blog/'+blog+'/post',{method:'POST',body:{type:'text',format:'html',body:Hh,tags}});
         if(x&&!x.error){r=x;log.textContent+='  (como HTML, igual que pegarlo)\n';}else log.textContent+='  · HTML: '+why(x)+'\n';}
       const RR=r&&(r.response||r);const id=RR&&(RR.id_string||RR.id);
       if(id){ok++;log.textContent+='✓ '+(labs[i]||('Post '+(i+1)))+(isRe?' (reblog)':'')+' → '+id+'\n';picks[n].checked=false;picks[n].disabled=true;
