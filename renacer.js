@@ -10,14 +10,14 @@ const api=async(path,opts={})=>{
     try{return await window.tumblr.apiFetch('/v2'+path,o);}catch(e){return {error:String(e&&(e.message||e)),body:e&&e.body};}
   }
   const r=await fetch('/api/v2'+path,{method:opts.method||'GET',credentials:'include',headers:{'Authorization':'Bearer '+TOK,'Content-Type':'application/json','X-Version':'redpop/3/0//redpop/','X-CSRF':CSRF||''},body:opts.body?JSON.stringify(opts.body):undefined});
-  try{return await r.json();}catch(e){return {error:'HTTP '+r.status};}
+  let j=null;try{j=await r.json();}catch(e){}return j&&r.ok?j:{error:'HTTP '+r.status,detail:j};
 };
 const box=$('div',{id:'rnc',style:'position:fixed;inset:0;z-index:2147483647;background:#1a120b;color:#ffd9b0;font:16px/1.4 system-ui,sans-serif;overflow:auto;padding:16px 14px 40px'});
 const log=$('div',{style:'font-size:13px;color:#e7b98a;white-space:pre-wrap;max-height:34vh;overflow:auto;margin-top:10px'});
 const st=$('div',{style:'color:#9be59b;min-height:1.3em;margin:8px 0'});
 const close=$('button',{textContent:'✕ Cerrar',style:'position:absolute;top:10px;right:12px;background:#5a3a1e;color:#ffd9b0;border:0;border-radius:10px;padding:8px 12px;font-weight:700'});
 close.onclick=()=>box.remove();
-box.append(close,$('h2',{textContent:'🍪 Renacer',style:'color:#ff9a3c;margin:0 0 4px'}),$('p',{textContent:'Publica en el blog que elijas. Tandas de 5, 20 segundos entre posts.',style:'color:#f3c99a;margin:0 0 12px'}));
+box.append(close,$('h2',{textContent:'🍪 Renacer',style:'color:#ff9a3c;margin:0 0 4px'}),$('div',{textContent:'modo: '+((window.tumblr&&typeof window.tumblr.apiFetch==='function')?'interno':'alternativo'),style:'font-size:11px;color:#a58a6a'}),$('p',{textContent:'Publica en el blog que elijas. Tandas de 5, 20 segundos entre posts.',style:'color:#f3c99a;margin:0 0 12px'}));
 document.body.append(box);
 let blogs=[];
 const u=await api('/user/info');
@@ -126,7 +126,7 @@ function showPosts(title,D,TAGS,labs){
       const body={content:toNPF(D[i]),tags:TAGS.slice(0,30),state:'published'};
       const ev=(labs[i]||'').match(/^Evidence (\d+)/);
       if(ev&&chain.ev&&+ev[1]===chain.ev.n+1){body.parent_tumblelog_uuid=B.uuid;body.parent_post_id=chain.ev.id;body.reblog_key=chain.ev.key;}
-      const r=await api('/blog/'+blog+'/posts',{method:'POST',body});
+      let r=await api('/blog/'+(B.uuid||blog)+'/posts',{method:'POST',body});if(r&&r.error&&B.uuid)r=await api('/blog/'+blog+'/posts',{method:'POST',body});
       const RR=r&&(r.response||r);const id=RR&&(RR.id_string||RR.id);
       if(id){ok++;log.textContent+='✓ '+(labs[i]||i)+' → '+id+'\n';picks[n].checked=false;picks[n].disabled=true;
         if(ev){const g=await api('/blog/'+blog+'/posts/'+id);const P=g&&(g.response||g);if(P&&P.reblog_key)chain.ev={n:+ev[1],id:id,key:P.reblog_key};}}
