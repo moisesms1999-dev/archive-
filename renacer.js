@@ -17,7 +17,7 @@ const log=$('div',{style:'font-size:13px;color:#e7b98a;white-space:pre-wrap;max-
 const st=$('div',{style:'color:#9be59b;min-height:1.3em;margin:8px 0'});
 const close=$('button',{textContent:'✕ Cerrar',style:'position:absolute;top:10px;right:12px;background:#5a3a1e;color:#ffd9b0;border:0;border-radius:10px;padding:8px 12px;font-weight:700'});
 close.onclick=()=>box.remove();
-box.append(close,$('h2',{textContent:'🍪 Renacer',style:'color:#ff9a3c;margin:0 0 4px'}),$('p',{textContent:'Publica en el blog que elijas. Tandas de 5, un minuto entre posts.',style:'color:#f3c99a;margin:0 0 12px'}));
+box.append(close,$('h2',{textContent:'🍪 Renacer',style:'color:#ff9a3c;margin:0 0 4px'}),$('p',{textContent:'Publica en el blog que elijas. Tandas de 5, 20 segundos entre posts.',style:'color:#f3c99a;margin:0 0 12px'}));
 document.body.append(box);
 let blogs=[];
 const u=await api('/user/info');
@@ -27,6 +27,34 @@ else{box.append($('p',{textContent:'No pude leer tus blogs: '+JSON.stringify(u).
 const sel=$('select',{style:'width:100%;padding:11px;border-radius:10px;background:#1a120b;color:#ffd9b0;border:1px solid #5a3a1e;margin-bottom:12px'});
 blogs.forEach(b=>sel.append($('option',{value:b.name,textContent:b.name})));
 box.append(sel);
+const fbox=$('div',{style:'background:#2a1a0e;border:1px solid #5a3a1e;border-radius:12px;padding:10px;margin:0 0 12px'});
+const fst=$('div',{style:'color:#9be59b;font-size:14px;min-height:1.2em;margin-top:6px'});
+const flog=$('div',{style:'font-size:12px;color:#e7b98a;white-space:pre-wrap;max-height:18vh;overflow:auto'});
+const bstyle='display:block;width:100%;text-align:left;background:#5a3a1e;color:#ffd9b0;border:0;border-radius:10px;padding:11px;margin:6px 0 0;font-weight:700';
+const bF=$('button',{textContent:'👥 Seguir a todos mis seguidores',style:bstyle});
+const bL=$('button',{textContent:'📋 Seguir a mi lista fija',style:bstyle});
+fbox.append($('b',{textContent:'Seguidores',style:'color:#ffb066'}),bF,bL,fst,flog);box.append(fbox);
+const nap=()=>new Promise(r=>setTimeout(r,2500+Math.random()*2500));
+async function followAll(names,label){
+  bF.disabled=bL.disabled=true;let ok=0,n=0;
+  for(const nm of names){n++;fst.textContent=label+': '+n+' de '+names.length+' ('+nm+')';
+    const r=await api('/user/follow',{method:'POST',body:{url:'https://'+nm+'.tumblr.com'}});
+    if(r&&!r.error&&!(r.meta&&r.meta.status>=400)){ok++;flog.textContent+='✓ '+nm+'\n';}else flog.textContent+='✗ '+nm+'\n';
+    flog.scrollTop=1e9;await nap();}
+  fst.textContent=label+': hecho, '+ok+' seguidos de '+names.length+'.';bF.disabled=bL.disabled=false;
+}
+bF.onclick=async()=>{const blog=sel.value;fst.textContent='Leyendo seguidores de '+blog+'…';let users=[],off=0,total=0;
+  for(let k=0;k<100;k++){const r=await api('/blog/'+blog+'/followers?limit=20&offset='+off);const R=r&&(r.response||r);
+    if(!R||!R.users){fst.textContent='No pude leer los seguidores: '+JSON.stringify(r).slice(0,150);return;}
+    total=R.total_users||0;users=users.concat(R.users);if(R.users.length<20||users.length>=total)break;off+=20;}
+  const todo=users.filter(x=>!x.following).map(x=>x.name);
+  flog.textContent='Seguidores: '+total+'. Por seguir: '+todo.length+'\n';
+  if(!todo.length){fst.textContent='Ya los sigues a todos.';return;}
+  followAll(todo,'Seguidores');};
+bL.onclick=async()=>{fst.textContent='Leyendo la lista…';let t='';try{t=await (await fetch(ARCH+'lista.txt?'+Date.now())).text();}catch(e){}
+  const L=[...new Set(t.split(/\r?\n/).map(x=>x.trim().toLowerCase().replace(/^@/,'')).filter(Boolean))];
+  if(!L.length){fst.textContent='La lista está vacía.';return;}
+  followAll(L,'Lista fija');};
 const list=$('div');box.append(list,st,log);
 function inline(node,acc){
   for(const n of node.childNodes){
@@ -103,7 +131,7 @@ function showPosts(title,D,TAGS,labs){
         if(ev){const g=await api('/blog/'+blog+'/posts/'+id);const P=g&&(g.response||g);if(P&&P.reblog_key)chain.ev={n:+ev[1],id:id,key:P.reblog_key};}}
       else log.textContent+='✗ '+(labs[i]||i)+' '+JSON.stringify(r).slice(0,220)+'\n';
       log.scrollTop=1e9;
-      if(n<picks.length-1)for(let t=60;t>0;t--){st.textContent='Siguiente en '+t+' s…';await new Promise(r=>setTimeout(r,1000));}
+      if(n<picks.length-1)for(let t=20;t>0;t--){st.textContent='Siguiente en '+t+' s…';await new Promise(r=>setTimeout(r,1000));}
     }
     const left=checks.filter(c=>c.checked&&!c.disabled).length;
     st.textContent='Tanda hecha: '+ok+' de '+picks.length+'.'+(left?' Quedan '+left+': espera y vuelve a pulsar.':' No queda nada.');pub.disabled=false;
