@@ -123,14 +123,14 @@ function showPosts(title,D,TAGS,labs){
     pub.disabled=true;let ok=0;
     for(let n=0;n<picks.length;n++){
       const i=+picks[n].dataset.i;st.textContent='Publicando '+(n+1)+' de '+picks.length+'…';
-      const body={content:toNPF(D[i]),tags:TAGS.slice(0,30),state:'published'};
+      const content=toNPF(D[i]);const body={content,tags:TAGS.slice(0,30).join(','),state:'published'};
       const ev=(labs[i]||'').match(/^Evidence (\d+)/);
       if(ev&&chain.ev&&+ev[1]===chain.ev.n+1){body.parent_tumblelog_uuid=B.uuid;body.parent_post_id=chain.ev.id;body.reblog_key=chain.ev.key;}
-      let r=await api('/blog/'+(B.uuid||blog)+'/posts',{method:'POST',body});if(r&&r.error&&B.uuid)r=await api('/blog/'+blog+'/posts',{method:'POST',body});
+      const send=async(b)=>{let x=await api('/blog/'+(B.uuid||blog)+'/posts',{method:'POST',body:b});if(x&&x.error&&B.uuid)x=await api('/blog/'+blog+'/posts',{method:'POST',body:b});return x;};let r=await send(body);if(r&&r.error){const plain=content.map(c=>{const d=Object.assign({},c);delete d.formatting;return d;});r=await send(Object.assign({},body,{content:plain}));if(!(r&&r.error))log.textContent+='  (sin negritas ni enlaces)\n';}if(r&&r.error){const safe=content.filter(c=>c.type==='text').map(c=>({type:'text',text:c.text}));r=await send(Object.assign({},body,{content:safe.length?safe:[{type:'text',text:' '}]}));if(!(r&&r.error))log.textContent+='  (solo texto)\n';}
       const RR=r&&(r.response||r);const id=RR&&(RR.id_string||RR.id);
       if(id){ok++;log.textContent+='✓ '+(labs[i]||i)+' → '+id+'\n';picks[n].checked=false;picks[n].disabled=true;
         if(ev){const g=await api('/blog/'+blog+'/posts/'+id);const P=g&&(g.response||g);if(P&&P.reblog_key)chain.ev={n:+ev[1],id:id,key:P.reblog_key};}}
-      else log.textContent+='✗ '+(labs[i]||i)+' '+JSON.stringify(r).slice(0,220)+'\n';
+      else{const er=(r&&r.body&&r.body.errors&&r.body.errors[0])||{};log.textContent+='✗ '+(labs[i]||i)+' · '+(er.code||'')+' '+(er.detail||er.title||r.error||'')+'\n';}
       log.scrollTop=1e9;
       if(n<picks.length-1)for(let t=20;t>0;t--){st.textContent='Siguiente en '+t+' s…';await new Promise(r=>setTimeout(r,1000));}
     }
