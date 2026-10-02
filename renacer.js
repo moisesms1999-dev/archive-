@@ -17,7 +17,7 @@ const log=$('div',{style:'font-size:13px;color:#e7b98a;white-space:pre-wrap;max-
 const st=$('div',{style:'color:#9be59b;min-height:1.3em;margin:8px 0'});
 const close=$('button',{textContent:'✕ Cerrar',style:'position:absolute;top:10px;right:12px;background:#5a3a1e;color:#ffd9b0;border:0;border-radius:10px;padding:8px 12px;font-weight:700'});
 close.onclick=()=>box.remove();
-box.append(close,$('h2',{textContent:'🍪 Renacer',style:'color:#ff9a3c;margin:0 0 4px'}),$('div',{textContent:'modo: '+((window.tumblr&&typeof window.tumblr.apiFetch==='function')?'interno':'alternativo'),style:'font-size:11px;color:#a58a6a'}),$('p',{textContent:'Publica en el blog que elijas. Tandas de 5, 20 segundos entre posts.',style:'color:#f3c99a;margin:0 0 12px'}));
+box.append(close,$('h2',{textContent:'🍪 Renacer',style:'color:#ff9a3c;margin:0 0 4px'}),$('div',{textContent:'modo: '+((window.tumblr&&typeof window.tumblr.apiFetch==='function')?'interno':'alternativo'),style:'font-size:11px;color:#a58a6a'}),$('p',{textContent:'Publica en el blog que elijas. Tandas de 5, 10 segundos entre posts.',style:'color:#f3c99a;margin:0 0 12px'}));
 document.body.append(box);
 let blogs=[];
 const u=await api('/user/info');
@@ -134,7 +134,7 @@ function showPosts(title,D,TAGS,labs){
         if(ev){const g=await api('/blog/'+blog+'/posts/'+id);const P=g&&(g.response||g);if(P&&P.reblog_key)chain.ev={n:+ev[1],id:id,key:P.reblog_key};}}
       else{const er=(r&&r.body&&r.body.errors&&r.body.errors[0])||{};log.textContent+='✗ '+(labs[i]||i)+' · '+(er.code||'')+' '+(er.detail||er.title||r.error||'')+'\n';}
       log.scrollTop=1e9;
-      if(n<picks.length-1)for(let t=20;t>0;t--){st.textContent='Siguiente en '+t+' s…';await new Promise(r=>setTimeout(r,1000));}
+      if(n<picks.length-1)for(let t=10;t>0;t--){st.textContent='Siguiente en '+t+' s…';await new Promise(r=>setTimeout(r,1000));}
     }
     const left=checks.filter(c=>c.checked&&!c.disabled).length;
     st.textContent='Tanda hecha: '+ok+' de '+picks.length+'.'+(left?' Quedan '+left+': espera y vuelve a pulsar.':' No queda nada.');pub.disabled=false;
