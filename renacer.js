@@ -56,6 +56,14 @@ bL.onclick=async()=>{fst.textContent='Leyendo la lista…';let t='';try{t=await 
   const L=[...new Set(t.split(/\r?\n/).map(x=>x.trim().toLowerCase().replace(/^@/,'')).filter(Boolean))];
   if(!L.length){fst.textContent='La lista está vacía.';return;}
   followAll(L,'Lista fija');};
+const abox=$('div',{style:'background:#2a1a0e;border:1px solid #5a3a1e;border-radius:12px;padding:10px;margin:0 0 12px'});
+const bA=$('button',{textContent:'🎨 Cabecera y foto de perfil',style:'display:block;width:100%;text-align:left;background:#5a3a1e;color:#ffd9b0;border:0;border-radius:10px;padding:11px;font-weight:700'});
+const ain=$('div');abox.append(bA,ain);box.append(abox);
+bA.onclick=()=>{ain.innerHTML='';
+  const im=(src,lab)=>$('div',{style:'margin-top:10px'},$('div',{textContent:lab,style:'font-size:13px;color:#f3c99a;margin-bottom:4px'}),$('img',{src:ARCH+'branding/'+src+'?'+Date.now(),style:'width:100%;border-radius:10px'}));
+  ain.append($('p',{textContent:'Mantén pulsada cada imagen y "Descargar imagen". Luego toca el enlace de abajo, y en Apariencia eliges las dos de tu galería.',style:'font-size:13px;color:#e7b98a;margin:8px 0 0'}),
+    im('header.png','Cabecera'),im('avatar.png','Foto de perfil'),
+    $('a',{href:'https://www.tumblr.com/settings/blog/'+sel.value,textContent:'➜ Abrir la apariencia de '+sel.value,style:'display:block;margin-top:10px;color:#ff9a3c;font-weight:800'}));};
 const list=$('div');box.append(list,st,log);
 function inline(node,acc){
   for(const n of node.childNodes){
