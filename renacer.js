@@ -83,6 +83,8 @@ function toNPF(h){
   for(const el of root.children){
     const tag=el.tagName;
     if(tag==='FIGURE'){const url=el.getAttribute('data-url')||((el.querySelector('iframe')||{}).src||'');if(url)C.push({type:'video',provider:'youtube',url:url.replace('/embed/','/watch?v=').replace(/\?feature=oembed/,'')});continue;}
+    const as=el.querySelectorAll?el.querySelectorAll('a'):[];
+    if(tag==='P'&&as.length===1&&!el.querySelector('img')&&el.textContent.trim()===as[0].textContent.trim()&&/^https?:/.test(as[0].getAttribute('href')||'')){C.push({type:'link',url:as[0].getAttribute('href'),title:as[0].textContent.trim()});continue;}
     const img=el.tagName==='IMG'?el:el.querySelector('img');
     if(img&&!el.textContent.trim()){C.push({type:'image',media:[{url:img.getAttribute('src')}]});continue;}
     if(tag==='BLOCKQUOTE'){for(const c of (el.children.length?el.children:[el]))C.push(...textBlocks(c,'indented'));continue;}
@@ -126,7 +128,7 @@ function showPosts(title,D,TAGS,labs){
       const content=toNPF(D[i]);const body={content,tags:TAGS.slice(0,30).join(','),state:'published'};
       const ev=(labs[i]||'').match(/^Evidence (\d+)/);
       if(ev&&chain.ev&&+ev[1]===chain.ev.n+1){body.parent_tumblelog_uuid=B.uuid;body.parent_post_id=chain.ev.id;body.reblog_key=chain.ev.key;}
-      const send=async(b)=>{let x=await api('/blog/'+(B.uuid||blog)+'/posts',{method:'POST',body:b});if(x&&x.error&&B.uuid)x=await api('/blog/'+blog+'/posts',{method:'POST',body:b});return x;};let r=await send(body);if(r&&r.error){const plain=content.map(c=>{const d=Object.assign({},c);delete d.formatting;return d;});r=await send(Object.assign({},body,{content:plain}));if(!(r&&r.error))log.textContent+='  (sin negritas ni enlaces)\n';}if(r&&r.error){const safe=content.filter(c=>c.type==='text').map(c=>({type:'text',text:c.text}));r=await send(Object.assign({},body,{content:safe.length?safe:[{type:'text',text:' '}]}));if(!(r&&r.error))log.textContent+='  (solo texto)\n';}
+      const send=async(b)=>{let x=await api('/blog/'+(B.uuid||blog)+'/posts',{method:'POST',body:b});if(x&&x.error&&B.uuid)x=await api('/blog/'+blog+'/posts',{method:'POST',body:b});return x;};const why=x=>{const e=(x&&x.body&&x.body.errors&&x.body.errors[0])||{};return (e.code||'')+' '+(e.detail||e.title||x&&x.error||'');};let r=await send(body);if(r&&r.error){log.textContent+='  · formato nativo: '+why(r)+'\n';let x=await api('/blog/'+blog+'/post',{method:'POST',body:{type:'text',format:'html',body:D[i],tags:TAGS.slice(0,30).join(',')}});if(x&&!x.error){r=x;log.textContent+='  (publicado como HTML, igual que pegarlo)\n';}else log.textContent+='  · HTML: '+why(x)+'\n';}if(r&&r.error){const plain=content.map(c=>{const d=Object.assign({},c);delete d.formatting;return d;});r=await send(Object.assign({},body,{content:plain}));if(!(r&&r.error))log.textContent+='  (sin negritas ni enlaces)\n';}if(r&&r.error){const safe=content.filter(c=>c.type==='text').map(c=>({type:'text',text:c.text}));r=await send(Object.assign({},body,{content:safe.length?safe:[{type:'text',text:' '}]}));if(!(r&&r.error))log.textContent+='  (solo texto)\n';}
       const RR=r&&(r.response||r);const id=RR&&(RR.id_string||RR.id);
       if(id){ok++;log.textContent+='✓ '+(labs[i]||i)+' → '+id+'\n';picks[n].checked=false;picks[n].disabled=true;
         if(ev){const g=await api('/blog/'+blog+'/posts/'+id);const P=g&&(g.response||g);if(P&&P.reblog_key)chain.ev={n:+ev[1],id:id,key:P.reblog_key};}}
