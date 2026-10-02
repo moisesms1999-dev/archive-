@@ -33,8 +33,9 @@ const flog=$('div',{style:'font-size:12px;color:#e7b98a;white-space:pre-wrap;max
 const bstyle='display:block;width:100%;text-align:left;background:#5a3a1e;color:#ffd9b0;border:0;border-radius:10px;padding:11px;margin:6px 0 0;font-weight:700';
 const bF=$('button',{textContent:'👥 Seguir a todos mis seguidores',style:bstyle});
 const bL=$('button',{textContent:'📋 Seguir a mi lista fija',style:bstyle});
-fbox.append($('b',{textContent:'Seguidores',style:'color:#ffb066'}),bF,bL,fst,flog);box.append(fbox);
-const nap=()=>new Promise(r=>setTimeout(r,2500+Math.random()*2500));
+const sp=$('select',{style:'width:100%;padding:9px;border-radius:10px;background:#1a120b;color:#ffd9b0;border:1px solid #5a3a1e;margin-top:6px'});sp.append($('option',{value:'n',textContent:'Velocidad normal (uno cada 2,5 a 5 s)'}),$('option',{value:'f',textContent:'Rápido (uno cada 0,8 a 1,6 s)'}));
+fbox.append($('b',{textContent:'Seguidores',style:'color:#ffb066'}),sp,bF,bL,fst,flog);box.append(fbox);
+const nap=()=>new Promise(r=>setTimeout(r,sp.value==='f'?800+Math.random()*800:2500+Math.random()*2500));
 async function followAll(names,label){
   bF.disabled=bL.disabled=true;let ok=0,n=0;
   for(const nm of names){n++;fst.textContent=label+': '+n+' de '+names.length+' ('+nm+')';
@@ -122,7 +123,7 @@ function showPosts(title,D,TAGS,labs){
     pub.disabled=true;let ok=0;
     for(let n=0;n<picks.length;n++){
       const i=+picks[n].dataset.i;st.textContent='Publicando '+(n+1)+' de '+picks.length+'…';
-      const body={content:toNPF(D[i]),tags:TAGS.join(','),state:'published'};
+      const body={content:toNPF(D[i]),tags:TAGS.slice(0,30),state:'published'};
       const ev=(labs[i]||'').match(/^Evidence (\d+)/);
       if(ev&&chain.ev&&+ev[1]===chain.ev.n+1){body.parent_tumblelog_uuid=B.uuid;body.parent_post_id=chain.ev.id;body.reblog_key=chain.ev.key;}
       const r=await api('/blog/'+blog+'/posts',{method:'POST',body});
