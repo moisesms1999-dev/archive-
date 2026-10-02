@@ -106,12 +106,14 @@ for(const it of items){
     const TAGS=JSON.parse(m[2]).split(',').map(s=>s.trim()).filter(Boolean);
     const labs={};let lm;const lre=/data-i="(\d+)"[^>]*>(?:<span[^>]*>[^<]*<\/span>)?<span class="t">([^<]*)<\/span>/g;
     while((lm=lre.exec(h)))labs[+lm[1]]=lm[2];
-    showPosts(it.title,D,TAGS,labs);st.textContent='';
+    showPosts(it,D,TAGS,labs);st.textContent='';
   };
   list.append(b);
 }
-function showPosts(title,D,TAGS,labs){
-  list.innerHTML='';list.append($('h3',{textContent:title,style:'color:#ffb066;margin:4px 0 8px'}));
+function showPosts(it,D,TAGS,labs){
+  const title=it.title;list.innerHTML='';list.append($('h3',{textContent:title,style:'color:#ffb066;margin:4px 0 8px'}));
+  const chk=$('input',{type:'checkbox',checked:!!it.chain});const cl=$('label',{style:'display:flex;gap:8px;align-items:center;margin:0 0 10px;color:#ffb066;font-weight:700'});cl.append(chk,$('span',{textContent:'⛓ En cadena: cada post rebloguea el anterior, desde el marcado en adelante'}));list.append(cl);
+  const KEY=()=>'rnc_chain_'+it.path+'_'+sel.value;
   const checks=[];
   D.forEach((d,i)=>{const row=$('label',{style:'display:flex;gap:8px;align-items:flex-start;margin:0 0 8px;font-size:14px'});
     const c=$('input',{type:'checkbox',checked:true});c.dataset.i=i;checks.push(c);
@@ -119,25 +121,37 @@ function showPosts(title,D,TAGS,labs){
   const pub=$('button',{textContent:'Publicar los marcados (tanda de 5)',style:'display:block;width:100%;background:#ff9a3c;color:#1a120b;border:0;border-radius:12px;padding:15px;font-weight:800;margin:8px 0'});
   const chain={};
   pub.onclick=async()=>{
-    const blog=sel.value;const B=blogs.find(x=>x.name===blog)||{};
-    const picks=checks.filter(c=>c.checked&&!c.disabled).slice(0,5);
+    const blog=sel.value;
+    let picks;
+    if(chk.checked){const first=checks.findIndex(c=>c.checked&&!c.disabled);if(first<0){st.textContent='Marca desde cuál empezar.';return;}picks=checks.slice(first).filter(c=>!c.disabled).slice(0,5);}
+    else picks=checks.filter(c=>c.checked&&!c.disabled).slice(0,5);
     if(!picks.length){st.textContent='No hay nada marcado.';return;}
     pub.disabled=true;let ok=0;
+    let uuid=null;if(chk.checked){const bi=await api('/blog/'+blog+'/info');const BI=bi&&(bi.response||bi);uuid=BI&&BI.blog&&BI.blog.uuid;}
+    let prev=null;try{prev=JSON.parse(localStorage.getItem(KEY())||'null');}catch(e){}
+    const why=x=>{const e=(x&&x.body&&x.body.errors&&x.body.errors[0])||{};return (e.code||'')+' '+(e.detail||e.title||x&&x.error||'');};
     for(let n=0;n<picks.length;n++){
       const i=+picks[n].dataset.i;st.textContent='Publicando '+(n+1)+' de '+picks.length+'…';
-      const content=toNPF(D[i]);const body={content,tags:TAGS.slice(0,30).join(','),state:'published'};
-      const ev=(labs[i]||'').match(/^Evidence (\d+)/);
-      if(ev&&chain.ev&&+ev[1]===chain.ev.n+1){body.parent_tumblelog_uuid=B.uuid;body.parent_post_id=chain.ev.id;body.reblog_key=chain.ev.key;}
-      const send=async(b)=>{let x=await api('/blog/'+(B.uuid||blog)+'/posts',{method:'POST',body:b});if(x&&x.error&&B.uuid)x=await api('/blog/'+blog+'/posts',{method:'POST',body:b});return x;};const why=x=>{const e=(x&&x.body&&x.body.errors&&x.body.errors[0])||{};return (e.code||'')+' '+(e.detail||e.title||x&&x.error||'');};let r=await send(body);if(r&&r.error){log.textContent+='  · formato nativo: '+why(r)+'\n';let x=await api('/blog/'+blog+'/post',{method:'POST',body:{type:'text',format:'html',body:D[i],tags:TAGS.slice(0,30).join(',')}});if(x&&!x.error){r=x;log.textContent+='  (publicado como HTML, igual que pegarlo)\n';}else log.textContent+='  · HTML: '+why(x)+'\n';}if(r&&r.error){const plain=content.map(c=>{const d=Object.assign({},c);delete d.formatting;return d;});r=await send(Object.assign({},body,{content:plain}));if(!(r&&r.error))log.textContent+='  (sin negritas ni enlaces)\n';}if(r&&r.error){const safe=content.filter(c=>c.type==='text').map(c=>({type:'text',text:c.text}));r=await send(Object.assign({},body,{content:safe.length?safe:[{type:'text',text:' '}]}));if(!(r&&r.error))log.textContent+='  (solo texto)\n';}
+      const content=toNPF(D[i]);const tags=TAGS.slice(0,30).join(',');
+      const isRe=chk.checked&&prev&&prev.next===i&&uuid;
+      const body={content,tags,state:'published'};
+      if(isRe){body.parent_tumblelog_uuid=uuid;body.parent_post_id=prev.id;body.reblog_key=prev.key;}
+      let r=await api('/blog/'+blog+'/posts',{method:'POST',body});
+      if(r&&r.error){log.textContent+='  · nativo: '+why(r)+'\n';
+        const x=isRe?await api('/blog/'+blog+'/post/reblog',{method:'POST',body:{id:prev.id,reblog_key:prev.key,comment:D[i],tags}})
+                    :await api('/blog/'+blog+'/post',{method:'POST',body:{type:'text',format:'html',body:D[i],tags}});
+        if(x&&!x.error){r=x;log.textContent+='  (como HTML, igual que pegarlo)\n';}else log.textContent+='  · HTML: '+why(x)+'\n';}
       const RR=r&&(r.response||r);const id=RR&&(RR.id_string||RR.id);
-      if(id){ok++;log.textContent+='✓ '+(labs[i]||i)+' → '+id+'\n';picks[n].checked=false;picks[n].disabled=true;
-        if(ev){const g=await api('/blog/'+blog+'/posts/'+id);const P=g&&(g.response||g);if(P&&P.reblog_key)chain.ev={n:+ev[1],id:id,key:P.reblog_key};}}
-      else{const er=(r&&r.body&&r.body.errors&&r.body.errors[0])||{};log.textContent+='✗ '+(labs[i]||i)+' · '+(er.code||'')+' '+(er.detail||er.title||r.error||'')+'\n';}
+      if(id){ok++;log.textContent+='✓ '+(labs[i]||('Post '+(i+1)))+(isRe?' (reblog)':'')+' → '+id+'\n';picks[n].checked=false;picks[n].disabled=true;
+        if(chk.checked){const g=await api('/blog/'+blog+'/posts/'+id);const P=g&&(g.response||g);const key=P&&(P.reblog_key||(P.posts&&P.posts[0]&&P.posts[0].reblog_key));
+          prev={id:String(id),key:key,next:i+1};try{localStorage.setItem(KEY(),JSON.stringify(prev));}catch(e){}
+          if(checks[i+1]&&!checks[i+1].disabled)checks[i+1].checked=true;}}
+      else{log.textContent+='✗ '+(labs[i]||('Post '+(i+1)))+' · '+why(r)+'\n';break;}
       log.scrollTop=1e9;
       if(n<picks.length-1)for(let t=10;t>0;t--){st.textContent='Siguiente en '+t+' s…';await new Promise(r=>setTimeout(r,1000));}
     }
-    const left=checks.filter(c=>c.checked&&!c.disabled).length;
-    st.textContent='Tanda hecha: '+ok+' de '+picks.length+'.'+(left?' Quedan '+left+': espera y vuelve a pulsar.':' No queda nada.');pub.disabled=false;
+    const left=checks.filter(c=>!c.disabled).length-(chk.checked?0:0);
+    st.textContent='Tanda hecha: '+ok+' de '+picks.length+'.'+(chk.checked?' La cadena sigue donde lo dejaste: vuelve a pulsar para la siguiente tanda.':'');pub.disabled=false;
   };
   list.append(pub);
 }

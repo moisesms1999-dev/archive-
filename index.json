@@ -5,6 +5,30 @@
   "about": "All posts: call-outs, the coinedbank anons, the evidence chain, threads, gallery, videos, posts."
  },
  {
+  "path": "videos-chain/index.html",
+  "title": "Videos ⛓",
+  "about": "Chain: each post reblogs the previous one.",
+  "chain": true
+ },
+ {
+  "path": "gallery-chain/index.html",
+  "title": "Coinedbank gallery ⛓",
+  "about": "Chain: each post reblogs the previous one.",
+  "chain": true
+ },
+ {
+  "path": "evidence-chain/index.html",
+  "title": "Evidence chain (1 to 11) ⛓",
+  "about": "Chain: each post reblogs the previous one.",
+  "chain": true
+ },
+ {
+  "path": "coinedbank-chain/index.html",
+  "title": "Coinedbank, the whole thread ⛓",
+  "about": "Chain: each post reblogs the previous one.",
+  "chain": true
+ },
+ {
   "path": "coinedbank-complete/index.html",
   "title": "Coinedbank complete",
   "about": "The full call-out and every coinedbank anon answered."
