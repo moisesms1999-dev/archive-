@@ -17,7 +17,7 @@ const log=$('div',{style:'font-size:13px;color:#e7b98a;white-space:pre-wrap;max-
 const st=$('div',{style:'color:#9be59b;min-height:1.3em;margin:8px 0'});
 const close=$('button',{textContent:'✕ Cerrar',style:'position:absolute;top:10px;right:12px;background:#5a3a1e;color:#ffd9b0;border:0;border-radius:10px;padding:8px 12px;font-weight:700'});
 close.onclick=()=>box.remove();
-box.append(close,$('h2',{textContent:'🍪 Renacer',style:'color:#ff9a3c;margin:0 0 4px'}),$('div',{textContent:'modo: '+((window.tumblr&&typeof window.tumblr.apiFetch==='function')?'interno':'alternativo'),style:'font-size:11px;color:#a58a6a'}),$('p',{textContent:'Publica en el blog que elijas. Tandas de 5, 10 segundos entre posts.',style:'color:#f3c99a;margin:0 0 12px'}));
+box.append(close,$('h2',{textContent:'🍪 Renacer',style:'color:#ff9a3c;margin:0 0 4px'}),$('div',{textContent:'modo: '+((window.tumblr&&typeof window.tumblr.apiFetch==='function')?'interno':'alternativo'),style:'font-size:11px;color:#a58a6a'}),$('p',{textContent:'Publica en el blog que elijas. Turbo: sin espera entre posts, hasta 25 por tanda.',style:'color:#f3c99a;margin:0 0 12px'}));
 document.body.append(box);
 let blogs=[];
 const u=await api('/user/info');
@@ -33,9 +33,9 @@ const flog=$('div',{style:'font-size:12px;color:#e7b98a;white-space:pre-wrap;max
 const bstyle='display:block;width:100%;text-align:left;background:#5a3a1e;color:#ffd9b0;border:0;border-radius:10px;padding:11px;margin:6px 0 0;font-weight:700';
 const bF=$('button',{textContent:'👥 Seguir a todos mis seguidores',style:bstyle});
 const bL=$('button',{textContent:'📋 Seguir a mi lista fija',style:bstyle});
-const sp=$('select',{style:'width:100%;padding:9px;border-radius:10px;background:#1a120b;color:#ffd9b0;border:1px solid #5a3a1e;margin-top:6px'});sp.append($('option',{value:'n',textContent:'Velocidad normal (uno cada 2,5 a 5 s)'}),$('option',{value:'f',textContent:'Rápido (uno cada 0,8 a 1,6 s)'}));
+const sp=$('select',{style:'width:100%;padding:9px;border-radius:10px;background:#1a120b;color:#ffd9b0;border:1px solid #5a3a1e;margin-top:6px'});sp.append($('option',{value:'t',textContent:'Turbo (sin espera)'}),$('option',{value:'f',textContent:'Rápido (uno cada 0,8 a 1,6 s)'}),$('option',{value:'n',textContent:'Normal (uno cada 2,5 a 5 s)'}));
 fbox.append($('b',{textContent:'Seguidores',style:'color:#ffb066'}),sp,bF,bL,fst,flog);box.append(fbox);
-const nap=()=>new Promise(r=>setTimeout(r,sp.value==='f'?800+Math.random()*800:2500+Math.random()*2500));
+const nap=()=>sp.value==='t'?Promise.resolve():new Promise(r=>setTimeout(r,sp.value==='f'?800+Math.random()*800:2500+Math.random()*2500));
 async function followAll(names,label){
   bF.disabled=bL.disabled=true;let ok=0,n=0;
   for(const nm of names){n++;fst.textContent=label+': '+n+' de '+names.length+' ('+nm+')';
@@ -126,13 +126,13 @@ function showPosts(it,D,TAGS,labs){
   D.forEach((d,i)=>{const row=$('label',{style:'display:flex;gap:8px;align-items:flex-start;margin:0 0 8px;font-size:14px'});
     const c=$('input',{type:'checkbox',checked:true});c.dataset.i=i;checks.push(c);
     row.append(c,$('span',{textContent:(labs[i]||('Post '+(i+1)))+'  ·  '+(d.match(/<img /g)||[]).length+' img'}));list.append(row);});
-  const pub=$('button',{textContent:'Publicar los marcados (tanda de 5)',style:'display:block;width:100%;background:#ff9a3c;color:#1a120b;border:0;border-radius:12px;padding:15px;font-weight:800;margin:8px 0'});
+  const pub=$('button',{textContent:'Publicar los marcados (Turbo, hasta 25 seguidos)',style:'display:block;width:100%;background:#ff9a3c;color:#1a120b;border:0;border-radius:12px;padding:15px;font-weight:800;margin:8px 0'});
   const chain={};
   pub.onclick=async()=>{
     const blog=sel.value;
     let picks;
-    if(chk.checked){const first=checks.findIndex(c=>c.checked&&!c.disabled);if(first<0){st.textContent='Marca desde cuál empezar.';return;}picks=checks.slice(first).filter(c=>!c.disabled).slice(0,5);}
-    else picks=checks.filter(c=>c.checked&&!c.disabled).slice(0,5);
+    if(chk.checked){const first=checks.findIndex(c=>c.checked&&!c.disabled);if(first<0){st.textContent='Marca desde cuál empezar.';return;}picks=checks.slice(first).filter(c=>!c.disabled).slice(0,25);}
+    else picks=checks.filter(c=>c.checked&&!c.disabled).slice(0,25);
     if(!picks.length){st.textContent='No hay nada marcado.';return;}
     pub.disabled=true;let ok=0;
     let uuid=null;if(chk.checked){const bi=await api('/blog/'+blog+'/info');const BI=bi&&(bi.response||bi);uuid=BI&&BI.blog&&BI.blog.uuid;}
@@ -156,7 +156,7 @@ function showPosts(it,D,TAGS,labs){
           if(checks[i+1]&&!checks[i+1].disabled)checks[i+1].checked=true;}}
       else{log.textContent+='✗ '+(labs[i]||('Post '+(i+1)))+' · '+why(r)+'\n';break;}
       log.scrollTop=1e9;
-      if(n<picks.length-1)for(let t=10;t>0;t--){st.textContent='Siguiente en '+t+' s…';await new Promise(r=>setTimeout(r,1000));}
+      
     }
     const left=checks.filter(c=>!c.disabled).length-(chk.checked?0:0);
     st.textContent='Tanda hecha: '+ok+' de '+picks.length+'.'+(chk.checked?' La cadena sigue donde lo dejaste: vuelve a pulsar para la siguiente tanda.':'');pub.disabled=false;
