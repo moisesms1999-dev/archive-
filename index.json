@@ -5,6 +5,11 @@
   "about": "All posts: call-outs, the coinedbank anons, the evidence chain, threads, gallery, videos, posts."
  },
  {
+  "path": "export-4oct/index.html",
+  "title": "Export 4 oct",
+  "about": "The 4 October posts."
+ },
+ {
   "path": "videos-chain/index.html",
   "title": "Videos ⛓",
   "about": "Chain: each post reblogs the previous one.",
