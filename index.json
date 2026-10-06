@@ -5,6 +5,12 @@
   "about": "All posts: call-outs, the coinedbank anons, the evidence chain, threads, gallery, videos, posts."
  },
  {
+  "path": "ungrooming-chain/index.html",
+  "title": "Ungrooming ring, one more thing ⛓",
+  "about": "Chain: the post (30 images), then its reblog with the addition (25).",
+  "chain": true
+ },
+ {
   "path": "export-5oct/index.html",
   "title": "Export 5 oct",
   "about": "thine-chocofinity-super, 4 and 5 October."
