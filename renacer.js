@@ -34,7 +34,7 @@ let blogs=[];
 const u=await api('/user/info');
 const R=u&&(u.response||u);
 if(R&&R.user&&R.user.blogs)blogs=R.user.blogs.map(b=>({name:b.name,uuid:b.uuid}));
-else{box.append($('p',{textContent:'No pude leer tus blogs: '+JSON.stringify(u).slice(0,200)+' — ¿estás en tumblr.com con la sesión iniciada?'}));}
+else{box.append($('p',{textContent:'No pude leer tus blogs: '+JSON.stringify(u).slice(0,200)+'. ¿Estás en tumblr.com con la sesión iniciada?'}));}
 const sel=$('select',{style:'width:100%;padding:11px;border-radius:10px;background:#1a120b;color:#ffd9b0;border:1px solid #5a3a1e;margin-bottom:12px'});
 blogs.forEach(b=>sel.append($('option',{value:b.name,textContent:b.name})));
 box.append(sel);
@@ -44,12 +44,17 @@ const wbl=$('label',{style:'display:flex;gap:8px;align-items:center;margin:0 0 2
 box.append(wbl,wbst,$('div',{style:'height:10px'}));
 let wbRunning=false;
 async function wbRun(){if(wbRunning)return;wbRunning=true;let done=0;
-  for(;;){const q=LS.get('rnc_wbq',[]);if(!q.length)break;const u=q[0];wbst.textContent='Wayback: guardando, '+q.length+' en cola. Deja esta pestaña abierta.';
+  for(;;){let k='rnc_wbq',q=LS.get(k,[]);if(!q.length){k='rnc_wbqi';q=LS.get(k,[]);}if(!q.length)break;const u=q[0];
+    wbst.textContent='Wayback: guardando. En cola: '+LS.get('rnc_wbq',[]).length+' post(s) y '+LS.get('rnc_wbqi',[]).length+' imagen(es). Deja esta pestaña abierta; si la cierras, sigue la próxima vez.';
     try{await fetch('https://web.archive.org/save/'+u,{mode:'no-cors',credentials:'omit'});}catch(e){}
-    LS.set('rnc_wbq',LS.get('rnc_wbq',[]).filter(x=>x!==u));done++;await new Promise(r=>setTimeout(r,4000));}
-  wbst.textContent=done?'Wayback: '+done+' enviado(s), cola vacía.':'';wbRunning=false;}
-const wbAdd=u=>{if(!wbon.checked)return;const q=LS.get('rnc_wbq',[]);if(!q.includes(u)){q.push(u);LS.set('rnc_wbq',q);}wbRun();};
-if(LS.get('rnc_wbq',[]).length)wbRun();
+    LS.set(k,LS.get(k,[]).filter(x=>x!==u));done++;await new Promise(r=>setTimeout(r,k==='rnc_wbq'?4000:2500));}
+  wbst.textContent=done?'Wayback: '+done+' guardado(s), cola vacía.':'';wbRunning=false;}
+function wbImgs(C){const L=[];(C||[]).forEach(b=>{if(!b||b.type!=='image'||!b.media||!b.media.length)return;const M=b.media.filter(m=>m&&m.url&&m.width).sort((a,c)=>a.width-c.width);if(!M.length)return;
+  const pick=w=>(M.find(m=>m.width>=w)||M[M.length-1]).url;[pick(1e9),pick(1080),pick(540)].forEach((u,j)=>{(L[j]=L[j]||[]).push(u);});});
+  return [...new Set([].concat(...L))];}
+const wbAdd=(u,imgs)=>{if(!wbon.checked)return;const q=LS.get('rnc_wbq',[]);if(!q.includes(u)){q.push(u);LS.set('rnc_wbq',q);}
+  if(imgs&&imgs.length){const qi=LS.get('rnc_wbqi',[]);imgs.forEach(x=>{if(!qi.includes(x))qi.push(x);});LS.set('rnc_wbqi',qi);}wbRun();};
+if(LS.get('rnc_wbq',[]).length||LS.get('rnc_wbqi',[]).length)wbRun();
 const fbox=$('div',{style:'background:#2a1a0e;border:1px solid #5a3a1e;border-radius:12px;padding:10px;margin:0 0 12px'});
 const fst=$('div',{style:'color:#9be59b;font-size:14px;min-height:1.2em;margin-top:6px'});
 const flog=$('div',{style:'font-size:12px;color:#e7b98a;white-space:pre-wrap;max-height:18vh;overflow:auto'});
@@ -195,7 +200,7 @@ function showPosts(it,D,TAGS,labs){
                     :await api('/blog/'+blog+'/post',{method:'POST',body:{type:'text',format:'html',body:Hh,tags}});
         if(x&&!x.error){r=x;log.textContent+='  (como HTML, igual que pegarlo)\n';}else log.textContent+='  · HTML: '+why(x)+'\n';}
       const RR=r&&(r.response||r);const id=RR&&(RR.id_string||RR.id);
-      if(id){ok++;log.textContent+='✓ '+(labs[i]||('Post '+(i+1)))+(isRe?' (reblog)':'')+' → '+id+'\n';const nu='https://www.tumblr.com/'+blog+'/'+id;remember(blog,it.path+'#'+i,nu);wbAdd(nu);picks[n].checked=false;picks[n].disabled=true;
+      if(id){ok++;log.textContent+='✓ '+(labs[i]||('Post '+(i+1)))+(isRe?' (reblog)':'')+' → '+id+'\n';const nu='https://www.tumblr.com/'+blog+'/'+id;remember(blog,it.path+'#'+i,nu);let wi=[];if(wbon.checked){try{const g=await api('/blog/'+blog+'/posts/'+id);const G=g&&(g.response||g);wi=wbImgs(G&&(G.content||(G.posts&&G.posts[0]&&G.posts[0].content)));}catch(e){}if(wi.length)log.textContent+='  🗄 '+wi.length+' imagen(es) a la cola del Wayback\n';}wbAdd(nu,wi);picks[n].checked=false;picks[n].disabled=true;
         if(chk.checked){const g=await api('/blog/'+blog+'/posts/'+id);const P=g&&(g.response||g);const key=P&&(P.reblog_key||(P.posts&&P.posts[0]&&P.posts[0].reblog_key));
           prev={id:String(id),key:key,next:i+1};try{localStorage.setItem(KEY(),JSON.stringify(prev));}catch(e){}
           if(checks[i+1]&&!checks[i+1].disabled)checks[i+1].checked=true;}}
