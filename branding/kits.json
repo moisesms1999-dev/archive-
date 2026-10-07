@@ -1,0 +1,56 @@
+[
+ {
+  "name": "Choco",
+  "dir": "branding/",
+  "header": "header.png",
+  "avatar": "avatar.png"
+ },
+ {
+  "name": "conspiracies-of-proshippers",
+  "match": "conspirac",
+  "dir": "branding/conspiracies-of-proshippers/",
+  "header": "header.jpg",
+  "avatar": "avatar.jpg",
+  "page": "branding/conspiracies-of-proshippers/",
+  "title": "What's your cultfession? Let us know!",
+  "description": "Sup! this is a cultfession blog! around here we allow the conspiracy theories and smear campaigns against our lord and savior, infinite-proship-choco, is there an individual you think qualifies for a cultfession? remember, so long as what they say is without evidence and ridiculous enough to be put on a MAGA magazine, you're good to go!",
+  "theme": [
+   [
+    "Color de fondo",
+    "#1d0038"
+   ],
+   [
+    "Color del título",
+    "#ffff00"
+   ],
+   [
+    "Color de los enlaces",
+    "#00B8FF"
+   ],
+   [
+    "Fuente del título",
+    "Gibson, negrita"
+   ],
+   [
+    "Foto de perfil",
+    "Círculo"
+   ],
+   [
+    "Cabecera",
+    "Estirada, a todo lo ancho"
+   ],
+   [
+    "Mostrar cabecera, foto, título y descripción",
+    "Sí"
+   ],
+   [
+    "Preguntas (Ask)",
+    "Activadas, \"Ask me anything\""
+   ],
+   [
+    "Compartir likes y seguidos",
+    "No"
+   ]
+  ]
+ }
+]

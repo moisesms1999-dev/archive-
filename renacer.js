@@ -1,5 +1,16 @@
 javascript:(async()=>{
 const ARCH='https://moisesms1999-dev.github.io/archive-/';
+{const old=document.getElementById('rnc');if(old)old.remove();}
+const LS={get:(k,d)=>{try{const v=localStorage.getItem(k);return v?JSON.parse(v):d;}catch(e){return d;}},set:(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}};
+let LK=null;const links=async()=>{if(LK)return LK;try{LK=await (await fetch(ARCH+'links.json?'+Date.now())).json();}catch(e){LK={t:{},k:{}};}return LK;};
+const TRX=/^https?:\/\/(?:www\.tumblr\.com\/([\w-]+)|([\w-]+)\.tumblr\.com\/post)\/(\d{15,})/;
+function relink(h,blog){const T=(LK&&LK.t)||{},M=(LS.get('rnc_links',{})[blog])||{};let n=0;
+  const out=h.replace(/href="([^"]*)"/g,(s,u)=>{const m=u.replace(/&amp;/g,'&').match(TRX);if(!m)return s;const id=m[3],x=T[id]||{},c=M[id];
+    const to=x.own===false?(x.wb||c):(c||x.wb);if(!to||to===u)return s;n++;return 'href="'+to.replace(/&/g,'&amp;').replace(/"/g,'&quot;')+'"';});
+  return {html:out,n:n};}
+function remember(blog,key,url){const ids=((LK&&LK.k)||{})[key]||[];if(!ids.length)return 0;const all=LS.get('rnc_links',{});all[blog]=all[blog]||{};ids.forEach(x=>{all[blog][x]=url;});LS.set('rnc_links',all);return ids.length;}
+const copy=async s=>{try{await navigator.clipboard.writeText(s);return true;}catch(e){const a=document.createElement('textarea');a.value=s;a.setAttribute('readonly','');a.style.cssText='position:fixed;left:-9999px;opacity:0';document.body.append(a);a.select();let ok=false;try{ok=document.execCommand('copy');}catch(_){}a.remove();return ok;}};
+const dl=async(url,name)=>{try{const b=await (await fetch(url)).blob();const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=name;document.body.append(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},5000);return true;}catch(e){window.open(url,'_blank');return false;}};
 const $=(t,p={},...k)=>{const e=document.createElement(t);Object.assign(e,p);if(p.style)e.setAttribute('style',p.style);k.flat().forEach(c=>e.append(c));return e;};
 const html=document.documentElement.innerHTML;
 const TOK=(html.match(/"API_TOKEN":"([^"]+)"/)||[])[1];
@@ -27,6 +38,18 @@ else{box.append($('p',{textContent:'No pude leer tus blogs: '+JSON.stringify(u).
 const sel=$('select',{style:'width:100%;padding:11px;border-radius:10px;background:#1a120b;color:#ffd9b0;border:1px solid #5a3a1e;margin-bottom:12px'});
 blogs.forEach(b=>sel.append($('option',{value:b.name,textContent:b.name})));
 box.append(sel);
+const wbon=$('input',{type:'checkbox',checked:LS.get('rnc_wbon',true)});wbon.onchange=()=>LS.set('rnc_wbon',wbon.checked);
+const wbst=$('div',{style:'font-size:12px;color:#a58a6a;margin:2px 0 0 28px;min-height:1em'});
+const wbl=$('label',{style:'display:flex;gap:8px;align-items:center;margin:0 0 2px;color:#ffb066;font-weight:700;font-size:14px'});wbl.append(wbon,$('span',{textContent:'🗄 Guardar cada post nuevo en el Wayback Machine, para que sus enlaces no mueran'}));
+box.append(wbl,wbst,$('div',{style:'height:10px'}));
+let wbRunning=false;
+async function wbRun(){if(wbRunning)return;wbRunning=true;let done=0;
+  for(;;){const q=LS.get('rnc_wbq',[]);if(!q.length)break;const u=q[0];wbst.textContent='Wayback: guardando, '+q.length+' en cola. Deja esta pestaña abierta.';
+    try{await fetch('https://web.archive.org/save/'+u,{mode:'no-cors',credentials:'omit'});}catch(e){}
+    LS.set('rnc_wbq',LS.get('rnc_wbq',[]).filter(x=>x!==u));done++;await new Promise(r=>setTimeout(r,4000));}
+  wbst.textContent=done?'Wayback: '+done+' enviado(s), cola vacía.':'';wbRunning=false;}
+const wbAdd=u=>{if(!wbon.checked)return;const q=LS.get('rnc_wbq',[]);if(!q.includes(u)){q.push(u);LS.set('rnc_wbq',q);}wbRun();};
+if(LS.get('rnc_wbq',[]).length)wbRun();
 const fbox=$('div',{style:'background:#2a1a0e;border:1px solid #5a3a1e;border-radius:12px;padding:10px;margin:0 0 12px'});
 const fst=$('div',{style:'color:#9be59b;font-size:14px;min-height:1.2em;margin-top:6px'});
 const flog=$('div',{style:'font-size:12px;color:#e7b98a;white-space:pre-wrap;max-height:18vh;overflow:auto'});
@@ -59,11 +82,27 @@ bL.onclick=async()=>{fst.textContent='Leyendo la lista…';let t='';try{t=await 
 const abox=$('div',{style:'background:#2a1a0e;border:1px solid #5a3a1e;border-radius:12px;padding:10px;margin:0 0 12px'});
 const bA=$('button',{textContent:'🎨 Cabecera y foto de perfil',style:'display:block;width:100%;text-align:left;background:#5a3a1e;color:#ffd9b0;border:0;border-radius:10px;padding:11px;font-weight:700'});
 const ain=$('div');abox.append(bA,ain);box.append(abox);
-bA.onclick=()=>{ain.innerHTML='';
-  const im=(src,lab)=>$('div',{style:'margin-top:10px'},$('div',{textContent:lab,style:'font-size:13px;color:#f3c99a;margin-bottom:4px'}),$('img',{src:ARCH+'branding/'+src+'?'+Date.now(),style:'width:100%;border-radius:10px'}));
-  ain.append($('p',{textContent:'Mantén pulsada cada imagen y "Descargar imagen". Luego toca el enlace de abajo, y en Apariencia eliges las dos de tu galería.',style:'font-size:13px;color:#e7b98a;margin:8px 0 0'}),
-    im('header.png','Cabecera'),im('avatar.png','Foto de perfil'),
-    $('a',{href:'https://www.tumblr.com/settings/blog/'+sel.value,textContent:'➜ Abrir la apariencia de '+sel.value,style:'display:block;margin-top:10px;color:#ff9a3c;font-weight:800'}));};
+bA.onclick=async()=>{ain.innerHTML='';let K=[];try{K=await (await fetch(ARCH+'branding/kits.json?'+Date.now())).json();}catch(e){}
+  if(!K.length)K=[{name:'Choco',dir:'branding/',header:'header.png',avatar:'avatar.png'}];
+  const row=$('div',{style:'display:flex;flex-wrap:wrap;gap:6px;margin-top:10px'});const body=$('div');ain.append(row,body);
+  const sb='background:#3a2412;color:#ffd9b0;border:0;border-radius:10px;padding:9px 12px;font-weight:700';
+  const cb=(lab,val)=>{const b=$('button',{textContent:'📋 '+lab,style:sb+';margin-top:6px'});b.onclick=async()=>{b.textContent=(await copy(val))?'✓ Copiado':'✗ No pude, mantén pulsado el texto';setTimeout(()=>{b.textContent='📋 '+lab;},2200);};return b;};
+  const show=k=>{body.innerHTML='';[...row.children].forEach(x=>{x.style.background=x.dataset.n===k.name?'#ff9a3c':'#3a2412';x.style.color=x.dataset.n===k.name?'#1a120b':'#ffd9b0';});
+    const im=(f,lab,name)=>{const u=ARCH+k.dir+f;const d=$('button',{textContent:'⬇ Descargar '+lab.toLowerCase(),style:sb+';margin-top:6px'});d.onclick=async()=>{d.textContent='Descargando…';await dl(u+'?'+Date.now(),name);d.textContent='⬇ Descargar '+lab.toLowerCase();};
+      return $('div',{style:'margin-top:12px'},$('div',{textContent:lab,style:'font-size:13px;color:#f3c99a;margin-bottom:4px'}),$('img',{src:u+'?'+Date.now(),alt:lab,style:'width:100%;max-width:420px;border-radius:10px;display:block'}),d);};
+    const slug=k.name.replace(/[^\w-]+/g,'-').toLowerCase();
+    body.append(im(k.header,'Cabecera',slug+'_cabecera.'+k.header.split('.').pop()),im(k.avatar,'Foto de perfil',slug+'_avatar.'+k.avatar.split('.').pop()));
+    const tx=(lab,v)=>$('div',{style:'margin-top:12px;background:#1a120b;border:1px solid #5a3a1e;border-radius:10px;padding:10px'},$('div',{textContent:lab,style:'font-size:12px;color:#e7b98a'}),$('div',{textContent:v,style:'white-space:pre-wrap;margin:4px 0'}),cb('Copiar '+lab.toLowerCase(),v));
+    if(k.title)body.append(tx('Título',k.title));
+    if(k.description)body.append(tx('Descripción',k.description));
+    if(k.theme&&k.theme.length){const ul=$('div',{style:'margin-top:12px'},$('div',{textContent:'Apariencia',style:'font-size:12px;color:#e7b98a;margin-bottom:4px'}));
+      k.theme.forEach(([lab,v])=>{const r=$('div',{style:'display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:0 0 6px;font-size:14px'});
+        const hex=/^#[0-9a-f]{3,8}$/i.test(v);if(hex)r.append($('span',{style:'display:inline-block;width:18px;height:18px;border-radius:5px;border:1px solid #fff6;background:'+v}));
+        r.append($('span',{textContent:lab+': '}),$('b',{textContent:v}));if(hex){const b=$('button',{textContent:'📋',ariaLabel:'Copiar '+lab.toLowerCase()+', '+v,style:sb+';padding:4px 10px'});b.onclick=async()=>{b.textContent=(await copy(v))?'✓':'✗';setTimeout(()=>{b.textContent='📋';},1800);};r.append(b);}ul.append(r);});body.append(ul);}
+    body.append($('a',{href:'https://www.tumblr.com/settings/blog/'+sel.value,target:'_blank',textContent:'➜ Abrir la apariencia de '+sel.value,style:'display:block;margin-top:12px;color:#ff9a3c;font-weight:800'}));
+    if(k.page)body.append($('a',{href:ARCH+k.page,target:'_blank',textContent:'➜ La página del kit',style:'display:block;margin-top:8px;color:#ffb066;font-weight:700'}));};
+  K.forEach(k=>{const b=$('button',{textContent:k.name,style:sb});b.dataset.n=k.name;b.onclick=()=>show(k);row.append(b);});
+  show(K.find(k=>k.match&&new RegExp(k.match,'i').test(sel.value))||K[0]);};
 const list=$('div');box.append(list,st,log);
 
 const imgOK=u=>new Promise(res=>{const im=new Image();let done=false;const t=setTimeout(()=>{if(!done){done=true;res(false);}},9000);im.onload=()=>{if(!done){done=true;clearTimeout(t);res(im.naturalWidth>0);}};im.onerror=()=>{if(!done){done=true;clearTimeout(t);res(false);}};im.src=u;});
@@ -140,13 +179,13 @@ function showPosts(it,D,TAGS,labs){
     if(chk.checked){const first=checks.findIndex(c=>c.checked&&!c.disabled);if(first<0){st.textContent='Marca desde cuál empezar.';return;}picks=checks.slice(first).filter(c=>!c.disabled).slice(0,25);}
     else picks=checks.filter(c=>c.checked&&!c.disabled).slice(0,25);
     if(!picks.length){st.textContent='No hay nada marcado.';return;}
-    pub.disabled=true;let ok=0;
+    pub.disabled=true;let ok=0;await links();
     let uuid=null;if(chk.checked){const bi=await api('/blog/'+blog+'/info');const BI=bi&&(bi.response||bi);uuid=BI&&BI.blog&&BI.blog.uuid;}
     let prev=null;try{prev=JSON.parse(localStorage.getItem(KEY())||'null');}catch(e){}
     const why=x=>{const e=(x&&x.body&&x.body.errors&&x.body.errors[0])||{};return (e.code||'')+' '+(e.detail||e.title||x&&x.error||'');};
     for(let n=0;n<picks.length;n++){
       const i=+picks[n].dataset.i;st.textContent='Publicando '+(n+1)+' de '+picks.length+'…';
-      const ci=await cleanImgs(D[i]);const Hh=ci.html;if(ci.bad)log.textContent+='  ('+ci.bad+' imagen(es) caída(s), quitada(s))\n';const content=toNPF(Hh);const tags=TAGS.slice(0,30).join(',');
+      const ci=await cleanImgs(D[i]);const rl=relink(ci.html,blog);const Hh=rl.html;if(ci.bad)log.textContent+='  ('+ci.bad+' imagen(es) caída(s), quitada(s))\n';if(rl.n)log.textContent+='  🔗 '+rl.n+' enlace(s) llevados a una copia viva\n';const content=toNPF(Hh);const tags=TAGS.slice(0,30).join(',');
       const isRe=chk.checked&&prev&&prev.next===i&&uuid;
       const body={content,tags,state:'published'};
       if(isRe){body.parent_tumblelog_uuid=uuid;body.parent_post_id=prev.id;body.reblog_key=prev.key;}
@@ -156,7 +195,7 @@ function showPosts(it,D,TAGS,labs){
                     :await api('/blog/'+blog+'/post',{method:'POST',body:{type:'text',format:'html',body:Hh,tags}});
         if(x&&!x.error){r=x;log.textContent+='  (como HTML, igual que pegarlo)\n';}else log.textContent+='  · HTML: '+why(x)+'\n';}
       const RR=r&&(r.response||r);const id=RR&&(RR.id_string||RR.id);
-      if(id){ok++;log.textContent+='✓ '+(labs[i]||('Post '+(i+1)))+(isRe?' (reblog)':'')+' → '+id+'\n';picks[n].checked=false;picks[n].disabled=true;
+      if(id){ok++;log.textContent+='✓ '+(labs[i]||('Post '+(i+1)))+(isRe?' (reblog)':'')+' → '+id+'\n';const nu='https://www.tumblr.com/'+blog+'/'+id;remember(blog,it.path+'#'+i,nu);wbAdd(nu);picks[n].checked=false;picks[n].disabled=true;
         if(chk.checked){const g=await api('/blog/'+blog+'/posts/'+id);const P=g&&(g.response||g);const key=P&&(P.reblog_key||(P.posts&&P.posts[0]&&P.posts[0].reblog_key));
           prev={id:String(id),key:key,next:i+1};try{localStorage.setItem(KEY(),JSON.stringify(prev));}catch(e){}
           if(checks[i+1]&&!checks[i+1].disabled)checks[i+1].checked=true;}}
