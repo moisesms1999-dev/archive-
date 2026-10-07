@@ -6,14 +6,14 @@
   "avatar": "avatar.png"
  },
  {
-  "name": "conspiracies-of-proshippers",
-  "match": "conspirac",
+  "name": "cultfessions-of-proshippers",
+  "match": "cultfession|conspirac",
   "dir": "branding/conspiracies-of-proshippers/",
   "header": "header.jpg",
   "avatar": "avatar.jpg",
   "page": "branding/conspiracies-of-proshippers/",
   "title": "What's your cultfession? Let us know!",
-  "description": "Sup! this is a cultfession blog! around here we allow the conspiracy theories and smear campaigns against our lord and savior, infinite-proship-choco, is there an individual you think qualifies for a cultfession? remember, so long as what they say is without evidence and ridiculous enough to be put on a MAGA magazine, you're good to go!",
+  "description": "Sup! this is a cultfession blog! around here we allow the conspiracy theories and smear campaigns against our lord and savior, infinite-proship-choco, want to try a cultfession? so long as what you say is without evidence and ridiculous enough to be put on a MAGA magazine, you're good to go! all things considered you'll have no problem with this. Parody blog.",
   "theme": [
    [
     "Color de fondo",
