@@ -1,0 +1,19 @@
+conspiracies-of-proshippers
+
+Título:
+What's your cultfession? Let us know!
+
+Descripción:
+Sup! this is a cultfession blog! around here we allow the conspiracy theories and smear campaigns against our lord and savior, infinite-proship-choco, is there an individual you think qualifies for a cultfession? remember, so long as what they say is without evidence and ridiculous enough to be put on a MAGA magazine, you're good to go!
+
+Apariencia:
+Color de fondo: #1d0038
+Color del título: #ffff00
+Color de los enlaces: #00B8FF
+Fuente del título: Gibson, negrita
+Forma de la foto de perfil: Círculo
+Cabecera: Estirada, a todo lo ancho
+Mostrar cabecera, foto, título y descripción: Sí, las cuatro
+Preguntas (Ask): Activadas, página "Ask me anything"
+Contenido para adultos: No marcado
+Compartir likes y seguidos: No
