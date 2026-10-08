@@ -1,0 +1,46 @@
+[
+ {
+  "name": "thine-super-choco-finity",
+  "label": "Choco (main): Everything + exports 1 a 7 oct",
+  "match": "choco|finity|infinit|survivor",
+  "pages": [
+   "everything/index.html",
+   "official-citations/index.html",
+   "lying-about-the-law/index.html",
+   "other-callouts/index.html",
+   "export-1oct/index.html",
+   "export-2oct/index.html",
+   "export-3oct/index.html",
+   "export-4oct/index.html",
+   "export-5oct/index.html",
+   "export-6oct/index.html",
+   "export-7oct/index.html"
+  ]
+ },
+ {
+  "name": "hesrllybehindmeisnthe",
+  "label": "Gimmick: he's behind me (30 sep a 7 oct)",
+  "match": "behind|behlnd",
+  "pages": [
+   "gimmick-export-6oct/index.html",
+   "gimmick/index.html",
+   "ungrooming-chain/index.html"
+  ]
+ },
+ {
+  "name": "cultfessions-of-proshippers",
+  "label": "Cultfessions (7 a 8 oct)",
+  "match": "cultfession|conspirac",
+  "pages": [
+   "cultfessions-7oct/index.html"
+  ]
+ },
+ {
+  "name": "exquisetly-proshititly-antichoco",
+  "label": "Antichoco (8 oct)",
+  "match": "antichoco",
+  "pages": [
+   "antichoco-8oct/index.html"
+  ]
+ }
+]
