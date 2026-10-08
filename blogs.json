@@ -22,6 +22,17 @@
   ]
  },
  {
+  "name": "thine-super-choco-finity-export",
+  "label": "Choco: solo el último export (5 oct noche, 24 posts) + lo del 6 y 7 oct, en orden",
+  "match": "choco|finity|infinit|survivor",
+  "pages": [
+   "choco-export-5oct/index.html",
+   "export-6oct/index.html",
+   "export-7oct/index.html"
+  ],
+  "strict": true
+ },
+ {
   "name": "hesrllybehindmeisnthe",
   "label": "Gimmick: solo el export (5 a 7 oct), tal cual y en orden",
   "match": "behind|behlnd",
