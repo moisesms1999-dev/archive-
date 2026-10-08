@@ -42,6 +42,14 @@
   "strict": true
  },
  {
+  "name": "hesrllybehindmeisnthe-silence",
+  "label": "Gimmick: el gordo (SILENCE! / Coinedbank), 30 + 25 + 5 en cadena de reblogs",
+  "match": "behind|behlnd",
+  "pages": [
+   "silence-chain/index.html"
+  ]
+ },
+ {
   "name": "cultfessions-of-proshippers",
   "label": "Cultfessions (7 a 8 oct, solo el export, en orden)",
   "match": "cultfession|conspirac",
