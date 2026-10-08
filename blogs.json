@@ -35,6 +35,15 @@
   "strict": true
  },
  {
+  "name": "thine-super-choco-finity-gordo",
+  "label": "Choco: el gordo (la respuesta al anon de coinedbank, 7 oct), suelto",
+  "match": "choco|finity|infinit|survivor",
+  "pages": [
+   "choco-gordo-7oct/index.html"
+  ],
+  "strict": true
+ },
+ {
   "name": "thine-super-choco-finity-8oct",
   "label": "Choco: el de \"SLANDER IS AWESOME\" (8 oct), suelto",
   "match": "choco|finity|infinit|survivor",
