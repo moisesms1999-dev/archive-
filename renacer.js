@@ -96,7 +96,7 @@ bA.onclick=async()=>{ain.innerHTML='';let K=[];try{K=await (await fetch(ARCH+'br
     const im=(f,lab,name)=>{const u=ARCH+k.dir+f;const d=$('button',{textContent:'⬇ Descargar '+lab.toLowerCase(),style:sb+';margin-top:6px'});d.onclick=async()=>{d.textContent='Descargando…';await dl(u+'?'+Date.now(),name);d.textContent='⬇ Descargar '+lab.toLowerCase();};
       return $('div',{style:'margin-top:12px'},$('div',{textContent:lab,style:'font-size:13px;color:#f3c99a;margin-bottom:4px'}),$('img',{src:u+'?'+Date.now(),alt:lab,style:'width:100%;max-width:420px;border-radius:10px;display:block'}),d);};
     const slug=k.name.replace(/[^\w-]+/g,'-').toLowerCase();
-    body.append(im(k.header,'Cabecera',slug+'_cabecera.'+k.header.split('.').pop()),im(k.avatar,'Foto de perfil',slug+'_avatar.'+k.avatar.split('.').pop()));
+    body.append(im(k.header,'Cabecera',slug+'_cabecera.'+k.header.split('.').pop()));if(k.avatar)body.append(im(k.avatar,'Foto de perfil',slug+'_avatar.'+k.avatar.split('.').pop()));else body.append($('p',{textContent:'Foto de perfil: Tumblr no la guardó al cerrar el blog. Ponla desde tu galería.',style:'font-size:13px;color:#e7b98a;margin-top:10px'}));
     const tx=(lab,v)=>$('div',{style:'margin-top:12px;background:#1a120b;border:1px solid #5a3a1e;border-radius:10px;padding:10px'},$('div',{textContent:lab,style:'font-size:12px;color:#e7b98a'}),$('div',{textContent:v,style:'white-space:pre-wrap;margin:4px 0'}),cb('Copiar '+lab.toLowerCase(),v));
     if(k.title)body.append(tx('Título',k.title));
     if(k.description)body.append(tx('Descripción',k.description));

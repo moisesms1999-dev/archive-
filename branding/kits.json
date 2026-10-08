@@ -1,9 +1,91 @@
 [
  {
-  "name": "Choco",
-  "dir": "branding/",
+  "name": "thine-super-choco-finity",
+  "match": "choco|finity|infinit|survivor",
+  "dir": "branding/choco/",
   "header": "header.png",
-  "avatar": "avatar.png"
+  "avatar": "avatar.png",
+  "page": "branding/choco/",
+  "title": "The Syskid.",
+  "description": "Creator of Mirmology and the Antibraincells tag, csa and cocsa cult surviving AUDHD BPD hosting OSDD being gremlin, NOT associated with the weird ass crk chococritters creepazoid and have in fact reported him before, known deplatformer of predators and absolutely unhinged, yours truly, Choco.",
+  "theme": [
+   [
+    "Color de fondo",
+    "#000000"
+   ],
+   [
+    "Color del título",
+    "#0000ff"
+   ],
+   [
+    "Color de los enlaces",
+    "#00B8FF"
+   ],
+   [
+    "Fuente del título",
+    "Gibson, negrita"
+   ],
+   [
+    "Forma de la foto de perfil",
+    "Círculo"
+   ],
+   [
+    "Cabecera",
+    "Estirada, a todo lo ancho"
+   ],
+   [
+    "Mostrar cabecera, foto, título y descripción",
+    "Sí, las cuatro"
+   ],
+   [
+    "Preguntas (Ask)",
+    "Activadas, página \"Ask me anything\""
+   ]
+  ]
+ },
+ {
+  "name": "hesrllybehindmeisnthe",
+  "match": "behind|behlnd",
+  "dir": "branding/gimmick/",
+  "header": "header.png",
+  "avatar": "",
+  "page": "branding/gimmick/",
+  "title": "making fun of known predators (anti chocos m)",
+  "description": "PARODY ACCOUNT.\nCry about it",
+  "theme": [
+   [
+    "Color de fondo",
+    "#00ffff"
+   ],
+   [
+    "Color del título",
+    "#000000"
+   ],
+   [
+    "Color de los enlaces",
+    "#00B8FF"
+   ],
+   [
+    "Fuente del título",
+    "Gibson, negrita"
+   ],
+   [
+    "Forma de la foto de perfil",
+    "Círculo"
+   ],
+   [
+    "Cabecera",
+    "Estirada, a todo lo ancho"
+   ],
+   [
+    "Mostrar cabecera, foto, título y descripción",
+    "Sí, las cuatro"
+   ],
+   [
+    "Preguntas (Ask)",
+    "Activadas, página \"Ask me anything\""
+   ]
+  ]
  },
  {
   "name": "cultfessions-of-proshippers",
@@ -50,6 +132,50 @@
    [
     "Compartir likes y seguidos",
     "No"
+   ]
+  ]
+ },
+ {
+  "name": "exquisetly-proshititly-antichoco",
+  "match": "antichoco",
+  "dir": "branding/antichoco/",
+  "header": "header.jpg",
+  "avatar": "avatar.jpg",
+  "page": "branding/antichoco/",
+  "title": "The Anti Shitkid",
+  "description": "The Anti Shitkid\n@exquisetly-proshititly-chocooo parody account.\n\nCreator of methamphetaminors and strong advocate\nfor not thinking. Lack of accountability is all I know.\nDeplatformer of poppyheads I hate like Choco :(\nabsolutely unhinged, yours truly, anti chode",
+  "theme": [
+   [
+    "Color de fondo",
+    "#FFFFFF"
+   ],
+   [
+    "Color del título",
+    "#000000"
+   ],
+   [
+    "Color de los enlaces",
+    "#00B8FF"
+   ],
+   [
+    "Fuente del título",
+    "Gibson, negrita"
+   ],
+   [
+    "Forma de la foto de perfil",
+    "Círculo"
+   ],
+   [
+    "Cabecera",
+    "Estirada, a todo lo ancho"
+   ],
+   [
+    "Mostrar cabecera, foto, título y descripción",
+    "Sí, las cuatro"
+   ],
+   [
+    "Preguntas (Ask)",
+    "Activadas, página \"Ask me anything\""
    ]
   ]
  }
