@@ -9,6 +9,10 @@
   "title": "Choco export, 5 oct (último export del blog)"
  },
  {
+  "path": "export-8oct/index.html",
+  "title": "Export 8 oct"
+ },
+ {
   "path": "antichoco-8oct/index.html",
   "title": "Antichoco, 8 oct",
   "about": "exquisetly-proshititly-antichoco, mirror of the impostor blog, 8 October."
@@ -97,6 +101,10 @@
   "path": "silence-chain/index.html",
   "title": "SILENCE! the ungrooming ring, whole chain (30 + 25 + 5) ⛓",
   "chain": true
+ },
+ {
+  "path": "nah-reblog/index.html",
+  "title": "NAH YOU KNOW WHAT? reblog de coinedbank ↻"
  },
  {
   "path": "gimmick-export-6oct/index.html",

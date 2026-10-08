@@ -1,7 +1,7 @@
 [
  {
   "name": "thine-super-choco-finity",
-  "label": "Choco (main): Everything, cadenas (coinedbank, evidence, gallery, videos) y exports 1 a 7 oct",
+  "label": "Choco (main): Everything, cadenas (coinedbank, evidence, gallery, videos) y exports 1 a 8 oct",
   "match": "choco|finity|infinit|survivor",
   "pages": [
    "coinedbank-chain/index.html",
@@ -18,17 +18,19 @@
    "export-4oct/index.html",
    "export-5oct/index.html",
    "export-6oct/index.html",
-   "export-7oct/index.html"
+   "export-7oct/index.html",
+   "export-8oct/index.html"
   ]
  },
  {
   "name": "thine-super-choco-finity-export",
-  "label": "Choco: solo el último export (5 oct noche, 24 posts) + lo del 6 y 7 oct, en orden",
+  "label": "Choco: solo el último export (5 oct noche, 24 posts) + lo del 6, 7 y 8 oct, en orden",
   "match": "choco|finity|infinit|survivor",
   "pages": [
    "choco-export-5oct/index.html",
    "export-6oct/index.html",
-   "export-7oct/index.html"
+   "export-7oct/index.html",
+   "export-8oct/index.html"
   ],
   "strict": true
  },
@@ -48,6 +50,15 @@
   "pages": [
    "silence-chain/index.html"
   ]
+ },
+ {
+  "name": "hesrllybehindmeisnthe-nah",
+  "label": "Gimmick: NAH YOU KNOW WHAT (reblog del post de coinedbank al anon)",
+  "match": "behind|behlnd",
+  "pages": [
+   "nah-reblog/index.html"
+  ],
+  "strict": true
  },
  {
   "name": "cultfessions-of-proshippers",

@@ -162,6 +162,10 @@ function toNPF(h){
 const why=x=>{const e=(x&&x.body&&x.body.errors&&x.body.errors[0])||{};return (e.code||'')+' '+(e.detail||e.title||x&&x.error||'');};
 async function getPost(blog,id){for(const q of ['/blog/'+blog+'/posts/'+id+'?npf=true','/blog/'+blog+'/posts/'+id,'/blog/'+blog+'/posts?id='+id+'&npf=true']){for(let k=0;k<3;k++){const g=await api(q);const G=g&&(g.response||g);const PP=G&&(G.posts&&G.posts[0]||G);if(PP&&PP.reblog_key)return PP;await new Promise(z=>setTimeout(z,1200));}}return null;}
 async function publishOne(blog,html,TAGS,label,key,chain){
+  const em=html.match(/^\s*<!--reblog ([\w-]+) (\d+)-->/);
+  if(em){html=html.slice(em[0].length);const PB=await getPost(em[1],em[2]);const bi=await api('/blog/'+em[1]+'/info');const BI=bi&&(bi.response||bi);const pu=BI&&BI.blog&&BI.blog.uuid;
+    if(!PB||!PB.reblog_key||!pu){log.textContent+='✗ '+label+' · no pude leer el post '+em[2]+' de '+em[1]+' para reblogarlo (¿borrado o privado?)\n';return {};}
+    chain={uuid:pu,prev:{id:em[2],key:PB.reblog_key}};log.textContent+='  ↻ reblog de '+em[1]+'/'+em[2]+'\n';}
   const ci=await cleanImgs(html);const rl=relink(ci.html,blog);const Hh=rl.html;
   if(ci.bad)log.textContent+='  ('+ci.bad+' imagen(es) caída(s), quitada(s))\n';if(rl.n)log.textContent+='  🔗 '+rl.n+' enlace(s) llevados a una copia viva\n';
   const content=toNPF(Hh);const tags=TAGS.slice(0,30).join(',');let isRe=!!chain,restart=false;
