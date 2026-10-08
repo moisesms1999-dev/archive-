@@ -35,6 +35,15 @@
   "strict": true
  },
  {
+  "name": "thine-super-choco-finity-8oct",
+  "label": "Choco: el de \"SLANDER IS AWESOME\" (8 oct), suelto",
+  "match": "choco|finity|infinit|survivor",
+  "pages": [
+   "export-8oct/index.html"
+  ],
+  "strict": true
+ },
+ {
   "name": "hesrllybehindmeisnthe",
   "label": "Gimmick: solo el export (5 a 7 oct), tal cual y en orden",
   "match": "behind|behlnd",
