@@ -32,18 +32,20 @@
  },
  {
   "name": "cultfessions-of-proshippers",
-  "label": "Cultfessions (7 a 8 oct)",
+  "label": "Cultfessions (7 a 8 oct, solo el export, en orden)",
   "match": "cultfession|conspirac",
   "pages": [
    "cultfessions-7oct/index.html"
-  ]
+  ],
+  "strict": true
  },
  {
   "name": "exquisetly-proshititly-antichoco",
-  "label": "Antichoco (8 oct)",
+  "label": "Antichoco (8 oct, solo el export, en orden)",
   "match": "antichoco",
   "pages": [
    "antichoco-8oct/index.html"
-  ]
+  ],
+  "strict": true
  }
 ]
