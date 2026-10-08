@@ -178,6 +178,25 @@ async function loadPage(path){const h=await (await fetch(ARCH+path+'?'+Date.now(
   return {D,TAGS,labs};}
 const norm=h=>h.replace(/<[^>]+>/g,' ').replace(/&[a-z#0-9]+;/g,' ').replace(/\s+/g,' ').trim().toLowerCase().slice(0,300);
 const hasTl=h=>/href="https?:\/\/(?:www\.tumblr\.com\/[\w-]+|[\w-]+\.tumblr\.com\/post)\/\d{15,}/.test(h);
+const dbox=$('div',{style:'background:#2a1a0e;border:1px solid #5a3a1e;border-radius:12px;padding:10px;margin:0 0 12px'});
+const dst=$('div',{style:'color:#9be59b;font-size:14px;min-height:1.2em;margin-top:6px'});
+const bD=$('button',{textContent:'🗑 Borrar TODOS los posts del blog elegido',style:bstyle+';background:#6b1d1d;color:#ffd0d0'});
+dbox.append($('b',{textContent:'Limpieza',style:'color:#ffb066'}),bD,dst);box.append(dbox);
+bD.onclick=async()=>{const blog=sel.value;bD.disabled=true;dst.textContent='Contando posts de '+blog+'…';
+  const first=await api('/blog/'+blog+'/posts?limit=20&offset=0');const F=first&&(first.response||first);
+  if(!F||!F.posts){dst.textContent='No pude leer los posts: '+JSON.stringify(first).slice(0,150);bD.disabled=false;return;}
+  const total=F.total_posts||F.posts.length;if(!total){dst.textContent='El blog ya está vacío.';bD.disabled=false;return;}
+  if(!confirm('Vas a borrar '+total+' posts de '+blog+'. No se puede deshacer. ¿Seguro?')){dst.textContent='Nada borrado.';bD.disabled=false;return;}
+  let done=0,fail=0,empty=0;
+  for(let k=0;k<400;k++){const r=await api('/blog/'+blog+'/posts?limit=20&offset=0');const R=r&&(r.response||r);const ps=(R&&R.posts)||[];
+    if(!ps.length){if(++empty>=2)break;await new Promise(z=>setTimeout(z,1200));continue;}empty=0;
+    for(const p of ps){const id=p.id_string||p.id;const x=await api('/blog/'+blog+'/post/delete',{method:'POST',body:{id:String(id)}});
+      if(x&&!x.error&&!(x.meta&&x.meta.status>=400))done++;else{fail++;log.textContent+='✗ borrar '+id+' · '+why(x)+'\n';}
+      dst.textContent='Borrando… '+done+' de '+total+(fail?' ('+fail+' fallos)':'');await new Promise(z=>setTimeout(z,250));}
+    if(fail>=ps.length&&fail>=20)break;}
+  const keep={};Object.keys(localStorage).forEach(k=>{if((k.startsWith('rnc_whole_')||k.startsWith('rnc_chain_'))&&k.endsWith('_'+blog))localStorage.removeItem(k);});
+  const L=LS.get('rnc_links',{});if(L[blog]){delete L[blog];LS.set('rnc_links',L);}
+  dst.textContent='Hecho: '+done+' posts borrados de '+blog+(fail?', '+fail+' no se pudieron':'')+'. El progreso de los botones de blog entero para este blog se ha puesto a cero.';bD.disabled=false;};
 const wbox=$('div',{style:'background:#2a1a0e;border:1px solid #5a3a1e;border-radius:12px;padding:10px;margin:0 0 12px'});
 wbox.append($('b',{textContent:'🔁 Blog entero, de un toque',style:'color:#ffb066'}),$('p',{textContent:'Cada botón publica un blog caído completo en el blog elegido arriba: primero los posts sin enlaces, luego los que enlazan a otros posts, para que los enlaces apunten a las copias nuevas. Los posts troceados (más de 30 imágenes) van en cadena: cada trozo rebloguea el anterior, como estaban. Tandas de 25; sigue donde lo dejaste.',style:'font-size:13px;color:#e7b98a;margin:6px 0 8px'}));
 const wst=$('div',{style:'color:#9be59b;font-size:14px;min-height:1.2em;margin-top:6px'});const wlist=$('div');wbox.append(wlist,wst);box.append(wbox);
@@ -186,9 +205,10 @@ const wst=$('div',{style:'color:#9be59b;font-size:14px;min-height:1.2em;margin-t
   for(const bl of BL){const b=$('button',{textContent:'🔁 '+bl.label,style:bstyle});wlist.append(b);
     b.onclick=async()=>{const blog=sel.value;b.disabled=true;wst.textContent='Leyendo '+bl.pages.length+' página(s)…';await links();
       let IX=[];try{IX=await (await fetch(ARCH+'index.json?'+Date.now())).json();}catch(e){}const CH=new Set(IX.filter(x=>x.chain).map(x=>x.path));
-      const M=new Map();const skipped={dup:0,big:0};const all=[];
+      const M=new Map();const skipped={dup:0,big:0,other:0};const all=[];const OWN=new RegExp(BL.map(x=>x.match).filter(Boolean).join('|'),'i');
+      const foreign=d=>{const m=d.match(/^\s*<p>(?:<a [^>]*>)?([\w-]+)(?:<\/a>)?:<\/p>\s*<blockquote>/);return !!(m&&!OWN.test(m[1]));};
       for(const path of bl.pages){const pg=await loadPage(path);if(!pg)continue;const isC=CH.has(path);
-        pg.D.forEach((d,i)=>{const im=(d.match(/<img /g)||[]).length;if(im>30){skipped.big++;return;}
+        pg.D.forEach((d,i)=>{const im=(d.match(/<img /g)||[]).length;if(im>30){skipped.big++;return;}if(foreign(d)){skipped.other++;return;}
           const it={path,i,html:d,TAGS:pg.TAGS,label:(pg.labs[i]||('Post '+(i+1))),key:path+'#'+i,links:hasTl(d),chain:isC};all.push(it);
           const k=dkey(d);const prev=M.get(k);if(!prev){M.set(k,it);return;}skipped.dup++;if(isC&&!prev.chain){prev.drop=true;M.set(k,it);}else it.drop=true;});}
       const keep=all.filter(x=>!x.drop);const solo=keep.filter(x=>!x.chain);const groups=[];
@@ -197,7 +217,7 @@ const wst=$('div',{style:'color:#9be59b;font-size:14px;min-height:1.2em;margin-t
       const order=[].concat(...groups.filter(g=>!g.links).map(g=>g.items),solo.filter(x=>!x.links),...groups.filter(g=>g.links).map(g=>g.items),solo.filter(x=>x.links));
       const PK='rnc_whole_'+bl.name+'_'+blog;const done=new Set(LS.get(PK,[]));const todo=order.filter(x=>!done.has(x.key));
       const nch=groups.reduce((a,g)=>a+g.items.length,0);
-      wst.textContent=bl.label+': '+order.length+' posts ('+order.filter(x=>!x.links).length+' sin enlaces, '+order.filter(x=>x.links).length+' con'+(nch?', '+nch+' en cadena de reblogs':'')+'), '+done.size+' ya publicados aquí, '+todo.length+' por publicar.'+(skipped.dup?' '+skipped.dup+' repetidos omitidos.':'')+(skipped.big?' '+skipped.big+' de más de 30 imágenes omitidos (van por trozos, en cadena).':'');
+      wst.textContent=bl.label+': '+order.length+' posts ('+order.filter(x=>!x.links).length+' sin enlaces, '+order.filter(x=>x.links).length+' con'+(nch?', '+nch+' en cadena de reblogs':'')+'), '+done.size+' ya publicados aquí, '+todo.length+' por publicar.'+(skipped.dup?' '+skipped.dup+' repetidos omitidos.':'')+(skipped.big?' '+skipped.big+' de más de 30 imágenes omitidos (van por trozos, en cadena).':'')+(skipped.other?' '+skipped.other+' reblogs de posts ajenos fuera.':'');
       if(!todo.length){b.disabled=false;wst.textContent+=' Nada pendiente.';return;}
       const go=$('button',{textContent:'Publicar la siguiente tanda ('+Math.min(25,todo.length)+' de '+todo.length+') en '+blog,style:'display:block;width:100%;background:#ff9a3c;color:#1a120b;border:0;border-radius:12px;padding:13px;font-weight:800;margin:8px 0'});
       const reset=$('button',{textContent:'Empezar de cero en este blog (olvidar lo publicado)',style:bstyle+';font-size:13px'});reset.onclick=()=>{LS.set(PK,[]);groups.forEach(g=>LS.set('rnc_chain_'+g.path+'_'+blog,null));wst.textContent='Progreso borrado. Vuelve a pulsar el botón del blog.';go.remove();reset.remove();b.disabled=false;};
