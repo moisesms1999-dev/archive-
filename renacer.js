@@ -160,15 +160,19 @@ function toNPF(h){
   return C;
 }
 const why=x=>{const e=(x&&x.body&&x.body.errors&&x.body.errors[0])||{};return (e.code||'')+' '+(e.detail||e.title||x&&x.error||'');};
+async function getPost(blog,id){for(const q of ['/blog/'+blog+'/posts/'+id+'?npf=true','/blog/'+blog+'/posts/'+id,'/blog/'+blog+'/posts?id='+id+'&npf=true']){for(let k=0;k<3;k++){const g=await api(q);const G=g&&(g.response||g);const PP=G&&(G.posts&&G.posts[0]||G);if(PP&&PP.reblog_key)return PP;await new Promise(z=>setTimeout(z,1200));}}return null;}
 async function publishOne(blog,html,TAGS,label,key,chain){
   const ci=await cleanImgs(html);const rl=relink(ci.html,blog);const Hh=rl.html;
   if(ci.bad)log.textContent+='  ('+ci.bad+' imagen(es) caída(s), quitada(s))\n';if(rl.n)log.textContent+='  🔗 '+rl.n+' enlace(s) llevados a una copia viva\n';
   const content=toNPF(Hh);const tags=TAGS.slice(0,30).join(',');let isRe=!!chain,restart=false;
   const body={content,tags,state:'published'};
-  if(isRe){body.parent_tumblelog_uuid=chain.uuid;body.parent_post_id=chain.prev.id;body.reblog_key=chain.prev.key;}
+  if(isRe&&!chain.prev.key){const PP=await getPost(blog,chain.prev.id);if(PP&&PP.reblog_key)chain.prev.key=PP.reblog_key;}
+  if(isRe&&!chain.uuid){const bi=await api('/blog/'+blog+'/info');const BI=bi&&(bi.response||bi);chain.uuid=BI&&BI.blog&&BI.blog.uuid;}
+  if(isRe&&(!chain.prev.key||!chain.uuid)){log.textContent+='  (reblog imposible: falta '+(chain.prev.key?'':'reblog key ')+(chain.uuid?'':'uuid del blog')+'; lo publico suelto)\n';isRe=false;}
+  if(isRe){body.parent_tumblelog_uuid=chain.uuid;body.parent_post_id=String(chain.prev.id);body.reblog_key=chain.prev.key;}
   let r=await api('/blog/'+blog+'/posts',{method:'POST',body});
   if(r&&r.error&&isRe&&/404|not found/i.test(why(r)+String(r.error))){delete body.parent_tumblelog_uuid;delete body.parent_post_id;delete body.reblog_key;isRe=false;restart=true;r=await api('/blog/'+blog+'/posts',{method:'POST',body});}
-  if(r&&r.error){log.textContent+='  · nativo: '+why(r)+'\n';
+  if(r&&r.error){log.textContent+='  · nativo: '+why(r)+(r.detail?' '+JSON.stringify(r.detail).slice(0,200):'')+'\n';
     const x=isRe?await api('/blog/'+blog+'/post/reblog',{method:'POST',body:{id:chain.prev.id,reblog_key:chain.prev.key,comment:Hh,tags}})
                 :await api('/blog/'+blog+'/post',{method:'POST',body:{type:'text',format:'html',body:Hh,tags}});
     if(x&&!x.error){r=x;log.textContent+='  (como HTML, igual que pegarlo)\n';}else log.textContent+='  · HTML: '+why(x)+'\n';}
@@ -176,7 +180,7 @@ async function publishOne(blog,html,TAGS,label,key,chain){
   if(!id){log.textContent+='✗ '+label+' · '+why(r)+'\n';log.scrollTop=1e9;return {restart};}
   log.textContent+='✓ '+label+(isRe?' (reblog)':'')+' → '+id+'\n';log.scrollTop=1e9;
   const nu='https://www.tumblr.com/'+blog+'/'+id;remember(blog,key,nu);
-  let wi=[],rk=null;try{const g=await api('/blog/'+blog+'/posts/'+id);const G=g&&(g.response||g);const PP=G&&(G.posts&&G.posts[0]||G);rk=PP&&PP.reblog_key;if(wbon.checked)wi=wbImgs(PP&&PP.content);}catch(e){}
+  let wi=[],rk=null;try{const PP=await getPost(blog,id);rk=PP&&PP.reblog_key;if(!rk)log.textContent+='  (no pude leer la reblog key de '+id+')\n';if(wbon.checked&&PP)wi=wbImgs(PP.content);}catch(e){}
   if(wi.length)log.textContent+='  🗄 '+wi.length+' imagen(es) a la cola del Wayback\n';wbAdd(nu,wi);
   return {id:String(id),key:rk,restart};
 }
@@ -232,7 +236,7 @@ const wst=$('div',{style:'color:#9be59b;font-size:14px;min-height:1.2em;margin-t
       go.onclick=async()=>{go.disabled=true;let ok=0;const batch=todo.slice(0,25);let uuid=null;
         if(batch.some(x=>x.chain)){const bi=await api('/blog/'+blog+'/info');const BI=bi&&(bi.response||bi);uuid=BI&&BI.blog&&BI.blog.uuid;}
         for(let n=0;n<batch.length;n++){const x=batch[n];wst.textContent='Publicando '+(n+1)+' de '+batch.length+' ('+(x.chain?'en cadena':x.links?'con enlaces':'sin enlaces')+')…';
-          let ch=null;if(x.chain&&x.gprev){const pv=LS.get('rnc_chain_'+x.path+'_'+blog,null);if(pv&&pv.id&&pv.next===x.i&&uuid)ch={uuid,prev:pv};else log.textContent+='  (no tengo el post anterior de la cadena: este va suelto)\n';}
+          let ch=null;if(x.chain&&x.gprev){const pv=LS.get('rnc_chain_'+x.path+'_'+blog,null);if(pv&&pv.id&&pv.next===x.i)ch={uuid,prev:pv};else log.textContent+='  (no tengo el post anterior de la cadena: este va suelto)\n';}
           const res=await publishOne(blog,x.html,x.TAGS,x.label,x.key,ch);
           if(res&&res.restart)log.textContent+='  (el post anterior de la cadena ya no existe: empiezo cadena nueva)\n';
           if(res&&res.id){ok++;const d=LS.get(PK,[]);if(!d.includes(x.key))d.push(x.key);LS.set(PK,d);if(x.chain)LS.set('rnc_chain_'+x.path+'_'+blog,{id:String(res.id),key:res.key,next:x.i+1});}else break;}
