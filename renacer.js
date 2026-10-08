@@ -136,6 +136,14 @@ function textBlocks(el,subtype){
     if(f.length)b.formatting=f;if(subtype)b.subtype=subtype;out.push(b);}
   return out;
 }
+function quoteBlocks(el){const out=[];const kids=el.children.length?[...el.children]:[el];
+  for(const c of kids){if(c.tagName==='BLOCKQUOTE'){out.push(...quoteBlocks(c));continue;}
+    if(c.tagName==='FIGURE'){const url=c.getAttribute('data-url')||((c.querySelector('iframe')||{}).src||'');if(url)out.push({type:'video',provider:'youtube',url:url.replace('/embed/','/watch?v=').replace(/\?feature=oembed/,'')});continue;}
+    const img=c.tagName==='IMG'?c:c.querySelector('img');
+    if(img&&!c.textContent.trim()){out.push({type:'image',media:[{url:img.getAttribute('src')}]});continue;}
+    if(img){const t=textBlocks(c,'indented');out.push(...t);c.querySelectorAll('img').forEach(im=>out.push({type:'image',media:[{url:im.getAttribute('src')}]}));continue;}
+    out.push(...textBlocks(c,'indented'));}
+  return out;}
 function toNPF(h){
   const doc=new DOMParser().parseFromString('<div>'+h+'</div>','text/html');const root=doc.body.firstChild;const C=[];
   for(const el of root.children){
@@ -145,7 +153,7 @@ function toNPF(h){
     if(tag==='P'&&as.length===1&&!el.querySelector('img')&&el.textContent.trim()===as[0].textContent.trim()&&/^https?:/.test(as[0].getAttribute('href')||'')){C.push({type:'link',url:as[0].getAttribute('href'),title:as[0].textContent.trim()});continue;}
     const img=el.tagName==='IMG'?el:el.querySelector('img');
     if(img&&!el.textContent.trim()){C.push({type:'image',media:[{url:img.getAttribute('src')}]});continue;}
-    if(tag==='BLOCKQUOTE'){for(const c of (el.children.length?el.children:[el]))C.push(...textBlocks(c,'indented'));continue;}
+    if(tag==='BLOCKQUOTE'){C.push(...quoteBlocks(el));continue;}
     if(tag==='UL'||tag==='OL'){for(const li of el.children)C.push(...textBlocks(li,tag==='UL'?'unordered-list-item':'ordered-list-item'));continue;}
     C.push(...textBlocks(el));
   }
@@ -210,11 +218,11 @@ const wst=$('div',{style:'color:#9be59b;font-size:14px;min-height:1.2em;margin-t
       for(const path of bl.pages){const pg=await loadPage(path);if(!pg)continue;const isC=CH.has(path);
         pg.D.forEach((d,i)=>{const im=(d.match(/<img /g)||[]).length;if(im>30){skipped.big++;return;}if(foreign(d)){skipped.other++;return;}
           const it={path,i,html:d,TAGS:pg.TAGS,label:(pg.labs[i]||('Post '+(i+1))),key:path+'#'+i,links:hasTl(d),chain:isC,im};all.push(it);
-          const k=dkey(d);const prev=M.get(k);if(!prev){M.set(k,it);return;}skipped.dup++;if((isC&&!prev.chain)||(isC===prev.chain&&im>prev.im)){prev.drop=true;M.set(k,it);}else it.drop=true;});}
+          const k=dkey(d);const prev=M.get(k);if(!prev){M.set(k,it);return;}skipped.dup++;if((isC&&!prev.chain)||(isC===prev.chain&&(im>prev.im||(bl.strict&&im===prev.im)))){prev.drop=true;M.set(k,it);}else it.drop=true;});}
       const keep=all.filter(x=>!x.drop);const solo=keep.filter(x=>!x.chain);const groups=[];
       for(const x of keep.filter(x=>x.chain)){let g=groups.find(g=>g.path===x.path);if(!g){g={path:x.path,items:[],links:false};groups.push(g);}g.items.push(x);g.links=g.links||x.links;}
       groups.forEach(g=>g.items.forEach((x,j)=>{x.gprev=j?g.items[j-1]:null;}));
-      const order=[];for(const path of bl.pages){const g=groups.find(g=>g.path===path);if(g){order.push(...g.items);continue;}const pp=solo.filter(x=>x.path===path);order.push(...pp.filter(x=>!x.links),...pp.filter(x=>x.links));}
+      const order=[];for(const path of bl.pages){const g=groups.find(g=>g.path===path);if(g){order.push(...g.items);continue;}const pp=solo.filter(x=>x.path===path);if(bl.strict)order.push(...pp);else order.push(...pp.filter(x=>!x.links),...pp.filter(x=>x.links));}
       const PK='rnc_whole_'+bl.name+'_'+blog;const done=new Set(LS.get(PK,[]));const todo=order.filter(x=>!done.has(x.key));
       const nch=groups.reduce((a,g)=>a+g.items.length,0);
       wst.textContent=bl.label+': '+order.length+' posts ('+order.filter(x=>!x.links).length+' sin enlaces, '+order.filter(x=>x.links).length+' con'+(nch?', '+nch+' en cadena de reblogs':'')+'), '+done.size+' ya publicados aquí, '+todo.length+' por publicar.'+(skipped.dup?' '+skipped.dup+' repetidos omitidos (de cada post repetido queda la versión con más capturas).':'')+(skipped.big?' '+skipped.big+' de más de 30 imágenes omitidos (van por trozos, en cadena).':'')+(skipped.other?' '+skipped.other+' reblogs de posts ajenos fuera.':'');

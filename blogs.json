@@ -23,13 +23,12 @@
  },
  {
   "name": "hesrllybehindmeisnthe",
-  "label": "Gimmick: he's behind me (30 sep a 7 oct)",
+  "label": "Gimmick: solo el export (5 a 7 oct), tal cual y en orden",
   "match": "behind|behlnd",
   "pages": [
-   "gimmick-export-6oct/index.html",
-   "gimmick/index.html",
-   "ungrooming-chain/index.html"
-  ]
+   "gimmick-export-6oct/index.html"
+  ],
+  "strict": true
  },
  {
   "name": "cultfessions-of-proshippers",
