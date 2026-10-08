@@ -1,7 +1,7 @@
 [
  {
   "name": "thine-super-choco-finity",
-  "label": "Choco (main): Everything + exports 1 a 7 oct",
+  "label": "Choco (main): Everything, cadenas (coinedbank, evidence, gallery, videos) y exports 1 a 7 oct",
   "match": "choco|finity|infinit|survivor",
   "pages": [
    "everything/index.html",
@@ -14,7 +14,11 @@
    "export-4oct/index.html",
    "export-5oct/index.html",
    "export-6oct/index.html",
-   "export-7oct/index.html"
+   "export-7oct/index.html",
+   "coinedbank-chain/index.html",
+   "evidence-chain/index.html",
+   "gallery-chain/index.html",
+   "videos-chain/index.html"
   ]
  },
  {

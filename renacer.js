@@ -182,7 +182,7 @@ const wbox=$('div',{style:'background:#2a1a0e;border:1px solid #5a3a1e;border-ra
 wbox.append($('b',{textContent:'🔁 Blog entero, de un toque',style:'color:#ffb066'}),$('p',{textContent:'Cada botón publica un blog caído completo en el blog elegido arriba: primero los posts sin enlaces, luego los que enlazan a otros posts, para que los enlaces apunten a las copias nuevas. Los posts troceados (más de 30 imágenes) van en cadena: cada trozo rebloguea el anterior, como estaban. Tandas de 25; sigue donde lo dejaste.',style:'font-size:13px;color:#e7b98a;margin:6px 0 8px'}));
 const wst=$('div',{style:'color:#9be59b;font-size:14px;min-height:1.2em;margin-top:6px'});const wlist=$('div');wbox.append(wlist,wst);box.append(wbox);
 (async()=>{let BL=[];try{BL=await (await fetch(ARCH+'blogs.json?'+Date.now())).json();}catch(e){}
-  const dkey=h=>h.replace(/<[^>]+>/g,' ').replace(/&[a-z#0-9]+;/g,' ').toLowerCase().replace(/[^a-z0-9]/g,'').slice(0,120)+'|'+(h.match(/<img /g)||[]).length;
+  const dkey=h=>{const t=h.replace(/<[^>]+>/g,' ').replace(/&[a-z#0-9]+;/g,' ').toLowerCase().replace(/[^a-z0-9]/g,'');const n=(h.match(/<img /g)||[]).length;if(t.length>=60)return t.slice(0,120)+'|'+n;return t+'|'+n+'|'+(h.match(/(?:src|href|data-url)="[^"]*"/g)||[]).join('');};
   for(const bl of BL){const b=$('button',{textContent:'🔁 '+bl.label,style:bstyle});wlist.append(b);
     b.onclick=async()=>{const blog=sel.value;b.disabled=true;wst.textContent='Leyendo '+bl.pages.length+' página(s)…';await links();
       let IX=[];try{IX=await (await fetch(ARCH+'index.json?'+Date.now())).json();}catch(e){}const CH=new Set(IX.filter(x=>x.chain).map(x=>x.path));
