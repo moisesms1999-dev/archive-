@@ -4,6 +4,10 @@
   "label": "Choco (main): Everything, cadenas (coinedbank, evidence, gallery, videos) y exports 1 a 7 oct",
   "match": "choco|finity|infinit|survivor",
   "pages": [
+   "coinedbank-chain/index.html",
+   "evidence-chain/index.html",
+   "gallery-chain/index.html",
+   "videos-chain/index.html",
    "everything/index.html",
    "official-citations/index.html",
    "lying-about-the-law/index.html",
@@ -14,11 +18,7 @@
    "export-4oct/index.html",
    "export-5oct/index.html",
    "export-6oct/index.html",
-   "export-7oct/index.html",
-   "coinedbank-chain/index.html",
-   "evidence-chain/index.html",
-   "gallery-chain/index.html",
-   "videos-chain/index.html"
+   "export-7oct/index.html"
   ]
  },
  {
