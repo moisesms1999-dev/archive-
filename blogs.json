@@ -1,7 +1,7 @@
 [
  {
   "name": "thine-super-choco-finity",
-  "label": "Choco (main): Everything, cadenas (coinedbank, evidence, gallery, videos) y exports 1 a 8 oct",
+  "label": "Choco (main): Everything, cadenas (coinedbank, evidence, gallery, videos) y exports 1 a 8 oct + LMAO 9 oct",
   "match": "choco|finity|infinit|survivor",
   "pages": [
    "coinedbank-chain/index.html",
@@ -19,18 +19,20 @@
    "export-5oct/index.html",
    "export-6oct/index.html",
    "export-7oct/index.html",
-   "export-8oct/index.html"
+   "export-8oct/index.html",
+   "lmao-9oct/index.html"
   ]
  },
  {
   "name": "thine-super-choco-finity-export",
-  "label": "Choco: solo el último export (5 oct noche, 24 posts) + lo del 6, 7 y 8 oct, en orden",
+  "label": "Choco: solo el último export (5 oct noche, 24 posts) + lo del 6, 7, 8 y 9 oct, en orden",
   "match": "choco|finity|infinit|survivor",
   "pages": [
    "choco-export-5oct/index.html",
    "export-6oct/index.html",
    "export-7oct/index.html",
-   "export-8oct/index.html"
+   "export-8oct/index.html",
+   "lmao-9oct/index.html"
   ],
   "strict": true
  },
@@ -49,6 +51,15 @@
   "match": "choco|finity|infinit|survivor",
   "pages": [
    "export-8oct/index.html"
+  ],
+  "strict": true
+ },
+ {
+  "name": "super-thine-chocofinity-lmao",
+  "label": "Choco: \"LMAOOOOOOO\" (9 oct), confessions-of-proshippers y Lucid-Cups, suelto",
+  "match": "choco|finity|infinit|survivor",
+  "pages": [
+   "lmao-9oct/index.html"
   ],
   "strict": true
  },
