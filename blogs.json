@@ -22,7 +22,8 @@
    "export-8oct/index.html",
    "lmao-9oct/index.html",
    "choco-from-gimmick/index.html",
-   "choco-receipts-80smaniac/index.html"
+   "choco-receipts-80smaniac/index.html",
+   "choco-the-choco-situation/index.html"
   ]
  },
  {
@@ -77,10 +78,11 @@
  },
  {
   "name": "thine-infinity-choco-receipts",
-  "label": "Choco: receipts on 80smaniac (10 oct), suelto",
+  "label": "Choco: receipts on 80smaniac y el timeline completo (10 oct), sueltos",
   "match": "choco|finity|infinit|survivor",
   "pages": [
-   "choco-receipts-80smaniac/index.html"
+   "choco-receipts-80smaniac/index.html",
+   "choco-the-choco-situation/index.html"
   ]
  },
  {
