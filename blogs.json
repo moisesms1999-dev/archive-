@@ -21,7 +21,8 @@
    "export-7oct/index.html",
    "export-8oct/index.html",
    "lmao-9oct/index.html",
-   "choco-from-gimmick/index.html"
+   "choco-from-gimmick/index.html",
+   "choco-receipts-80smaniac/index.html"
   ]
  },
  {
@@ -73,6 +74,14 @@
    "choco-from-gimmick/index.html"
   ],
   "strict": true
+ },
+ {
+  "name": "thine-infinity-choco-receipts",
+  "label": "Choco: receipts on 80smaniac (10 oct), suelto",
+  "match": "choco|finity|infinit|survivor",
+  "pages": [
+   "choco-receipts-80smaniac/index.html"
+  ]
  },
  {
   "name": "hesrllybehindmeisnthe",
