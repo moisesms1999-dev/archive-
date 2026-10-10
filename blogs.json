@@ -1,7 +1,7 @@
 [
  {
   "name": "thine-super-choco-finity",
-  "label": "Choco (main): Everything, cadenas (coinedbank, evidence, gallery, videos), exports 1 a 9 oct y lo rescatado del gimmick",
+  "label": "Choco (main): Everything, cadenas (coinedbank, evidence, gallery, videos), exports 1 a 9 oct y lo rescatado del gimmick y de cultfessions",
   "match": "choco|finity|infinit|survivor",
   "pages": [
    "coinedbank-chain/index.html",
@@ -26,7 +26,7 @@
  },
  {
   "name": "thine-super-choco-finity-export",
-  "label": "Choco: el último export (5 oct noche, 24 posts) + 6, 7, 8 y 9 oct + lo rescatado del gimmick",
+  "label": "Choco: el último export (5 oct noche, 24 posts) + 6, 7, 8 y 9 oct + lo rescatado del gimmick y de cultfessions",
   "match": "choco|finity|infinit|survivor",
   "pages": [
    "choco-export-5oct/index.html",
@@ -67,7 +67,7 @@
  },
  {
   "name": "thine-super-choco-finity-rescued",
-  "label": "Choco: lo rescatado del gimmick (6 y 9 oct: las dos respuestas a confessions-of-proshippers y lo de proship-froggo), suelto",
+  "label": "Choco: lo rescatado del gimmick y de cultfessions (6 y 9 oct: las dos respuestas a confessions-of-proshippers y lo de proship-froggo entero), suelto",
   "match": "choco|finity|infinit|survivor",
   "pages": [
    "choco-from-gimmick/index.html"
@@ -112,10 +112,20 @@
  },
  {
   "name": "cultfessions-of-proshippers",
-  "label": "Cultfessions (7 a 8 oct, solo el export, en orden)",
+  "label": "Cultfessions: los dos exports (7 a 9 oct), sin lo de Choco",
   "match": "cultfession|conspirac|proshlppers",
   "pages": [
-   "cultfessions-7oct/index.html"
+   "cultfessions-7oct/index.html",
+   "cultfessions-9oct/index.html"
+  ],
+  "strict": true
+ },
+ {
+  "name": "confessions-of-proshlppers-9oct",
+  "label": "Cultfessions: solo el export nuevo (8 y 9 oct), suelto",
+  "match": "cultfession|conspirac|proshlppers",
+  "pages": [
+   "cultfessions-9oct/index.html"
   ],
   "strict": true
  },

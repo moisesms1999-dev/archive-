@@ -161,6 +161,13 @@ function toNPF(h){
 }
 const why=x=>{const e=(x&&x.body&&x.body.errors&&x.body.errors[0])||{};return (e.code||'')+' '+(e.detail||e.title||x&&x.error||'');};
 async function getPost(blog,id){for(const q of ['/blog/'+blog+'/posts/'+id+'?npf=true','/blog/'+blog+'/posts/'+id,'/blog/'+blog+'/posts?id='+id+'&npf=true']){for(let k=0;k<3;k++){const g=await api(q);const G=g&&(g.response||g);const PP=G&&(G.posts&&G.posts[0]||G);if(PP&&PP.reblog_key)return PP;await new Promise(z=>setTimeout(z,1200));}}return null;}
+let ASKOFF=false;
+function askSplit(h){const m=h.match(/^\s*<p><b>Anonymous asked:<\/b><\/p>\s*/);if(!m)return null;let i=m[0].length;const qs=[];
+  if(/^\s*<blockquote[^>]*>/.test(h.slice(i))){const o=h.slice(i).match(/^\s*<blockquote[^>]*>/);let d=1,j=i+o[0].length;const re=/<(\/?)blockquote[^>]*>/g;re.lastIndex=j;let t,end=-1;while((t=re.exec(h))){d+=t[1]?-1:1;if(!d){end=re.lastIndex;break;}}if(end<0)return null;qs.push(h.slice(i+o[0].length,t.index));i=end;}
+  if(!qs.length)return null;return {q:qs.join(''),rest:h.slice(i)};}
+function askNPF(h){const sp=askSplit(h);if(!sp)return null;const qd=new DOMParser().parseFromString('<div>'+sp.q+'</div>','text/html').body.firstChild;const QB=[];let extra='';
+  for(const el of [...qd.children]){if(el.tagName==='IMG'||el.querySelector('img,figure,iframe')){extra+=el.outerHTML;continue;}if(el.tagName==='UL'||el.tagName==='OL'){for(const li of el.children)QB.push(...textBlocks(li,el.tagName==='UL'?'unordered-list-item':'ordered-list-item'));continue;}QB.push(...textBlocks(el));}
+  const AB=toNPF(extra+sp.rest);if(!QB.length||!AB.length)return null;return {content:QB.concat(AB),layout:[{type:'ask',blocks:QB.map((_,k)=>k)}]};}
 function dropTrail(h,name){const m=h.match(new RegExp('^\\s*<p>(?:<a [^>]*>)?'+name+'(?:</a>)?:</p>\\s*<blockquote>'));if(!m)return h;let d=1,i=m[0].length;const re=/<(\/?)blockquote>/g;re.lastIndex=i;let t;while((t=re.exec(h))){d+=t[1]?-1:1;if(!d)return h.slice(re.lastIndex);}return h;}
 async function publishOne(blog,html,TAGS,label,key,chain){
   const em=html.match(/^\s*<!--reblog ([\w-]+) (\d+)-->/);
@@ -169,13 +176,14 @@ async function publishOne(blog,html,TAGS,label,key,chain){
     else{html=dropTrail(html,em[1]);chain={uuid:pu,prev:{id:em[2],key:PB.reblog_key}};log.textContent+='  ↻ reblog de '+em[1]+'/'+em[2]+'\n';}}
   const ci=await cleanImgs(html);const rl=relink(ci.html,blog);const Hh=rl.html;
   if(ci.bad)log.textContent+='  ('+ci.bad+' imagen(es) caída(s), quitada(s))\n';if(rl.n)log.textContent+='  🔗 '+rl.n+' enlace(s) llevados a una copia viva\n';
-  const content=toNPF(Hh);const tags=TAGS.slice(0,30).join(',');let isRe=!!chain,restart=false;
-  const body={content,tags,state:'published'};
+  const AK=(chain||ASKOFF)?null:askNPF(Hh);const content=AK?AK.content:toNPF(Hh);const tags=TAGS.slice(0,30).join(',');let isRe=!!chain,restart=false;
+  const body={content,tags,state:'published'};if(AK)body.layout=AK.layout;
   if(isRe&&!chain.prev.key){const PP=await getPost(blog,chain.prev.id);if(PP&&PP.reblog_key)chain.prev.key=PP.reblog_key;}
   if(isRe&&!chain.uuid){const bi=await api('/blog/'+blog+'/info');const BI=bi&&(bi.response||bi);chain.uuid=BI&&BI.blog&&BI.blog.uuid;}
   if(isRe&&(!chain.prev.key||!chain.uuid)){log.textContent+='  (reblog imposible: falta '+(chain.prev.key?'':'reblog key ')+(chain.uuid?'':'uuid del blog')+'; lo publico suelto)\n';isRe=false;}
   if(isRe){body.parent_tumblelog_uuid=chain.uuid;body.parent_post_id=String(chain.prev.id);body.reblog_key=chain.prev.key;}
   let r=await api('/blog/'+blog+'/posts',{method:'POST',body});
+  if(AK){if(r&&r.error){log.textContent+='  (Tumblr no aceptó la cajita del ask: '+why(r)+'; va como texto)\n';delete body.layout;body.content=toNPF(Hh);r=await api('/blog/'+blog+'/posts',{method:'POST',body});}else log.textContent+='  💬 en su cajita de ask\n';}
   if(r&&r.error&&isRe&&/404|not found/i.test(why(r)+String(r.error))){delete body.parent_tumblelog_uuid;delete body.parent_post_id;delete body.reblog_key;isRe=false;restart=true;r=await api('/blog/'+blog+'/posts',{method:'POST',body});}
   if(r&&r.error){log.textContent+='  · nativo: '+why(r)+(r.detail?' '+JSON.stringify(r.detail).slice(0,200):'')+'\n';
     const x=isRe?await api('/blog/'+blog+'/post/reblog',{method:'POST',body:{id:chain.prev.id,reblog_key:chain.prev.key,comment:Hh,tags}})
@@ -183,6 +191,7 @@ async function publishOne(blog,html,TAGS,label,key,chain){
     if(x&&!x.error){r=x;log.textContent+='  (como HTML, igual que pegarlo)\n';}else log.textContent+='  · HTML: '+why(x)+'\n';}
   const RR=r&&(r.response||r);const id=RR&&(RR.id_string||RR.id);
   if(!id){log.textContent+='✗ '+label+' · '+why(r)+'\n';log.scrollTop=1e9;return {restart};}
+  if(AK){const PQ=await getPost(blog,id);if(PQ&&!(PQ.layout||[]).some(l=>l&&l.type==='ask')){log.textContent+='  (Tumblr quitó la cajita del ask: lo borro y los asks van como texto)\n';await api('/blog/'+blog+'/post/delete',{method:'POST',body:{id:String(id)}});ASKOFF=true;return publishOne(blog,html,TAGS,label,key,chain);}}
   log.textContent+='✓ '+label+(isRe?' (reblog)':'')+' → '+id+'\n';log.scrollTop=1e9;
   const nu='https://www.tumblr.com/'+blog+'/'+id;remember(blog,key,nu);
   let wi=[],rk=null;try{const PP=await getPost(blog,id);rk=PP&&PP.reblog_key;if(!rk)log.textContent+='  (no pude leer la reblog key de '+id+')\n';if(wbon.checked&&PP)wi=wbImgs(PP.content);}catch(e){}
@@ -226,8 +235,8 @@ const wst=$('div',{style:'color:#9be59b;font-size:14px;min-height:1.2em;margin-t
       const foreign=d=>{const m=d.match(/^\s*<p>(?:<a [^>]*>)?([\w-]+)(?:<\/a>)?:<\/p>\s*<blockquote>/);return !!(m&&!OWN.test(m[1]));};
       for(const path of bl.pages){const pg=await loadPage(path);if(!pg)continue;const isC=CH.has(path);
         const OW=ORD[path]||[];pg.D.forEach((d,i)=>{const w=OW[i]||null;if(w==='x'){skipped.moved++;return;}const im=(d.match(/<img /g)||[]).length;if(im>30){skipped.big++;return;}if(foreign(d)){skipped.other++;return;}
-          const it={path,i,html:d,TAGS:pg.TAGS,label:(pg.labs[i]||('Post '+(i+1))),key:path+'#'+i,links:hasTl(d),chain:isC,im,w,seq:seq++};all.push(it);
-          const k=dkey(d);const prev=M.get(k);if(!prev){M.set(k,it);return;}skipped.dup++;if((isC&&!prev.chain)||(isC===prev.chain&&(im>prev.im||(bl.strict&&im===prev.im)))){prev.drop=true;M.set(k,it);}else it.drop=true;});}
+          const tl=d.replace(/<[^>]+>/g,' ').replace(/&[a-z#0-9]+;/g,' ').replace(/[^A-Za-z0-9]/g,'').length;const it={path,i,html:d,TAGS:pg.TAGS,label:(pg.labs[i]||('Post '+(i+1))),key:path+'#'+i,links:hasTl(d),chain:isC,im,tl,w,seq:seq++};all.push(it);
+          const k=dkey(d);const prev=M.get(k);if(!prev){M.set(k,it);return;}skipped.dup++;{const a=prev.w,b=it.w;const mw=(a&&b)?(a.padStart(20,'0')<b.padStart(20,'0')?a:b):(a||b);prev.w=mw;it.w=mw;}if((isC&&!prev.chain)||(isC===prev.chain&&(im>prev.im||(im===prev.im&&(tl>prev.tl*1.02||(bl.strict&&tl>=prev.tl*0.98)))))){prev.drop=true;M.set(k,it);}else it.drop=true;});}
       const keep=all.filter(x=>!x.drop);{let lw=null;keep.forEach(x=>{if(!x.w)x.w=lw;lw=x.w||lw;});}const solo=keep.filter(x=>!x.chain);const groups=[];
       for(const x of keep.filter(x=>x.chain)){let g=groups.find(g=>g.path===x.path);if(!g){g={path:x.path,items:[],links:false};groups.push(g);}g.items.push(x);g.links=g.links||x.links;}
       groups.forEach(g=>g.items.forEach((x,j)=>{x.gprev=j?g.items[j-1]:null;}));
