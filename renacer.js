@@ -161,11 +161,12 @@ function toNPF(h){
 }
 const why=x=>{const e=(x&&x.body&&x.body.errors&&x.body.errors[0])||{};return (e.code||'')+' '+(e.detail||e.title||x&&x.error||'');};
 async function getPost(blog,id){for(const q of ['/blog/'+blog+'/posts/'+id+'?npf=true','/blog/'+blog+'/posts/'+id,'/blog/'+blog+'/posts?id='+id+'&npf=true']){for(let k=0;k<3;k++){const g=await api(q);const G=g&&(g.response||g);const PP=G&&(G.posts&&G.posts[0]||G);if(PP&&PP.reblog_key)return PP;await new Promise(z=>setTimeout(z,1200));}}return null;}
+function dropTrail(h,name){const m=h.match(new RegExp('^\\s*<p>(?:<a [^>]*>)?'+name+'(?:</a>)?:</p>\\s*<blockquote>'));if(!m)return h;let d=1,i=m[0].length;const re=/<(\/?)blockquote>/g;re.lastIndex=i;let t;while((t=re.exec(h))){d+=t[1]?-1:1;if(!d)return h.slice(re.lastIndex);}return h;}
 async function publishOne(blog,html,TAGS,label,key,chain){
   const em=html.match(/^\s*<!--reblog ([\w-]+) (\d+)-->/);
   if(em){html=html.slice(em[0].length);const PB=await getPost(em[1],em[2]);const bi=await api('/blog/'+em[1]+'/info');const BI=bi&&(bi.response||bi);const pu=BI&&BI.blog&&BI.blog.uuid;
-    if(!PB||!PB.reblog_key||!pu){log.textContent+='✗ '+label+' · no pude leer el post '+em[2]+' de '+em[1]+' para reblogarlo (¿borrado o privado?)\n';return {};}
-    chain={uuid:pu,prev:{id:em[2],key:PB.reblog_key}};log.textContent+='  ↻ reblog de '+em[1]+'/'+em[2]+'\n';}
+    if(!PB||!PB.reblog_key||!pu){if(new RegExp('^\\s*<p>(?:<a [^>]*>)?'+em[1]+'(?:</a>)?:</p>\\s*<blockquote>').test(html))log.textContent+='  (el post '+em[2]+' de '+em[1]+' ya no se puede leer: lo publico suelto, con su cita dentro)\n';else{log.textContent+='✗ '+label+' · no pude leer el post '+em[2]+' de '+em[1]+' para reblogarlo (¿borrado o privado?)\n';return {};}}
+    else{html=dropTrail(html,em[1]);chain={uuid:pu,prev:{id:em[2],key:PB.reblog_key}};log.textContent+='  ↻ reblog de '+em[1]+'/'+em[2]+'\n';}}
   const ci=await cleanImgs(html);const rl=relink(ci.html,blog);const Hh=rl.html;
   if(ci.bad)log.textContent+='  ('+ci.bad+' imagen(es) caída(s), quitada(s))\n';if(rl.n)log.textContent+='  🔗 '+rl.n+' enlace(s) llevados a una copia viva\n';
   const content=toNPF(Hh);const tags=TAGS.slice(0,30).join(',');let isRe=!!chain,restart=false;
@@ -214,32 +215,33 @@ bD.onclick=async()=>{const blog=sel.value;bD.disabled=true;dst.textContent='Cont
   const L=LS.get('rnc_links',{});if(L[blog]){delete L[blog];LS.set('rnc_links',L);}
   dst.textContent='Hecho: '+done+' posts borrados de '+blog+(fail?', '+fail+' no se pudieron':'')+'. El progreso de los botones de blog entero para este blog se ha puesto a cero.';bD.disabled=false;};
 const wbox=$('div',{style:'background:#2a1a0e;border:1px solid #5a3a1e;border-radius:12px;padding:10px;margin:0 0 12px'});
-wbox.append($('b',{textContent:'🔁 Blog entero, de un toque',style:'color:#ffb066'}),$('p',{textContent:'Cada botón publica un blog caído completo en el blog elegido arriba, en el orden del blog original (lo más viejo primero, los exports al final, así lo último queda arriba); dentro de cada página, primero los posts sin enlaces y luego los que enlazan a otros, para que apunten a las copias nuevas. Los posts troceados (más de 30 imágenes) van en cadena: cada trozo rebloguea el anterior, como estaban. Tandas de 25; sigue donde lo dejaste.',style:'font-size:13px;color:#e7b98a;margin:6px 0 8px'}));
+wbox.append($('b',{textContent:'🔁 Blog entero, de un toque',style:'color:#ffb066'}),$('p',{textContent:'Cada botón publica un blog caído completo en el blog elegido arriba, en el orden en que se postearon los originales: lo más viejo primero y lo último al final, así el último que se publica es justo el último que se posteó y queda arriba. Como va en orden, cuando un post enlaza a otro anterior, ese ya está republicado y el enlace apunta a la copia nueva. Las cadenas de reblogs van juntas, cada trozo rebloguea el anterior, como estaban. Tandas de 25; sigue donde lo dejaste.',style:'font-size:13px;color:#e7b98a;margin:6px 0 8px'}));
 const wst=$('div',{style:'color:#9be59b;font-size:14px;min-height:1.2em;margin-top:6px'});const wlist=$('div');wbox.append(wlist,wst);box.append(wbox);
 (async()=>{let BL=[];try{BL=await (await fetch(ARCH+'blogs.json?'+Date.now())).json();}catch(e){}
   const dkey=h=>{const t=h.replace(/<[^>]+>/g,' ').replace(/&[a-z#0-9]+;/g,' ').toLowerCase().replace(/[^a-z0-9]/g,'');const n=(h.match(/<img /g)||[]).length;if(t.length>=60)return t.slice(0,120);return t+'|'+n+'|'+(h.match(/(?:src|href|data-url)="[^"]*"/g)||[]).join('');};
   for(const bl of BL){const b=$('button',{textContent:'🔁 '+bl.label,style:bstyle});wlist.append(b);
     b.onclick=async()=>{const blog=sel.value;b.disabled=true;wst.textContent='Leyendo '+bl.pages.length+' página(s)…';await links();
-      let IX=[];try{IX=await (await fetch(ARCH+'index.json?'+Date.now())).json();}catch(e){}const CH=new Set(IX.filter(x=>x.chain).map(x=>x.path));
-      const M=new Map();const skipped={dup:0,big:0,other:0};const all=[];const OWN=new RegExp(BL.map(x=>x.match).filter(Boolean).join('|'),'i');
+      let IX=[];try{IX=await (await fetch(ARCH+'index.json?'+Date.now())).json();}catch(e){}const CH=new Set(IX.filter(x=>x.chain).map(x=>x.path));let ORD={};try{ORD=await (await fetch(ARCH+'order.json?'+Date.now())).json();}catch(e){}
+      const M=new Map();const skipped={dup:0,big:0,other:0,moved:0};const all=[];let seq=0;const OWN=new RegExp(BL.map(x=>x.match).filter(Boolean).join('|'),'i');
       const foreign=d=>{const m=d.match(/^\s*<p>(?:<a [^>]*>)?([\w-]+)(?:<\/a>)?:<\/p>\s*<blockquote>/);return !!(m&&!OWN.test(m[1]));};
       for(const path of bl.pages){const pg=await loadPage(path);if(!pg)continue;const isC=CH.has(path);
-        pg.D.forEach((d,i)=>{const im=(d.match(/<img /g)||[]).length;if(im>30){skipped.big++;return;}if(foreign(d)){skipped.other++;return;}
-          const it={path,i,html:d,TAGS:pg.TAGS,label:(pg.labs[i]||('Post '+(i+1))),key:path+'#'+i,links:hasTl(d),chain:isC,im};all.push(it);
+        const OW=ORD[path]||[];pg.D.forEach((d,i)=>{const w=OW[i]||null;if(w==='x'){skipped.moved++;return;}const im=(d.match(/<img /g)||[]).length;if(im>30){skipped.big++;return;}if(foreign(d)){skipped.other++;return;}
+          const it={path,i,html:d,TAGS:pg.TAGS,label:(pg.labs[i]||('Post '+(i+1))),key:path+'#'+i,links:hasTl(d),chain:isC,im,w,seq:seq++};all.push(it);
           const k=dkey(d);const prev=M.get(k);if(!prev){M.set(k,it);return;}skipped.dup++;if((isC&&!prev.chain)||(isC===prev.chain&&(im>prev.im||(bl.strict&&im===prev.im)))){prev.drop=true;M.set(k,it);}else it.drop=true;});}
-      const keep=all.filter(x=>!x.drop);const solo=keep.filter(x=>!x.chain);const groups=[];
+      const keep=all.filter(x=>!x.drop);{let lw=null;keep.forEach(x=>{if(!x.w)x.w=lw;lw=x.w||lw;});}const solo=keep.filter(x=>!x.chain);const groups=[];
       for(const x of keep.filter(x=>x.chain)){let g=groups.find(g=>g.path===x.path);if(!g){g={path:x.path,items:[],links:false};groups.push(g);}g.items.push(x);g.links=g.links||x.links;}
       groups.forEach(g=>g.items.forEach((x,j)=>{x.gprev=j?g.items[j-1]:null;}));
-      const order=[];for(const path of bl.pages){const g=groups.find(g=>g.path===path);if(g){order.push(...g.items);continue;}const pp=solo.filter(x=>x.path===path);if(bl.strict)order.push(...pp);else order.push(...pp.filter(x=>!x.links),...pp.filter(x=>x.links));}
+      const W=x=>String(x||'').padStart(20,'0');const units=solo.map(x=>({w:x.w,seq:x.seq,items:[x]})).concat(groups.map(g=>({w:g.items[0].w,seq:g.items[0].seq,items:g.items})));
+      units.sort((a,b)=>W(a.w)<W(b.w)?-1:W(a.w)>W(b.w)?1:a.seq-b.seq);const order=[];units.forEach(u=>order.push(...u.items));
       const PK='rnc_whole_'+bl.name+'_'+blog;const done=new Set(LS.get(PK,[]));const todo=order.filter(x=>!done.has(x.key));
       const nch=groups.reduce((a,g)=>a+g.items.length,0);
-      wst.textContent=bl.label+': '+order.length+' posts ('+order.filter(x=>!x.links).length+' sin enlaces, '+order.filter(x=>x.links).length+' con'+(nch?', '+nch+' en cadena de reblogs':'')+'), '+done.size+' ya publicados aquí, '+todo.length+' por publicar.'+(skipped.dup?' '+skipped.dup+' repetidos omitidos (de cada post repetido queda la versión con más capturas).':'')+(skipped.big?' '+skipped.big+' de más de 30 imágenes omitidos (van por trozos, en cadena).':'')+(skipped.other?' '+skipped.other+' reblogs de posts ajenos fuera.':'');
+      wst.textContent=bl.label+': '+order.length+' posts, en el orden en que se postearon'+(nch?' ('+nch+' en cadena de reblogs)':'')+', '+done.size+' ya publicados aquí, '+todo.length+' por publicar.'+(skipped.dup?' '+skipped.dup+' repetidos omitidos (de cada post repetido queda la versión con más capturas).':'')+(skipped.big?' '+skipped.big+' de más de 30 imágenes omitidos (van por trozos, en cadena).':'')+(skipped.other?' '+skipped.other+' reblogs de posts ajenos fuera.':'')+(skipped.moved?' '+skipped.moved+' que eran de otro blog van en el botón de ese blog.':'');
       if(!todo.length){b.disabled=false;wst.textContent+=' Nada pendiente.';return;}
       const go=$('button',{textContent:'Publicar la siguiente tanda ('+Math.min(25,todo.length)+' de '+todo.length+') en '+blog,style:'display:block;width:100%;background:#ff9a3c;color:#1a120b;border:0;border-radius:12px;padding:13px;font-weight:800;margin:8px 0'});
       const reset=$('button',{textContent:'Empezar de cero en este blog (olvidar lo publicado)',style:bstyle+';font-size:13px'});reset.onclick=()=>{LS.set(PK,[]);groups.forEach(g=>LS.set('rnc_chain_'+g.path+'_'+blog,null));wst.textContent='Progreso borrado. Vuelve a pulsar el botón del blog.';go.remove();reset.remove();b.disabled=false;};
       go.onclick=async()=>{go.disabled=true;let ok=0;const batch=todo.slice(0,25);let uuid=null;
         if(batch.some(x=>x.chain)){const bi=await api('/blog/'+blog+'/info');const BI=bi&&(bi.response||bi);uuid=BI&&BI.blog&&BI.blog.uuid;}
-        for(let n=0;n<batch.length;n++){const x=batch[n];wst.textContent='Publicando '+(n+1)+' de '+batch.length+' ('+(x.chain?'en cadena':x.links?'con enlaces':'sin enlaces')+')…';
+        for(let n=0;n<batch.length;n++){const x=batch[n];wst.textContent='Publicando '+(n+1)+' de '+batch.length+(x.chain?' (en cadena)':'')+'…';
           let ch=null;if(x.chain&&x.gprev){const pv=LS.get('rnc_chain_'+x.path+'_'+blog,null);if(pv&&pv.id&&pv.next===x.i)ch={uuid,prev:pv};else log.textContent+='  (no tengo el post anterior de la cadena: este va suelto)\n';}
           const res=await publishOne(blog,x.html,x.TAGS,x.label,x.key,ch);
           if(res&&res.restart)log.textContent+='  (el post anterior de la cadena ya no existe: empiezo cadena nueva)\n';

@@ -1,7 +1,7 @@
 [
  {
   "name": "thine-super-choco-finity",
-  "label": "Choco (main): Everything, cadenas (coinedbank, evidence, gallery, videos) y exports 1 a 8 oct + LMAO 9 oct",
+  "label": "Choco (main): Everything, cadenas (coinedbank, evidence, gallery, videos), exports 1 a 9 oct y lo rescatado del gimmick",
   "match": "choco|finity|infinit|survivor",
   "pages": [
    "coinedbank-chain/index.html",
@@ -20,19 +20,21 @@
    "export-6oct/index.html",
    "export-7oct/index.html",
    "export-8oct/index.html",
-   "lmao-9oct/index.html"
+   "lmao-9oct/index.html",
+   "choco-from-gimmick/index.html"
   ]
  },
  {
   "name": "thine-super-choco-finity-export",
-  "label": "Choco: solo el último export (5 oct noche, 24 posts) + lo del 6, 7, 8 y 9 oct, en orden",
+  "label": "Choco: el último export (5 oct noche, 24 posts) + 6, 7, 8 y 9 oct + lo rescatado del gimmick",
   "match": "choco|finity|infinit|survivor",
   "pages": [
    "choco-export-5oct/index.html",
    "export-6oct/index.html",
    "export-7oct/index.html",
    "export-8oct/index.html",
-   "lmao-9oct/index.html"
+   "lmao-9oct/index.html",
+   "choco-from-gimmick/index.html"
   ],
   "strict": true
  },
@@ -64,11 +66,30 @@
   "strict": true
  },
  {
+  "name": "thine-super-choco-finity-rescued",
+  "label": "Choco: lo rescatado del gimmick (6 y 9 oct: las dos respuestas a confessions-of-proshippers y lo de proship-froggo), suelto",
+  "match": "choco|finity|infinit|survivor",
+  "pages": [
+   "choco-from-gimmick/index.html"
+  ],
+  "strict": true
+ },
+ {
   "name": "hesrllybehindmeisnthe",
-  "label": "Gimmick: solo el export (5 a 7 oct), tal cual y en orden",
+  "label": "Gimmick: los dos exports (5 a 9 oct), sin lo de Choco",
   "match": "behind|behlnd",
   "pages": [
-   "gimmick-export-6oct/index.html"
+   "gimmick-export-6oct/index.html",
+   "gimmick-export-9oct/index.html"
+  ],
+  "strict": true
+ },
+ {
+  "name": "hesrllybehindmeisnthee-9oct",
+  "label": "Gimmick: solo el export nuevo (8 y 9 oct), suelto",
+  "match": "behind|behlnd",
+  "pages": [
+   "gimmick-export-9oct/index.html"
   ],
   "strict": true
  },
@@ -92,7 +113,7 @@
  {
   "name": "cultfessions-of-proshippers",
   "label": "Cultfessions (7 a 8 oct, solo el export, en orden)",
-  "match": "cultfession|conspirac",
+  "match": "cultfession|conspirac|proshlppers",
   "pages": [
    "cultfessions-7oct/index.html"
   ],
