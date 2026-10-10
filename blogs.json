@@ -131,10 +131,11 @@
  },
  {
   "name": "exquisetly-proshititly-antichoco",
-  "label": "Antichoco (8 oct, solo el export, en orden)",
+  "label": "Antichoco (8 oct: el export + lo rescatado del gimmick, en orden)",
   "match": "antichoco",
   "pages": [
-   "antichoco-8oct/index.html"
+   "antichoco-8oct/index.html",
+   "antichoco-from-gimmick/index.html"
   ],
   "strict": true
  }
