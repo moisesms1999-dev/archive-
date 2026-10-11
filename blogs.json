@@ -26,7 +26,8 @@
    "choco-the-choco-situation/index.html",
    "choco-philipgraveskitten/index.html",
    "choco-selfproclaimed/index.html",
-   "choco-obnoxious/index.html"
+   "choco-obnoxious/index.html",
+   "choco-sobbing/index.html"
   ]
  },
  {
@@ -110,6 +111,14 @@
   "match": "choco|finity|infinit|survivor",
   "pages": [
    "choco-obnoxious/index.html"
+  ]
+ },
+ {
+  "name": "thine-infinity-choco-sobbing",
+  "label": "Choco: \"Sobbing 😭\", el anon sobre rawrxd061 (11 oct), suelto",
+  "match": "choco|finity|infinit|survivor",
+  "pages": [
+   "choco-sobbing/index.html"
   ]
  },
  {
