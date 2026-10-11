@@ -25,7 +25,8 @@
    "choco-receipts-80smaniac/index.html",
    "choco-the-choco-situation/index.html",
    "choco-philipgraveskitten/index.html",
-   "choco-selfproclaimed/index.html"
+   "choco-selfproclaimed/index.html",
+   "choco-obnoxious/index.html"
   ]
  },
  {
@@ -101,6 +102,14 @@
   "match": "choco|finity|infinit|survivor",
   "pages": [
    "choco-selfproclaimed/index.html"
+  ]
+ },
+ {
+  "name": "thine-infinity-choco-obnoxious",
+  "label": "Choco: \"More obnoxious than…\", la respuesta al anon (11 oct), suelto",
+  "match": "choco|finity|infinit|survivor",
+  "pages": [
+   "choco-obnoxious/index.html"
   ]
  },
  {
