@@ -23,7 +23,8 @@
    "lmao-9oct/index.html",
    "choco-from-gimmick/index.html",
    "choco-receipts-80smaniac/index.html",
-   "choco-the-choco-situation/index.html"
+   "choco-the-choco-situation/index.html",
+   "choco-philipgraveskitten/index.html"
   ]
  },
  {
@@ -83,6 +84,14 @@
   "pages": [
    "choco-receipts-80smaniac/index.html",
    "choco-the-choco-situation/index.html"
+  ]
+ },
+ {
+  "name": "thine-infinity-choco-philipgraveskitten",
+  "label": "Choco: la respuesta sobre philipgraveskitten (11 oct), suelto",
+  "match": "choco|finity|infinit|survivor",
+  "pages": [
+   "choco-philipgraveskitten/index.html"
   ]
  },
  {
