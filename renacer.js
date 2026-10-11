@@ -123,7 +123,7 @@ function inline(node,acc){
     if(tag==='BR'){acc.text+='\n';continue;}
     inline(n,acc);const e=acc.text.length;if(e<=s)continue;
     if(tag==='B'||tag==='STRONG')acc.fmt.push({start:s,end:e,type:'bold'});
-    else if(tag==='I'||tag==='EM')acc.fmt.push({start:s,end:e,type:'italic'});
+    else if(tag==='I'||tag==='EM')acc.fmt.push({start:s,end:e,type:'italic'}); else if(tag==='S'||tag==='STRIKE'||tag==='DEL')acc.fmt.push({start:s,end:e,type:'strikethrough'});
     else if(tag==='A'&&n.getAttribute('href'))acc.fmt.push({start:s,end:e,type:'link',url:n.getAttribute('href')});
   }
   return acc;

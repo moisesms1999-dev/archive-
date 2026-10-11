@@ -24,7 +24,8 @@
    "choco-from-gimmick/index.html",
    "choco-receipts-80smaniac/index.html",
    "choco-the-choco-situation/index.html",
-   "choco-philipgraveskitten/index.html"
+   "choco-philipgraveskitten/index.html",
+   "choco-selfproclaimed/index.html"
   ]
  },
  {
@@ -92,6 +93,14 @@
   "match": "choco|finity|infinit|survivor",
   "pages": [
    "choco-philipgraveskitten/index.html"
+  ]
+ },
+ {
+  "name": "thine-infinity-choco-selfproclaimed",
+  "label": "Choco: la respuesta a hereallysbehindmrisnthe (11 oct), suelto",
+  "match": "choco|finity|infinit|survivor",
+  "pages": [
+   "choco-selfproclaimed/index.html"
   ]
  },
  {
