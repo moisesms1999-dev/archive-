@@ -27,7 +27,8 @@
    "choco-philipgraveskitten/index.html",
    "choco-selfproclaimed/index.html",
    "choco-obnoxious/index.html",
-   "choco-sobbing/index.html"
+   "choco-sobbing/index.html",
+   "choco-tired-gossipers/index.html"
   ]
  },
  {
@@ -119,6 +120,14 @@
   "match": "choco|finity|infinit|survivor",
   "pages": [
    "choco-sobbing/index.html"
+  ]
+ },
+ {
+  "name": "thine-infinity-choco-tired",
+  "label": "Choco: \"Goddanm tired of the infinite choco situation gossipers\", el anon (12 oct), suelto",
+  "match": "choco|finity|infinit|survivor",
+  "pages": [
+   "choco-tired-gossipers/index.html"
   ]
  },
  {
