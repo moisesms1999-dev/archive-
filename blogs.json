@@ -28,7 +28,8 @@
    "choco-selfproclaimed/index.html",
    "choco-obnoxious/index.html",
    "choco-sobbing/index.html",
-   "choco-tired-gossipers/index.html"
+   "choco-tired-gossipers/index.html",
+   "choco-export-10oct/index.html"
   ]
  },
  {
@@ -41,7 +42,8 @@
    "export-7oct/index.html",
    "export-8oct/index.html",
    "lmao-9oct/index.html",
-   "choco-from-gimmick/index.html"
+   "choco-from-gimmick/index.html",
+   "choco-export-10oct/index.html"
   ],
   "strict": true
  },
@@ -131,12 +133,22 @@
   ]
  },
  {
+  "name": "thine-infinity-choco-10oct",
+  "label": "Choco: solo lo nuevo del export del 10 oct (4 posts), suelto",
+  "match": "choco|finity|infinit|survivor",
+  "pages": [
+   "choco-export-10oct/index.html"
+  ],
+  "strict": true
+ },
+ {
   "name": "hesrllybehindmeisnthe",
   "label": "Gimmick: los dos exports (5 a 9 oct), sin lo de Choco",
   "match": "behind|behlnd",
   "pages": [
    "gimmick-export-6oct/index.html",
-   "gimmick-export-9oct/index.html"
+   "gimmick-export-9oct/index.html",
+   "gimmick-export-10oct/index.html"
   ],
   "strict": true
  },
@@ -146,6 +158,15 @@
   "match": "behind|behlnd",
   "pages": [
    "gimmick-export-9oct/index.html"
+  ],
+  "strict": true
+ },
+ {
+  "name": "hereallysbehindmrisnthe-10oct",
+  "label": "Gimmick: solo lo nuevo del export del 10 oct (1 post), suelto",
+  "match": "behind|behlnd",
+  "pages": [
+   "gimmick-export-10oct/index.html"
   ],
   "strict": true
  },
@@ -172,7 +193,8 @@
   "match": "cultfession|conspirac|proshlppers",
   "pages": [
    "cultfessions-7oct/index.html",
-   "cultfessions-9oct/index.html"
+   "cultfessions-9oct/index.html",
+   "cultfessions-10oct/index.html"
   ],
   "strict": true
  },
@@ -182,6 +204,15 @@
   "match": "cultfession|conspirac|proshlppers",
   "pages": [
    "cultfessions-9oct/index.html"
+  ],
+  "strict": true
+ },
+ {
+  "name": "cultfessions-10oct",
+  "label": "Cultfessions: solo lo nuevo del export del 10 oct (3 posts), suelto",
+  "match": "cultfession|conspirac|proshlppers",
+  "pages": [
+   "cultfessions-10oct/index.html"
   ],
   "strict": true
  },
