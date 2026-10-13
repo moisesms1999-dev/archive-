@@ -30,7 +30,8 @@
    "choco-sobbing/index.html",
    "choco-tired-gossipers/index.html",
    "choco-export-10oct/index.html",
-   "choco-mayday-pussy/index.html"
+   "choco-mayday-pussy/index.html",
+   "choco-cockslinger/index.html"
   ]
  },
  {
@@ -148,6 +149,14 @@
   "match": "choco|finity|infinit|survivor",
   "pages": [
    "choco-mayday-pussy/index.html"
+  ]
+ },
+ {
+  "name": "thine-infinity-choco-cockslinger",
+  "label": "Choco: \"Mayday is a cockslinger…\", el anon (13 oct), suelto",
+  "match": "choco|finity|infinit|survivor",
+  "pages": [
+   "choco-cockslinger/index.html"
   ]
  },
  {
