@@ -47,7 +47,8 @@
    "lmao-9oct/index.html",
    "choco-from-gimmick/index.html",
    "choco-export-10oct/index.html",
-   "choco-export-12oct/index.html"
+   "choco-export-12oct/index.html",
+   "choco-export-13oct/index.html"
   ],
   "strict": true
  },
@@ -175,6 +176,15 @@
   "match": "choco|finity|infinit|survivor",
   "pages": [
    "choco-export-12oct/index.html"
+  ],
+  "strict": true
+ },
+ {
+  "name": "thine-infinity-choco-export-13oct",
+  "label": "Choco: el export del 13 oct (thee-finity-choco, 37 posts, entero, en orden), suelto",
+  "match": "choco|finity|infinit|survivor",
+  "pages": [
+   "choco-export-13oct/index.html"
   ],
   "strict": true
  },
