@@ -104,7 +104,7 @@
  {
   "path": "export-3oct/index.html",
   "title": "Export 3 oct",
-  "about": "Lo nuevo del 3 de octubre: el anon de crow anon y el reblog de r4z0rbl4dez."
+  "about": "Lo nuevo del 3 de octubre: el anon de crow anon."
  },
  {
   "path": "other-callouts/index.html",
@@ -123,7 +123,7 @@
  },
  {
   "path": "silence-chain/index.html",
-  "title": "SILENCE! the ungrooming ring, whole chain (30 + 25 + 5) ⛓",
+  "title": "SILENCE! the ungrooming ring, whole chain (30 + 25) ⛓",
   "chain": true
  },
  {
@@ -203,7 +203,7 @@
  {
   "path": "choco-export-10oct/index.html",
   "title": "Choco export, 10 oct (lo nuevo)",
-  "about": "thine-infinity-choco, export of 10 October: the four posts not already in the archive, in posting order."
+  "about": "thine-infinity-choco, export of 10 October: the three posts not already in the archive, in posting order."
  },
  {
   "path": "cultfessions-10oct/index.html",
@@ -228,11 +228,6 @@
  {
   "path": "choco-export-12oct/index.html",
   "title": "Choco export, 12 oct (entero)",
-  "about": "infini-ty-super-choco, export of 12 October: the whole blog, 32 posts in posting order."
- },
- {
-  "path": "choco-niitroglycerin/index.html",
-  "title": "Choco, reblog de niitroglycerin (12 oct)",
-  "about": "Choco's reblog of niitroglycerin, the one post of the 12 October export not already in the archive."
+  "about": "infini-ty-super-choco, export of 12 October: the whole blog, 30 posts in posting order."
  }
 ]
