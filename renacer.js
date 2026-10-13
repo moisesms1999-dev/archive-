@@ -111,7 +111,7 @@ bA.onclick=async()=>{ain.innerHTML='';let K=[];try{K=await (await fetch(ARCH+'br
 const list=$('div');box.append(list,st,log);
 
 const imgOK=u=>new Promise(res=>{const im=new Image();let done=false;const t=setTimeout(()=>{if(!done){done=true;res(false);}},9000);im.onload=()=>{if(!done){done=true;clearTimeout(t);res(im.naturalWidth>0);}};im.onerror=()=>{if(!done){done=true;clearTimeout(t);res(false);}};im.src=u;});
-async function cleanImgs(h){const us=[...new Set([...h.matchAll(/<img src="([^"]+)"/g)].map(m=>m[1]))];const bad=[];
+async function cleanImgs(h){const us=[...new Set([...h.matchAll(/<img src="([^"]+)"/g)].map(m=>m[1]))].filter(u=>!u.startsWith(ARCH));const bad=[];
   for(let k=0;k<us.length;k+=8){const part=us.slice(k,k+8);const r=await Promise.all(part.map(imgOK));part.forEach((u,j)=>{if(!r[j])bad.push(u);});}
   let out=h;for(const u of bad){out=out.split('<p><img src="'+u+'"></p>').join('').split('<img src="'+u+'">').join('');}
   return {html:out,bad:bad.length};}
@@ -160,6 +160,7 @@ function toNPF(h){
   return C;
 }
 const why=x=>{const e=(x&&x.body&&x.body.errors&&x.body.errors[0])||{};return (e.code||'')+' '+(e.detail||e.title||x&&x.error||'');};
+async function getPost1(blog,id){const g=await api('/blog/'+blog+'/posts/'+id+'?npf=true');const G=g&&(g.response||g);const PP=G&&(G.posts&&G.posts[0]||G);return PP&&PP.reblog_key?PP:null;}
 async function getPost(blog,id){for(const q of ['/blog/'+blog+'/posts/'+id+'?npf=true','/blog/'+blog+'/posts/'+id,'/blog/'+blog+'/posts?id='+id+'&npf=true']){for(let k=0;k<3;k++){const g=await api(q);const G=g&&(g.response||g);const PP=G&&(G.posts&&G.posts[0]||G);if(PP&&PP.reblog_key)return PP;await new Promise(z=>setTimeout(z,1200));}}return null;}
 let ASKOFF=false;
 function askSplit(h){const m=h.match(/^\s*<p><b>Anonymous asked:<\/b><\/p>\s*/);if(!m)return null;let i=m[0].length;const qs=[];
@@ -194,7 +195,7 @@ async function publishOne(blog,html,TAGS,label,key,chain){
   if(AK){const PQ=await getPost(blog,id);if(PQ&&!(PQ.layout||[]).some(l=>l&&l.type==='ask')){log.textContent+='  (Tumblr quitó la cajita del ask: lo borro y los asks van como texto)\n';await api('/blog/'+blog+'/post/delete',{method:'POST',body:{id:String(id)}});ASKOFF=true;return publishOne(blog,html,TAGS,label,key,chain);}}
   log.textContent+='✓ '+label+(isRe?' (reblog)':'')+' → '+id+'\n';log.scrollTop=1e9;
   const nu='https://www.tumblr.com/'+blog+'/'+id;remember(blog,key,nu);
-  let wi=[],rk=null;try{const PP=await getPost(blog,id);rk=PP&&PP.reblog_key;if(!rk)log.textContent+='  (no pude leer la reblog key de '+id+')\n';if(wbon.checked&&PP)wi=wbImgs(PP.content);}catch(e){}
+  let wi=[],rk=(RR&&RR.reblog_key)||null;if(wbon.checked){try{const PP=await getPost1(blog,id);if(PP){rk=rk||PP.reblog_key;wi=wbImgs(PP.content);}}catch(e){}}
   if(wi.length)log.textContent+='  🗄 '+wi.length+' imagen(es) a la cola del Wayback\n';wbAdd(nu,wi);
   return {id:String(id),key:rk,restart};
 }
