@@ -65,21 +65,21 @@ const flog=$('div',{style:'font-size:12px;color:#e7b98a;white-space:pre-wrap;max
 const bstyle='display:block;width:100%;text-align:left;background:#5a3a1e;color:#ffd9b0;border:0;border-radius:10px;padding:11px;margin:6px 0 0;font-weight:700';
 const bF=$('button',{textContent:'👥 Seguir a todos mis seguidores',style:bstyle});
 const bL=$('button',{textContent:'📋 Seguir a mi lista fija',style:bstyle});
-const sp=$('select',{style:'width:100%;padding:9px;border-radius:10px;background:#1a120b;color:#ffd9b0;border:1px solid #5a3a1e;margin-top:6px'});sp.append($('option',{value:'n',textContent:'Normal (uno cada 6 a 12 s; el seguro con un blog nuevo)'}),$('option',{value:'f',textContent:'Rápido (uno cada 2 a 4 s)'}),$('option',{value:'t',textContent:'Turbo (sin espera; con un blog nuevo Tumblr deja los follows en fantasma)'}));
-const CAP=120;const fkey=()=>'rnc_fday_'+sel.value+'_'+new Date().toISOString().slice(0,10);const ftoday=()=>LS.get(fkey(),0);
+const sp=$('select',{style:'width:100%;padding:9px;border-radius:10px;background:#1a120b;color:#ffd9b0;border:1px solid #5a3a1e;margin-top:6px'});sp.append($('option',{value:'n',textContent:'Normal (uno cada 6 a 12 s; el seguro con un blog nuevo)'}),$('option',{value:'f',textContent:'Rápido (uno cada 2 a 4 s)'}),$('option',{value:'a',textContent:'Como antes (uno cada 0,8 a 1,6 s)'}),$('option',{value:'t',textContent:'Turbo (sin espera)'}));
+const CAP=200;const fkey=()=>'rnc_fday_'+sel.value+'_'+new Date().toISOString().slice(0,10);const ftoday=()=>LS.get(fkey(),0);
 const fnote=$('div',{style:'font-size:12px;color:#a58a6a;margin-top:4px'});
 fbox.append($('b',{textContent:'Seguidores',style:'color:#ffb066'}),sp,fnote,bF,bL,fst,flog);box.append(fbox);
-const fupd=()=>{fnote.textContent='Tope: '+CAP+' follows al día por blog (hoy llevas '+ftoday()+' en '+sel.value+'). Con el blog recién hecho, pon foto y cabecera y publica algo antes de seguir a nadie; si no, Tumblr acepta el follow pero no avisa al otro.';};
+const fupd=()=>{fnote.textContent='Tope: '+CAP+' follows al día por blog, el límite de Tumblr (hoy llevas '+ftoday()+' en '+sel.value+'); del 201 en adelante Tumblr dice OK pero no sigue a nadie. Con el blog recién hecho, pon foto y cabecera y publica algo antes de seguir.';};
 fupd();sel.addEventListener('change',fupd);
 sp.value=LS.get('rnc_fpace','n');sp.onchange=()=>LS.set('rnc_fpace',sp.value);
-const nap=()=>sp.value==='t'?Promise.resolve():new Promise(r=>setTimeout(r,sp.value==='f'?2000+Math.random()*2000:6000+Math.random()*6000));
+const nap=()=>sp.value==='t'?Promise.resolve():new Promise(r=>setTimeout(r,sp.value==='a'?800+Math.random()*800:sp.value==='f'?2000+Math.random()*2000:6000+Math.random()*6000));
 async function followAll(names,label){
   bF.disabled=bL.disabled=true;let ok=0,n=0,capped=false;
   for(const nm of names){if(ftoday()>=CAP){capped=true;break;}n++;fst.textContent=label+': '+n+' de '+names.length+' ('+nm+') · hoy '+ftoday()+' de '+CAP;
     const r=await api('/user/follow',{method:'POST',body:{url:'https://'+nm+'.tumblr.com'}});
     if(r&&!r.error&&!(r.meta&&r.meta.status>=400)){ok++;LS.set(fkey(),ftoday()+1);flog.textContent+='✓ '+nm+'\n';}else flog.textContent+='✗ '+nm+' · '+why(r)+'\n';
     flog.scrollTop=1e9;await nap();}
-  fst.textContent=label+': hecho, '+ok+' seguidos de '+names.length+'.'+(capped?' Tope de '+CAP+' follows al día en este blog: los que faltan, mañana (así Tumblr no los deja en fantasma).':'');bF.disabled=bL.disabled=false;if(typeof fupd==='function')fupd();
+  fst.textContent=label+': hecho, '+ok+' seguidos de '+names.length+'.'+(capped?' Tope de '+CAP+' follows al día en este blog (el límite de Tumblr): los que faltan, mañana; pasarse del límite es lo que los deja en fantasma.':'');bF.disabled=bL.disabled=false;if(typeof fupd==='function')fupd();
 }
 bF.onclick=async()=>{const blog=sel.value;fst.textContent='Leyendo seguidores de '+blog+'…';let users=[],off=0,total=0;
   for(let k=0;k<100;k++){const r=await api('/blog/'+blog+'/followers?limit=20&offset='+off);const R=r&&(r.response||r);
