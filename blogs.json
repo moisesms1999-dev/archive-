@@ -31,7 +31,8 @@
    "choco-tired-gossipers/index.html",
    "choco-export-10oct/index.html",
    "choco-mayday-pussy/index.html",
-   "choco-cockslinger/index.html"
+   "choco-cockslinger/index.html",
+   "choco-niitroglycerin/index.html"
   ]
  },
  {
@@ -45,7 +46,8 @@
    "export-8oct/index.html",
    "lmao-9oct/index.html",
    "choco-from-gimmick/index.html",
-   "choco-export-10oct/index.html"
+   "choco-export-10oct/index.html",
+   "choco-export-12oct/index.html"
   ],
   "strict": true
  },
@@ -158,6 +160,23 @@
   "pages": [
    "choco-cockslinger/index.html"
   ]
+ },
+ {
+  "name": "thine-infinity-choco-niitroglycerin",
+  "label": "Choco: reblog de niitroglycerin (12 oct), suelto",
+  "match": "choco|finity|infinit|survivor",
+  "pages": [
+   "choco-niitroglycerin/index.html"
+  ]
+ },
+ {
+  "name": "thine-infinity-choco-export-12oct",
+  "label": "Choco: el export del 12 oct (infini-ty-super-choco, 32 posts, entero, en orden), suelto",
+  "match": "choco|finity|infinit|survivor",
+  "pages": [
+   "choco-export-12oct/index.html"
+  ],
+  "strict": true
  },
  {
   "name": "hesrllybehindmeisnthe",
