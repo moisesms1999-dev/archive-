@@ -31,7 +31,8 @@
    "choco-tired-gossipers/index.html",
    "choco-export-10oct/index.html",
    "choco-mayday-pussy/index.html",
-   "choco-cockslinger/index.html"
+   "choco-cockslinger/index.html",
+   "choco-oddtripps/index.html"
   ]
  },
  {
@@ -133,6 +134,14 @@
   "match": "choco|finity|infinit|survivor",
   "pages": [
    "choco-tired-gossipers/index.html"
+  ]
+ },
+ {
+  "name": "thine-infinity-choco-oddtripps",
+  "label": "Choco: el anon de oddtripps (9 oct), suelto",
+  "match": "choco|finity|infinit|survivor",
+  "pages": [
+   "choco-oddtripps/index.html"
   ]
  },
  {
