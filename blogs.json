@@ -29,7 +29,8 @@
    "choco-obnoxious/index.html",
    "choco-sobbing/index.html",
    "choco-tired-gossipers/index.html",
-   "choco-export-10oct/index.html"
+   "choco-export-10oct/index.html",
+   "choco-mayday-pussy/index.html"
   ]
  },
  {
@@ -140,6 +141,14 @@
    "choco-export-10oct/index.html"
   ],
   "strict": true
+ },
+ {
+  "name": "thine-infinity-choco-mayday",
+  "label": "Choco: \"Mayday, you are such a fucking pussy…\", la respuesta al post de Reddit (12 oct), suelto",
+  "match": "choco|finity|infinit|survivor",
+  "pages": [
+   "choco-mayday-pussy/index.html"
+  ]
  },
  {
   "name": "hesrllybehindmeisnthe",
