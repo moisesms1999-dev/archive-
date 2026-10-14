@@ -32,7 +32,9 @@
    "choco-export-10oct/index.html",
    "choco-mayday-pussy/index.html",
    "choco-cockslinger/index.html",
-   "choco-oddtripps/index.html"
+   "choco-oddtripps/index.html",
+   "choco-pinned-14oct/index.html",
+   "choco-mayday-14oct/index.html"
   ]
  },
  {
@@ -143,6 +145,22 @@
   "match": "choco|finity|infinit|survivor",
   "pages": [
    "choco-oddtripps/index.html"
+  ]
+ },
+ {
+  "name": "thine-infinity-choco-pinned-14oct",
+  "label": "Choco: el pinned del 14 oct (\"that is the Choco situation\", con los dos enlaces), suelto",
+  "match": "choco|finity|infinit|survivor",
+  "pages": [
+   "choco-pinned-14oct/index.html"
+  ]
+ },
+ {
+  "name": "thine-infinity-choco-mayday-14oct",
+  "label": "Choco: \"Mayday, you are such a fucking pussy…\", versión del 14 oct con el enlace al pinned, suelto",
+  "match": "choco|finity|infinit|survivor",
+  "pages": [
+   "choco-mayday-14oct/index.html"
   ]
  },
  {
