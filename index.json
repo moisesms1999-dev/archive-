@@ -12,7 +12,7 @@
  {
   "path": "gimmick-export-9oct/index.html",
   "title": "Gimmick export, 8-9 oct",
-  "about": "hesrllybehindmeisnthee, export of 8 to 9 October, in posting order."
+  "about": "hesrllybehindmeisnthee, export of 8 to 9 October, in posting order. Each post opens with a card of the gimmick blog (name, title and the start of the text), so that on Choco's blog it reads as the gimmick speaking."
  },
  {
   "path": "cultfessions-9oct/index.html",
@@ -124,16 +124,18 @@
  {
   "path": "silence-chain/index.html",
   "title": "SILENCE! the ungrooming ring, whole chain (30 + 25) ⛓",
-  "chain": true
+  "chain": true,
+  "about": "Each post opens with a card of the gimmick blog (name, title and the start of the text), so that on Choco's blog it reads as the gimmick speaking."
  },
  {
   "path": "nah-reblog/index.html",
-  "title": "NAH YOU KNOW WHAT? reblog de coinedbank ↻"
+  "title": "NAH YOU KNOW WHAT? reblog de coinedbank ↻",
+  "about": "Each post opens with a card of the gimmick blog (name, title and the start of the text), so that on Choco's blog it reads as the gimmick speaking."
  },
  {
   "path": "gimmick-export-6oct/index.html",
   "title": "Gimmick export, 5-6 oct",
-  "about": "hesrllybehindmeisnthe, export of 5 to 6 October."
+  "about": "hesrllybehindmeisnthe, export of 5 to 6 October. Each post opens with a card of the gimmick blog (name, title and the start of the text), so that on Choco's blog it reads as the gimmick speaking."
  },
  {
   "path": "gimmick/index.html",
@@ -213,7 +215,7 @@
  {
   "path": "gimmick-export-10oct/index.html",
   "title": "Gimmick export, 10 oct (lo nuevo)",
-  "about": "hereallysbehindmrisnthe, export of 10 October: the one post not already in the archive."
+  "about": "hereallysbehindmrisnthe, export of 10 October: the one post not already in the archive. Each post opens with a card of the gimmick blog (name, title and the start of the text), so that on Choco's blog it reads as the gimmick speaking."
  },
  {
   "path": "choco-mayday-pussy/index.html",

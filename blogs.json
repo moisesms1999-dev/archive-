@@ -1,7 +1,7 @@
 [
  {
   "name": "thine-super-choco-finity",
-  "label": "Choco (main): Everything, cadenas (coinedbank, evidence, gallery, videos), exports 1 a 9 oct y lo rescatado del gimmick y de cultfessions",
+  "label": "Choco (main): Everything, cadenas (coinedbank, evidence, gallery, videos), exports 1 a 9 oct y lo rescatado del gimmick y de cultfessions + el gimmick con su tarjeta delante (todo en el blog de Choco)",
   "match": "choco|finity|infinit|survivor",
   "pages": [
    "coinedbank-chain/index.html",
@@ -36,7 +36,12 @@
    "choco-pinned-14oct/index.html",
    "choco-mayday-14oct/index.html",
    "choco-npc-dialogue-14oct/index.html",
-   "choco-liy-14oct/index.html"
+   "choco-liy-14oct/index.html",
+   "gimmick-export-6oct/index.html",
+   "gimmick-export-9oct/index.html",
+   "gimmick-export-10oct/index.html",
+   "silence-chain/index.html",
+   "nah-reblog/index.html"
   ]
  },
  {

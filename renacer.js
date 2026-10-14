@@ -214,7 +214,7 @@ async function publishOne(blog,html,TAGS,label,key,chain,date){
   const T0=Date.now();let pre='';const say=s=>{pre+=s+'\n';};
   const em=html.match(/^\s*<!--reblog ([\w-]+) (\d+)-->/);
   if(em){html=html.slice(em[0].length);const bi=await api('/blog/'+em[1]+'/info');const BI=bi&&(bi.response||bi);const pu=BI&&BI.blog&&BI.blog.uuid;const PB=pu?await getPost(em[1],em[2]):null;
-    if(!PB||!PB.reblog_key||!pu){if(new RegExp('^\\s*<p>(?:<a [^>]*>)?'+em[1]+'(?:</a>)?:</p>\\s*<blockquote>').test(html))say('  (el post '+em[2]+' de '+em[1]+' ya no se puede leer: lo publico suelto, con su cita dentro)');else{log.textContent+=pre+'✗ '+label+' · no pude leer el post '+em[2]+' de '+em[1]+' para reblogarlo (¿borrado o privado?)\n';return {};}}
+    if(!PB||!PB.reblog_key||!pu){if(new RegExp('^\\s*<p>(?:<a [^>]*>)?'+em[1]+'(?:</a>)?:</p>\\s*<blockquote>').test(html))say('  (el post '+em[2]+' de '+em[1]+' ya no se puede leer: lo publico suelto, con su cita dentro)');else{log.textContent+=pre+'✗ '+label+' · no pude leer el post '+em[2]+' de '+em[1]+' para reblogarlo (¿borrado o privado?): lo salto y sigo\n';return {skip:true};}}
     else{html=dropTrail(html,em[1]);chain={uuid:pu,prev:{id:em[2],key:PB.reblog_key}};say('  ↻ reblog de '+em[1]+'/'+em[2]);}}
   const rl=relink(html,blog);let Hh=rl.html;if(rl.n)say('  🔗 '+rl.n+' enlace(s) llevados a una copia viva');
   const tags=TAGS.slice(0,30).join(',');let isRe=!!chain,restart=false;let AK=null;
@@ -255,7 +255,7 @@ async function runBatch(blog,items,status,onOk){
       if(deps[n].some(m=>st[m]!==2))break;
       st[n]=1;active++;status(n,active);const ch=it.chain?it.chain():null;
       publishOne(blog,it.html,it.TAGS,it.label,it.key,ch,null).then(res=>{active--;
-        if(res&&res.again){st[n]=0;pump();return;}
+        if(res&&res.again){st[n]=0;pump();return;}if(res&&res.skip){st[n]=2;pump();return;}
         if(res&&res.limit&&!it.retried){it.retried=true;SLOW=true;hold=Date.now()+5000;log.textContent+='  (Tumblr frena ['+res.why+']: espero 5 s y sigo de uno en uno)\n';st[n]=0;pump();return;}st[n]=2;
         if(res&&res.restart)log.textContent+='  (el post anterior de la cadena ya no existe: empiezo cadena nueva)\n';
         if(res&&res.id){ok++;onOk(it,res,n);const w=st.some(x=>x===0)?pace():0;if(w){hold=Date.now()+w;status(n,0,Math.round(w/1000));}}else{if(res&&res.limit)log.textContent+='✗ '+it.label+' · '+res.why+'\n';stop=true;}pump();},e=>{st[n]=2;active--;stop=true;log.textContent+='✗ '+it.label+' · '+String(e&&(e.message||e))+'\n';pump();});}
