@@ -29,7 +29,7 @@ const log=$('div',{style:'font-size:13px;color:#e7b98a;white-space:pre-wrap;max-
 const st=$('div',{style:'color:#9be59b;min-height:1.3em;margin:8px 0'});
 const close=$('button',{textContent:'✕ Cerrar',style:'position:absolute;top:10px;right:12px;background:#5a3a1e;color:#ffd9b0;border:0;border-radius:10px;padding:8px 12px;font-weight:700'});
 close.onclick=()=>box.remove();
-box.append(close,$('h2',{textContent:'🍪 Renacer',style:'color:#ff9a3c;margin:0 0 4px'}),$('div',{textContent:'modo: '+((window.tumblr&&typeof window.tumblr.apiFetch==='function')?'interno':'alternativo'),style:'font-size:11px;color:#a58a6a'}),$('p',{textContent:'Publica en el blog que elijas, de uno en uno y en orden, 25 por tanda. El ritmo lo eliges abajo: con un blog nuevo, con calma. Cada línea del registro dice cuánto tardó el post y cuánto de eso fue Tumblr trayendo las imágenes.',style:'color:#f3c99a;margin:0 0 12px'}));
+box.append(close,$('h2',{textContent:'🍪 Renacer',style:'color:#ff9a3c;margin:0 0 4px'}),$('div',{textContent:'modo: '+((window.tumblr&&typeof window.tumblr.apiFetch==='function')?'interno':'alternativo'),style:'font-size:11px;color:#a58a6a'}),$('p',{textContent:'Publica en el blog que elijas, de uno en uno y en orden, el blog entero de un toque. El ritmo lo eliges abajo: con un blog nuevo, con calma. Cada línea del registro dice cuánto tardó el post y cuánto de eso fue Tumblr trayendo las imágenes.',style:'color:#f3c99a;margin:0 0 12px'}));
 document.body.append(box);
 let blogs=[];
 const u=await api('/user/info');
@@ -259,7 +259,7 @@ bD.onclick=async()=>{const blog=sel.value;bD.disabled=true;dst.textContent='Cont
   const L=LS.get('rnc_links',{});if(L[blog]){delete L[blog];LS.set('rnc_links',L);}
   dst.textContent='Hecho: '+done+' posts borrados de '+blog+(fail?', '+fail+' no se pudieron':'')+'. El progreso de los botones de blog entero para este blog se ha puesto a cero.';bD.disabled=false;};
 const wbox=$('div',{style:'background:#2a1a0e;border:1px solid #5a3a1e;border-radius:12px;padding:10px;margin:0 0 12px'});
-wbox.append($('b',{textContent:'🔁 Blog entero, de un toque',style:'color:#ffb066'}),$('p',{textContent:'Cada botón publica un blog caído completo en el blog elegido arriba, en el orden en que se postearon los originales: lo más viejo primero y lo último al final, así el último que se publica es justo el último que se posteó y queda arriba. Como va en orden, cuando un post enlaza a otro anterior, ese ya está republicado y el enlace apunta a la copia nueva. Las cadenas de reblogs van juntas, cada trozo rebloguea el anterior, como estaban. Tandas de 25, de uno en uno, al ritmo elegido arriba; sigue donde lo dejaste.',style:'font-size:13px;color:#e7b98a;margin:6px 0 8px'}));
+wbox.append($('b',{textContent:'🔁 Blog entero, de un toque',style:'color:#ffb066'}),$('p',{textContent:'Cada botón publica un blog caído completo en el blog elegido arriba, en el orden en que se postearon los originales: lo más viejo primero y lo último al final, así el último que se publica es justo el último que se posteó y queda arriba. Como va en orden, cuando un post enlaza a otro anterior, ese ya está republicado y el enlace apunta a la copia nueva. Las cadenas de reblogs van juntas, cada trozo rebloguea el anterior, como estaban. Todo de una vez, de uno en uno, al ritmo elegido arriba; sigue donde lo dejaste.',style:'font-size:13px;color:#e7b98a;margin:6px 0 8px'}));
 const wst=$('div',{style:'color:#9be59b;font-size:14px;min-height:1.2em;margin-top:6px'});const wlist=$('div');wbox.append(wlist,wst);box.append(wbox);
 (async()=>{let BL=[];try{BL=await (await fetch(ARCH+'blogs.json?'+Date.now())).json();}catch(e){}
   const dkey=h=>{const t=h.replace(/<[^>]+>/g,' ').replace(/&[a-z#0-9]+;/g,' ').toLowerCase().replace(/[^a-z0-9]/g,'');const n=(h.match(/<img /g)||[]).length;if(t.length>=60)return t.slice(0,120);return t+'|'+n+'|'+(h.match(/(?:src|href|data-url)="[^"]*"/g)||[]).join('');};
@@ -281,9 +281,9 @@ const wst=$('div',{style:'color:#9be59b;font-size:14px;min-height:1.2em;margin-t
       const nch=groups.reduce((a,g)=>a+g.items.length,0);
       wst.textContent=bl.label+': '+order.length+' posts, en el orden en que se postearon'+(nch?' ('+nch+' en cadena de reblogs)':'')+', '+done.size+' ya publicados aquí, '+todo.length+' por publicar.'+(skipped.dup?' '+skipped.dup+' repetidos omitidos (de cada post repetido queda la versión con más capturas).':'')+(skipped.big?' '+skipped.big+' de más de 30 imágenes omitidos (van por trozos, en cadena).':'')+(skipped.other?' '+skipped.other+' reblogs de posts ajenos fuera.':'')+(skipped.moved?' '+skipped.moved+' que eran de otro blog van en el botón de ese blog.':'')+(skipped.sup?' '+skipped.sup+' con una versión más nueva en el archivo: va la nueva.':'');
       if(!todo.length){b.disabled=false;wst.textContent+=' Nada pendiente.';return;}
-      const go=$('button',{textContent:'Publicar la siguiente tanda ('+Math.min(25,todo.length)+' de '+todo.length+') en '+blog,style:'display:block;width:100%;background:#ff9a3c;color:#1a120b;border:0;border-radius:12px;padding:13px;font-weight:800;margin:8px 0'});
+      const go=$('button',{textContent:'Publicar todo lo que falta ('+todo.length+' de '+order.length+') en '+blog,style:'display:block;width:100%;background:#ff9a3c;color:#1a120b;border:0;border-radius:12px;padding:13px;font-weight:800;margin:8px 0'});
       const reset=$('button',{textContent:'Empezar de cero en este blog (olvidar lo publicado)',style:bstyle+';font-size:13px'});reset.onclick=()=>{LS.set(PK,[]);groups.forEach(g=>LS.set('rnc_chain_'+g.path+'_'+blog,null));wst.textContent='Progreso borrado. Vuelve a pulsar el botón del blog.';go.remove();reset.remove();b.disabled=false;};
-      go.onclick=async()=>{go.disabled=true;const batch=todo.slice(0,25);let uuid=null;const TS=Date.now();
+      go.onclick=async()=>{go.disabled=true;const batch=todo.slice(0);let uuid=null;const TS=Date.now();
         if(batch.some(x=>x.chain)){const bi=await api('/blog/'+blog+'/info');const BI=bi&&(bi.response||bi);uuid=BI&&BI.blog&&BI.blog.uuid;}
         const items=batch.map(x=>({html:x.html,TAGS:x.TAGS,label:x.label,key:x.key,wait:(x.chain&&x.gprev)?true:null,
           chain:x.chain&&x.gprev?()=>{const pv=LS.get('rnc_chain_'+x.path+'_'+blog,null);if(pv&&pv.id&&pv.next===x.i)return {uuid,prev:pv};log.textContent+='  (no tengo el post anterior de la cadena: este va suelto)\n';return null;}:null,x}));
@@ -312,13 +312,13 @@ function showPosts(it,D,TAGS,labs){
   D.forEach((d,i)=>{const row=$('label',{style:'display:flex;gap:8px;align-items:flex-start;margin:0 0 8px;font-size:14px'});
     const c=$('input',{type:'checkbox',checked:true});c.dataset.i=i;checks.push(c);
     row.append(c,$('span',{textContent:(labs[i]||('Post '+(i+1)))+'  ·  '+(d.match(/<img /g)||[]).length+' img'}));list.append(row);});
-  const pub=$('button',{textContent:'Publicar los marcados (hasta 25, de uno en uno)',style:'display:block;width:100%;background:#ff9a3c;color:#1a120b;border:0;border-radius:12px;padding:15px;font-weight:800;margin:8px 0'});
+  const pub=$('button',{textContent:'Publicar los marcados (de uno en uno)',style:'display:block;width:100%;background:#ff9a3c;color:#1a120b;border:0;border-radius:12px;padding:15px;font-weight:800;margin:8px 0'});
   const chain={};
   pub.onclick=async()=>{
     const blog=sel.value;
     let picks;
-    if(chk.checked){const first=checks.findIndex(c=>c.checked&&!c.disabled);if(first<0){st.textContent='Marca desde cuál empezar.';return;}picks=checks.slice(first).filter(c=>!c.disabled).slice(0,25);}
-    else picks=checks.filter(c=>c.checked&&!c.disabled).slice(0,25);
+    if(chk.checked){const first=checks.findIndex(c=>c.checked&&!c.disabled);if(first<0){st.textContent='Marca desde cuál empezar.';return;}picks=checks.slice(first).filter(c=>!c.disabled);}
+    else picks=checks.filter(c=>c.checked&&!c.disabled);
     if(!picks.length){st.textContent='No hay nada marcado.';return;}
     pub.disabled=true;await links();const TS=Date.now();
     let uuid=null;if(chk.checked){const bi=await api('/blog/'+blog+'/info');const BI=bi&&(bi.response||bi);uuid=BI&&BI.blog&&BI.blog.uuid;}
