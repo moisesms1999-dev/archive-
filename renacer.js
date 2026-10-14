@@ -18,10 +18,11 @@ const TOK=(html.match(/"API_TOKEN":"([^"]+)"/)||[])[1];
 const CSRF=(html.match(/"csrfToken":"([^"]+)"/)||[])[1];
 const api=async(path,opts={})=>{
   if(window.tumblr&&typeof window.tumblr.apiFetch==='function'){
-    const o={method:opts.method||'GET'};if(opts.body)o.body=opts.body;
+    const o={method:opts.method||'GET'};if(opts.body)o.body=opts.body;if(opts.headers)o.headers=opts.headers;
     try{return await window.tumblr.apiFetch('/v2'+path,o);}catch(e){return {error:String(e&&(e.message||e)),body:e&&e.body};}
   }
-  const r=await fetch('/api/v2'+path,{method:opts.method||'GET',credentials:'include',headers:{'Authorization':'Bearer '+TOK,'Content-Type':'application/json','X-Version':'redpop/3/0//redpop/','X-CSRF':CSRF||''},body:opts.body?JSON.stringify(opts.body):undefined});
+  const form=opts.body instanceof FormData;const hd={'Authorization':'Bearer '+TOK,'X-Version':'redpop/3/0//redpop/','X-CSRF':CSRF||''};if(!form)hd['Content-Type']='application/json';
+  const r=await fetch('/api/v2'+path,{method:opts.method||'GET',credentials:'include',headers:hd,body:opts.body?(form?opts.body:JSON.stringify(opts.body)):undefined});
   let j=null;try{j=await r.json();}catch(e){}return j&&r.ok?j:{error:'HTTP '+r.status,detail:j};
 };
 const box=$('div',{id:'rnc',style:'position:fixed;inset:0;z-index:2147483647;background:#1a120b;color:#ffd9b0;font:16px/1.4 system-ui,sans-serif;overflow:auto;padding:16px 14px 40px'});
@@ -69,6 +70,33 @@ const sp=$('select',{style:'width:100%;padding:9px;border-radius:10px;background
 const CAP=200;const fkey=()=>'rnc_fday_'+sel.value+'_'+new Date().toISOString().slice(0,10);const ftoday=()=>LS.get(fkey(),0);
 const fnote=$('div',{style:'font-size:12px;color:#a58a6a;margin-top:4px'});
 fbox.append($('b',{textContent:'Seguidores',style:'color:#ffb066'}),sp,fnote,bF,bL,fst,flog);box.append(fbox);
+/* Perfil: título, bio, foto, cabecera, colores y pinned de un toque */
+const pbox=$('div',{style:'background:#2a1a0e;border:1px solid #5a3a1e;border-radius:12px;padding:10px;margin:0 0 12px'});
+let PROF=null;const prof=async()=>{if(PROF)return PROF;try{PROF=await (await fetch(ARCH+'profile/profile.json?'+Date.now())).json();}catch(e){PROF={sets:[]};}return PROF;};
+const selst='width:100%;padding:9px;border-radius:10px;background:#1a120b;color:#ffd9b0;border:1px solid #5a3a1e;margin-top:6px';
+const psel=$('select',{style:selst}),phsel=$('select',{style:selst});
+const pck=(t,on)=>{const l=$('label',{style:'display:inline-block;margin:6px 12px 0 0;font-size:14px'});const c=$('input',{type:'checkbox',checked:on!==false});l.append(c,' '+t);return [l,c];};
+const [lT,cT]=pck('título'),[lB,cB]=pck('bio'),[lA,cA]=pck('foto'),[lH,cH]=pck('cabecera'),[lC,cC]=pck('colores'),[lP,cP]=pck('pinned (publicar y fijar)');
+const pst=$('div',{style:'color:#9be59b;font-size:14px;min-height:1.2em;margin-top:6px'});const plog=$('div',{style:'font-size:12px;color:#e7b98a;white-space:pre-wrap;max-height:18vh;overflow:auto'});
+const bP=$('button',{textContent:'🪪 Poner el perfil en el blog elegido arriba',style:bstyle});
+const pnote=$('div',{style:'font-size:12px;color:#a58a6a;margin-top:4px',textContent:'Elige el juego y la cabecera; lo marcado se pone de un toque en el blog de arriba. La bio va tal cual está guardada.'});
+const fillH=()=>{const S=PROF&&PROF.sets[+psel.value];phsel.innerHTML='';(S&&S.headers||[]).forEach((h,i)=>phsel.append($('option',{value:String(i),textContent:h.label})));lP.style.display=S&&S.pinned?'inline-block':'none';};
+prof().then(P=>{P.sets.forEach((S,i)=>psel.append($('option',{value:String(i),textContent:S.label})));fillH();});psel.onchange=fillH;
+const b64=b=>new Promise((ok,ko)=>{const r=new FileReader();r.onload=()=>ok(String(r.result).replace(/^.+,/,''));r.onerror=ko;r.readAsDataURL(b);});
+bP.onclick=async()=>{const blog=sel.value;const S=PROF&&PROF.sets[+psel.value];if(!blog||!S){pst.textContent='Elige blog y juego.';return;}bP.disabled=true;plog.textContent='';const say=t=>{plog.textContent+=t+'\n';};pst.textContent='Poniendo el perfil en '+blog+'…';
+  try{
+    if(cT.checked||cB.checked){const body={};if(cT.checked)body.title=S.title;if(cB.checked)body.description=S.description.replace(/\n/g,'<br />');const r=await api('/blog/'+blog+'/settings',{method:'POST',body});say(r&&!r.error?'✓ '+[cT.checked?'título':'',cB.checked?'bio':''].filter(Boolean).join(' y '):'✗ título/bio: '+why(r));}
+    if(cC.checked&&S.theme){const r=await api('/blog/'+blog+'/theme_settings',{method:'POST',body:S.theme});say(r&&!r.error?'✓ colores y letra':'✗ colores: '+why(r));}
+    if(cA.checked&&S.avatar){const b=await (await fetch(ARCH+S.avatar)).blob();const r=await api('/blog/'+blog+'/avatar',{method:'POST',body:{data:await b64(b)}});say(r&&!r.error?'✓ foto':'✗ foto: '+why(r));}
+    if(cH.checked&&S.headers&&S.headers.length){const H=S.headers[+phsel.value||0];const b=await (await fetch(ARCH+H.file)).blob();const fd=new FormData();fd.append('data',new File([b],H.file.split('/').pop(),{type:b.type}));fd.append('header_stretch',String(!(S.theme&&S.theme.header_stretch===false)));const r=await api('/blog/'+blog+'/header',{method:'POST',body:fd,headers:{'Content-Type':'multipart/form-data'}});say(r&&!r.error?'✓ cabecera ('+H.label+')':'✗ cabecera: '+why(r));}
+    if(cP.checked&&S.pinned){await links();const M=(LS.get('rnc_links',{})[blog])||{};let u=M[S.pinned.id],id=u?u.split('/').pop():null;
+      if(!id){say('  el pinned no estaba publicado aquí: lo publico');const pg=await loadPage(S.pinned.page);if(!pg)throw new Error('no pude cargar '+S.pinned.page);const key=S.pinned.page+'#'+S.pinned.i;const res=await publishOne(blog,pg.D[S.pinned.i],pg.TAGS,pg.labs[S.pinned.i]||'pinned',key,null,null);id=res&&res.id;
+        if(id&&S.pinned.whole){const PKw='rnc_whole_'+S.pinned.whole+'_'+blog;const d=LS.get(PKw,[]);if(!d.includes(key))d.push(key);LS.set(PKw,d);}}
+      if(id){const r=await api('/blog/'+blog+'/posts/'+id+'/pin',{method:'POST'});say(r&&!r.error?'✓ pinned fijado ('+id+')':'✗ fijar: '+why(r));}else say('✗ no pude publicar el pinned');}
+    pst.textContent='Perfil puesto en '+blog+'.';
+  }catch(e){say('✗ '+String(e&&(e.message||e)));pst.textContent='Algo falló; mira el registro.';}
+  bP.disabled=false;};
+pbox.append($('b',{textContent:'🪪 Perfil',style:'color:#ffb066'}),psel,phsel,$('div',{},lT,lB,lA,lH,lC,lP),pnote,bP,pst,plog);box.append(pbox);
 const fupd=()=>{fnote.textContent='Tope: '+CAP+' follows al día por blog, el límite de Tumblr (hoy llevas '+ftoday()+' en '+sel.value+'); del 201 en adelante Tumblr dice OK pero no sigue a nadie. Con el blog recién hecho, pon foto y cabecera y publica algo antes de seguir.';};
 fupd();sel.addEventListener('change',fupd);
 sp.value=LS.get('rnc_fpace','n');sp.onchange=()=>LS.set('rnc_fpace',sp.value);

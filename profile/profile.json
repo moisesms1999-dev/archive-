@@ -1,0 +1,67 @@
+{
+ "sets": [
+  {
+   "id": "choco",
+   "label": "Choco: The Syskid (foto Choco, cabecera a elegir)",
+   "title": "The Syskid",
+   "description": "AUDHD BPD and OSDD CSA surviving mayhem gremlin chaos syschild, not associated with Chococritters, that's a Choco I exposed myself, creator of the Antibraincells tag and leader of Mirmology.",
+   "avatar": "profile/choco_avatar.png",
+   "headers": [
+    {
+     "label": "Mirmo (el reparto)",
+     "file": "profile/choco_header_mirmo.jpg"
+    },
+    {
+     "label": "Emblema (el de souper-thy-chocofinity)",
+     "file": "profile/choco_header_emblema.png"
+    }
+   ],
+   "theme": {
+    "background_color": "#000000",
+    "title_color": "#ffff00",
+    "link_color": "#00B8FF",
+    "title_font": "Gibson",
+    "title_font_weight": "bold",
+    "header_stretch": true,
+    "show_header_image": true,
+    "show_avatar": true,
+    "show_title": true,
+    "show_description": true,
+    "avatar_shape": "circle"
+   },
+   "pinned": {
+    "id": "830425221960024064",
+    "page": "choco-pinned-14oct/index.html",
+    "i": 0,
+    "whole": "thine-super-choco-finity"
+   }
+  },
+  {
+   "id": "gimmick",
+   "label": "hereallysbehindmeisnthe: making fun of known predators (el gimmick)",
+   "title": "making fun of known predators (anti chocos m)",
+   "description": "PARODY ACCOUNT\nCry about it",
+   "avatar": "profile/gimmick_avatar.jpg",
+   "headers": [
+    {
+     "label": "La misma foto (como estaba)",
+     "file": "profile/gimmick_header.jpg"
+    }
+   ],
+   "theme": {
+    "background_color": "#00ffff",
+    "title_color": "#000000",
+    "link_color": "#00B8FF",
+    "title_font": "Gibson",
+    "title_font_weight": "bold",
+    "header_stretch": true,
+    "show_header_image": true,
+    "show_avatar": true,
+    "show_title": true,
+    "show_description": true,
+    "avatar_shape": "circle"
+   },
+   "pinned": null
+  }
+ ]
+}
