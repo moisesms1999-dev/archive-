@@ -34,7 +34,8 @@
    "choco-cockslinger/index.html",
    "choco-oddtripps/index.html",
    "choco-pinned-14oct/index.html",
-   "choco-mayday-14oct/index.html"
+   "choco-mayday-14oct/index.html",
+   "choco-npc-dialogue-14oct/index.html"
   ]
  },
  {
@@ -161,6 +162,14 @@
   "match": "choco|finity|infinit|survivor",
   "pages": [
    "choco-mayday-14oct/index.html"
+  ]
+ },
+ {
+  "name": "thine-infinity-choco-npc-14oct",
+  "label": "Choco: \"real life NPC dialogue\", la respuesta a sephirthoughts (14 oct), suelto",
+  "match": "choco|finity|infinit|survivor",
+  "pages": [
+   "choco-npc-dialogue-14oct/index.html"
   ]
  },
  {
