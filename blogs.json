@@ -35,7 +35,8 @@
    "choco-oddtripps/index.html",
    "choco-pinned-14oct/index.html",
    "choco-mayday-14oct/index.html",
-   "choco-npc-dialogue-14oct/index.html"
+   "choco-npc-dialogue-14oct/index.html",
+   "choco-liy-14oct/index.html"
   ]
  },
  {
@@ -170,6 +171,14 @@
   "match": "choco|finity|infinit|survivor",
   "pages": [
    "choco-npc-dialogue-14oct/index.html"
+  ]
+ },
+ {
+  "name": "thine-infinity-choco-liy-14oct",
+  "label": "Choco: los tres reblogs de Liy del 14 oct (doxing, \"buzzwords\", el anon de froggo), sueltos",
+  "match": "choco|finity|infinit|survivor",
+  "pages": [
+   "choco-liy-14oct/index.html"
   ]
  },
  {
