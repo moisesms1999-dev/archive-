@@ -1,5 +1,14 @@
 [
  {
+  "name": "thine-infinity-choco-export-14oct-noche",
+  "label": "Choco: el export del 14 oct por la noche (the-choco-superfinity, 55 posts, entero, en orden, un solo blog con el gimmick dentro)",
+  "match": "choco|finity|infinit|survivor",
+  "pages": [
+   "choco-export-14oct-noche/index.html"
+  ],
+  "strict": true
+ },
+ {
   "name": "thine-super-choco-finity",
   "label": "Choco (main): Everything, cadenas (coinedbank, evidence, gallery, videos), exports 1 a 9 oct y lo rescatado del gimmick y de cultfessions + el gimmick con su tarjeta delante (todo en el blog de Choco)",
   "match": "choco|finity|infinit|survivor",
@@ -58,7 +67,8 @@
    "choco-export-10oct/index.html",
    "choco-export-12oct/index.html",
    "choco-export-13oct/index.html",
-   "choco-export-14oct/index.html"
+   "choco-export-14oct/index.html",
+   "choco-export-14oct-noche/index.html"
   ],
   "strict": true
  },
