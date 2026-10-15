@@ -50,7 +50,8 @@
    "gimmick-export-9oct/index.html",
    "gimmick-export-10oct/index.html",
    "silence-chain/index.html",
-   "nah-reblog/index.html"
+   "nah-reblog/index.html",
+   "choco-enables-15oct/index.html"
   ]
  },
  {
@@ -195,6 +196,14 @@
   "match": "choco|finity|infinit|survivor",
   "pages": [
    "choco-liy-14oct/index.html"
+  ]
+ },
+ {
+  "name": "thine-infinity-choco-enables-15oct",
+  "label": "Choco: \"It goes without saying, if anyone enables…\" (15 oct, 3 capturas), suelto",
+  "match": "choco|finity|infinit|survivor",
+  "pages": [
+   "choco-enables-15oct/index.html"
   ]
  },
  {
