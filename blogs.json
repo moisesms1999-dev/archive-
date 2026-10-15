@@ -52,7 +52,8 @@
    "silence-chain/index.html",
    "nah-reblog/index.html",
    "choco-enables-15oct/index.html",
-   "choco-enables-15oct-v2/index.html"
+   "choco-enables-15oct-v2/index.html",
+   "choco-psychotic-break-15oct/index.html"
   ]
  },
  {
@@ -205,6 +206,14 @@
   "match": "choco|finity|infinit|survivor",
   "pages": [
    "choco-enables-15oct-v2/index.html"
+  ]
+ },
+ {
+  "name": "thine-infinity-choco-psychotic-break-15oct",
+  "label": "Choco: el anon \"the psychotic break is alive and well\" y la respuesta (15 oct), suelto",
+  "match": "choco|finity|infinit|survivor",
+  "pages": [
+   "choco-psychotic-break-15oct/index.html"
   ]
  },
  {
