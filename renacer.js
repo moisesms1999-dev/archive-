@@ -136,13 +136,13 @@ async function runBlocks(auto){const blog=sel.value;if(KRUN||!blog)return;KRUN=t
   klog.textContent='';kst.textContent=(auto?'Al entrar: ':'')+'mirando a quién tienes ya bloqueado en '+blog+'…';const have=new Set();
   for(let off=0;off<5000;off+=20){const r=await api('/blog/'+blog+'/blocks?limit=20&offset='+off);const R=r&&(r.response||r);const B=(R&&(R.blocked_tumblelogs||R.blockedTumblelogs))||[];B.forEach(b=>have.add(String(b&&b.name||'').toLowerCase()));if(B.length<20)break;}
   const todo=L.filter(n=>!have.has(n));klog.textContent='Lista: '+L.length+' · ya bloqueados en '+blog+': '+(L.length-todo.length)+' · por bloquear: '+todo.length+'\n';
-  let ok=0,n=0,gone=0;
+  let ok=0,n=0;
   for(const nm of todo){n++;kst.textContent=(auto?'Al entrar: ':'')+'bloqueando '+n+' de '+todo.length+' ('+nm+')…';
     const r=await api('/blog/'+blog+'/blocks',{method:'POST',body:{blocked_tumblelog:nm}});
-    if(r&&!r.error&&!(r.meta&&r.meta.status>=400)){ok++;klog.textContent+='✓ '+nm+'\n';}else{const w=why(r);if(/404|not found/i.test(w+' '+(r&&r.error||'')))gone++;klog.textContent+='✗ '+nm+' · '+w+'\n';}
+    if(r&&!r.error&&!(r.meta&&r.meta.status>=400)){ok++;klog.textContent+='✓ '+nm+'\n';}else klog.textContent+='✗ '+nm+' · '+why(r)+'\n';
     klog.scrollTop=1e9;await new Promise(z=>setTimeout(z,700+Math.random()*700));}
-  if(ok+gone===todo.length)LS.set(MK,sig);
-  kst.textContent=todo.length?(auto?'Al entrar: ':'')+ok+' bloqueados nuevos en '+blog+(gone?', '+gone+' ya no existen (Tumblr no deja bloquear un blog borrado)':'')+(todo.length-ok-gone?', '+(todo.length-ok-gone)+' fallaron (mira abajo; vuelve a pulsar)':'')+'. De la lista, bloqueados: '+(L.length-todo.length+ok)+' de '+L.length+'.':'✓ Ya los tienes a todos bloqueados en '+blog+'.';
+  if(ok===todo.length)LS.set(MK,sig);
+  kst.textContent=todo.length?(auto?'Al entrar: ':'')+ok+' bloqueados nuevos en '+blog+(todo.length-ok?', '+(todo.length-ok)+' no se pudieron (mira abajo): se reintentan solos la próxima vez que entres':'')+'. De la lista, bloqueados: '+(L.length-todo.length+ok)+' de '+L.length+'.':'✓ Ya los tienes a todos bloqueados en '+blog+'.';
   }finally{KRUN=false;bK.disabled=false;}}
 bK.onclick=()=>runBlocks(false);sel.addEventListener('change',()=>runBlocks(true));setTimeout(()=>runBlocks(true),1200);
 const abox=$('div',{style:'background:#2a1a0e;border:1px solid #5a3a1e;border-radius:12px;padding:10px;margin:0 0 12px'});
