@@ -125,20 +125,26 @@ const kbox=$('div',{style:'background:#2a1a0e;border:1px solid #5a3a1e;border-ra
 const bK=$('button',{textContent:'🚫 Bloquear a todos los de mi lista de bloqueos',style:bstyle});
 const kst=$('div',{style:'color:#9be59b;font-size:14px;min-height:1.2em;margin-top:6px'});
 const klog=$('div',{style:'font-size:12px;color:#e7b98a;white-space:pre-wrap;max-height:18vh;overflow:auto'});
-kbox.append($('b',{textContent:'Bloqueos',style:'color:#ffb066'}),$('p',{textContent:'Bloquea desde el blog elegido arriba a todos los de la lista de bloqueos del archivo. Los que ya tienes bloqueados en ese blog se saltan, así que se puede pulsar las veces que haga falta.',style:'font-size:13px;color:#e7b98a;margin:6px 0 0'}),bK,kst,klog);box.append(kbox);
+kbox.append($('b',{textContent:'Bloqueos',style:'color:#ffb066'}),$('p',{textContent:'Nada más abrir el Renacer (o cambiar de blog arriba) se bloquea solo a todos los de la lista de bloqueos en ese blog. Los que ya tienes bloqueados se saltan, así que el botón se puede pulsar las veces que haga falta.',style:'font-size:13px;color:#e7b98a;margin:6px 0 0'}),bK,kst,klog);box.append(kbox);
 const kname=x=>x.replace(/#.*/,'').trim().toLowerCase().replace(/^@/,'').replace(/^https?:\/\//,'').replace(/^www\.tumblr\.com\//,'').replace(/\.tumblr\.com.*$/,'').replace(/[\/?].*$/,'');
-bK.onclick=async()=>{const blog=sel.value;bK.disabled=true;klog.textContent='';kst.textContent='Leyendo la lista de bloqueos…';let t='';try{t=await (await fetch(ARCH+'bloqueos.txt?'+Date.now())).text();}catch(e){}
-  const L=[...new Set(t.split(/\r?\n/).map(kname).filter(x=>/^[a-z0-9-]+$/.test(x)))];
-  if(!L.length){kst.textContent='La lista de bloqueos está vacía.';bK.disabled=false;return;}
-  kst.textContent='Mirando a quién tienes ya bloqueado en '+blog+'…';const have=new Set();
+let KRUN=false;
+async function runBlocks(auto){const blog=sel.value;if(KRUN||!blog)return;KRUN=true;bK.disabled=true;
+  try{let t='';try{t=await (await fetch(ARCH+'bloqueos.txt?'+Date.now())).text();}catch(e){}
+  const L=[...new Set(t.split(/\r?\n/).map(kname).filter(x=>/^[a-z0-9-]+$/.test(x)))];const sig=L.slice().sort().join(',');const MK='rnc_blk_'+blog;
+  if(!L.length){kst.textContent='La lista de bloqueos está vacía.';return;}
+  if(auto&&LS.get(MK,'')===sig){kst.textContent='✓ La lista de bloqueos ('+L.length+') ya está aplicada en '+blog+'.';return;}
+  klog.textContent='';kst.textContent=(auto?'Al entrar: ':'')+'mirando a quién tienes ya bloqueado en '+blog+'…';const have=new Set();
   for(let off=0;off<5000;off+=20){const r=await api('/blog/'+blog+'/blocks?limit=20&offset='+off);const R=r&&(r.response||r);const B=(R&&(R.blocked_tumblelogs||R.blockedTumblelogs))||[];B.forEach(b=>have.add(String(b&&b.name||'').toLowerCase()));if(B.length<20)break;}
   const todo=L.filter(n=>!have.has(n));klog.textContent='Lista: '+L.length+' · ya bloqueados en '+blog+': '+(L.length-todo.length)+' · por bloquear: '+todo.length+'\n';
-  let ok=0,n=0;
-  for(const nm of todo){n++;kst.textContent='Bloqueando '+n+' de '+todo.length+' ('+nm+')…';
+  let ok=0,n=0,gone=0;
+  for(const nm of todo){n++;kst.textContent=(auto?'Al entrar: ':'')+'bloqueando '+n+' de '+todo.length+' ('+nm+')…';
     const r=await api('/blog/'+blog+'/blocks',{method:'POST',body:{blocked_tumblelog:nm}});
-    if(r&&!r.error&&!(r.meta&&r.meta.status>=400)){ok++;klog.textContent+='✓ '+nm+'\n';}else klog.textContent+='✗ '+nm+' · '+why(r)+'\n';
+    if(r&&!r.error&&!(r.meta&&r.meta.status>=400)){ok++;klog.textContent+='✓ '+nm+'\n';}else{const w=why(r);if(/404|not found/i.test(w+' '+(r&&r.error||'')))gone++;klog.textContent+='✗ '+nm+' · '+w+'\n';}
     klog.scrollTop=1e9;await new Promise(z=>setTimeout(z,700+Math.random()*700));}
-  kst.textContent=todo.length?'Hecho: '+ok+' bloqueados nuevos en '+blog+(todo.length-ok?' ('+(todo.length-ok)+' no se pudieron: mira abajo; si el blog ya no existe, Tumblr no deja bloquearlo)':'')+'. De la lista, bloqueados ya: '+(L.length-todo.length+ok)+' de '+L.length+'.':'Ya los tienes a todos bloqueados en '+blog+'.';bK.disabled=false;};
+  if(ok+gone===todo.length)LS.set(MK,sig);
+  kst.textContent=todo.length?(auto?'Al entrar: ':'')+ok+' bloqueados nuevos en '+blog+(gone?', '+gone+' ya no existen (Tumblr no deja bloquear un blog borrado)':'')+(todo.length-ok-gone?', '+(todo.length-ok-gone)+' fallaron (mira abajo; vuelve a pulsar)':'')+'. De la lista, bloqueados: '+(L.length-todo.length+ok)+' de '+L.length+'.':'✓ Ya los tienes a todos bloqueados en '+blog+'.';
+  }finally{KRUN=false;bK.disabled=false;}}
+bK.onclick=()=>runBlocks(false);sel.addEventListener('change',()=>runBlocks(true));setTimeout(()=>runBlocks(true),1200);
 const abox=$('div',{style:'background:#2a1a0e;border:1px solid #5a3a1e;border-radius:12px;padding:10px;margin:0 0 12px'});
 const bA=$('button',{textContent:'🎨 Cabecera y foto de perfil',style:'display:block;width:100%;text-align:left;background:#5a3a1e;color:#ffd9b0;border:0;border-radius:10px;padding:11px;font-weight:700'});
 const ain=$('div');abox.append(bA,ain);box.append(abox);
