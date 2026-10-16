@@ -90,7 +90,7 @@ bP.onclick=async()=>{const blog=sel.value;const S=PROF&&PROF.sets[+psel.value];i
     if(cA.checked&&S.avatar){const b=await (await fetch(ARCH+S.avatar)).blob();const r=await api('/blog/'+blog+'/avatar',{method:'POST',body:{data:await b64(b)}});say(r&&!r.error?'✓ foto':'✗ foto: '+why(r));}
     if(cH.checked&&S.headers&&S.headers.length){const H=S.headers[+phsel.value||0];const b=await (await fetch(ARCH+H.file)).blob();const fd=new FormData();fd.append('data',new File([b],H.file.split('/').pop(),{type:b.type}));fd.append('header_stretch',String(!(S.theme&&S.theme.header_stretch===false)));const r=await api('/blog/'+blog+'/header',{method:'POST',body:fd,headers:{'Content-Type':'multipart/form-data'}});say(r&&!r.error?'✓ cabecera ('+H.label+')':'✗ cabecera: '+why(r));}
     if(cP.checked&&S.pinned){await links();const M=(LS.get('rnc_links',{})[blog])||{};let u=M[S.pinned.id],id=u?u.split('/').pop():null;
-      if(!id){say('  el pinned no estaba publicado aquí: lo publico');const pg=await loadPage(S.pinned.page);if(!pg)throw new Error('no pude cargar '+S.pinned.page);const key=S.pinned.page+'#'+S.pinned.i;const res=await publishOne(blog,pg.D[S.pinned.i],pg.TAGS,pg.labs[S.pinned.i]||'pinned',key,null,null);id=res&&res.id;
+      if(!id){say('  el pinned no estaba publicado aquí: lo publico');const pg=await loadPage(S.pinned.page);if(!pg)throw new Error('no pude cargar '+S.pinned.page);const key=S.pinned.page+'#'+S.pinned.i;const res=await publishOne(blog,pg.D[S.pinned.i],(pg.TG&&pg.TG[S.pinned.i])||pg.TAGS,pg.labs[S.pinned.i]||'pinned',key,null,null);id=res&&res.id;
         if(id&&S.pinned.whole){const PKw='rnc_whole_'+S.pinned.whole+'_'+blog;const d=LS.get(PKw,[]);if(!d.includes(key))d.push(key);LS.set(PKw,d);}}
       if(id){const r=await api('/blog/'+blog+'/posts/'+id+'/pin',{method:'POST'});say(r&&!r.error?'✓ pinned fijado ('+id+')':'✗ fijar: '+why(r));}else say('✗ no pude publicar el pinned');}
     pst.textContent='Perfil puesto en '+blog+'.';
@@ -264,7 +264,8 @@ async function runBatch(blog,items,status,onOk){
 async function loadPage(path){const h=await (await fetch(ARCH+path+'?'+Date.now())).text();const m=h.match(/const (?:D|P)=(\[[\s\S]*?\]);\s*const TAGS=("(?:[^"\\]|\\.)*")/);if(!m)return null;
   const base=new URL(path,ARCH).href.replace(/[^/]*$/,'');const D=JSON.parse(m[1]).map(x=>x.split('MEDIA/').join(base+'media/'));const TAGS=JSON.parse(m[2]).split(',').map(s=>s.trim()).filter(Boolean);
   const labs={};let lm;const lre=/data-i="(\d+)"[^>]*>(?:<span[^>]*>[^<]*<\/span>)?<span class="t">([^<]*)<\/span>/g;while((lm=lre.exec(h)))labs[+lm[1]]=lm[2].replace(/&quot;/g,'"').replace(/&#x27;/g,"'").replace(/&amp;/g,'&');
-  return {D,TAGS,labs};}
+  let TG=null;const tg=h.match(/const TG=(\[[\s\S]*?\]);<\/script>/);if(tg){try{TG=JSON.parse(tg[1]);}catch(e){TG=null;}}
+  return {D,TAGS,labs,TG};}
 const norm=h=>h.replace(/<[^>]+>/g,' ').replace(/&[a-z#0-9]+;/g,' ').replace(/\s+/g,' ').trim().toLowerCase().slice(0,300);
 const hasTl=h=>/href="https?:\/\/(?:www\.tumblr\.com\/[\w-]+|[\w-]+\.tumblr\.com\/post)\/\d{15,}/.test(h);
 const dbox=$('div',{style:'background:#2a1a0e;border:1px solid #5a3a1e;border-radius:12px;padding:10px;margin:0 0 12px'});
@@ -298,7 +299,7 @@ const wst=$('div',{style:'color:#9be59b;font-size:14px;min-height:1.2em;margin-t
       const foreign=d=>{const m=d.match(/^\s*<p>(?:<a [^>]*>)?([\w-]+)(?:<\/a>)?:<\/p>\s*<blockquote>/);return !!(m&&!OWN.test(m[1]));};
       for(const path of bl.pages){const pg=await loadPage(path);if(!pg)continue;const isC=CH.has(path);
         const OW=ORD[path]||[];pg.D.forEach((d,i)=>{const w=OW[i]||null;if(w==='x'){skipped.moved++;return;}if(w==='s'){skipped.sup++;return;}const im=(d.match(/<img /g)||[]).length;if(im>30){skipped.big++;return;}if(foreign(d)){skipped.other++;return;}
-          const tl=d.replace(/<[^>]+>/g,' ').replace(/&[a-z#0-9]+;/g,' ').replace(/[^A-Za-z0-9]/g,'').length;const it={path,i,html:d,TAGS:pg.TAGS,label:(pg.labs[i]||('Post '+(i+1))),key:path+'#'+i,links:hasTl(d),chain:isC,im,tl,w,seq:seq++};all.push(it);
+          const tl=d.replace(/<[^>]+>/g,' ').replace(/&[a-z#0-9]+;/g,' ').replace(/[^A-Za-z0-9]/g,'').length;const it={path,i,html:d,TAGS:(pg.TG&&pg.TG[i])||pg.TAGS,label:(pg.labs[i]||('Post '+(i+1))),key:path+'#'+i,links:hasTl(d),chain:isC,im,tl,w,seq:seq++};all.push(it);
           const k=dkey(d);const prev=M.get(k);if(!prev){M.set(k,it);return;}skipped.dup++;{const a=prev.w,b=it.w;const mw=(a&&b)?(a.padStart(20,'0')<b.padStart(20,'0')?a:b):(a||b);prev.w=mw;it.w=mw;}if((isC&&!prev.chain)||(isC===prev.chain&&(im>prev.im||(im===prev.im&&(tl>prev.tl*1.02||(bl.strict&&tl>=prev.tl*0.98)))))){prev.drop=true;M.set(k,it);}else it.drop=true;});}
       const keep=all.filter(x=>!x.drop);{let lw=null;keep.forEach(x=>{if(!x.w)x.w=lw;lw=x.w||lw;});}const solo=keep.filter(x=>!x.chain);const groups=[];
       for(const x of keep.filter(x=>x.chain)){let g=groups.find(g=>g.path===x.path);if(!g){g={path:x.path,items:[],links:false};groups.push(g);}g.items.push(x);g.links=g.links||x.links;}
@@ -327,12 +328,12 @@ for(const it of items){
   const b=$('button',{textContent:it.title,style:'display:block;width:100%;text-align:left;background:#3a2412;color:#ffd9b0;border:0;border-radius:10px;padding:12px;margin:0 0 8px;font-weight:700'});
   b.onclick=async()=>{st.textContent='Leyendo '+it.title+'…';
     const pg=await loadPage(it.path);if(!pg){st.textContent='Esa página no tiene posts.';return;}
-    const {D,TAGS,labs}=pg;
-    showPosts(it,D,TAGS,labs);st.textContent='';
+    const {D,TAGS,labs,TG}=pg;
+    showPosts(it,D,TAGS,labs,TG);st.textContent='';
   };
   list.append(b);
 }
-function showPosts(it,D,TAGS,labs){
+function showPosts(it,D,TAGS,labs,TG){
   const title=it.title;list.innerHTML='';list.append($('h3',{textContent:title,style:'color:#ffb066;margin:4px 0 8px'}));
   const chk=$('input',{type:'checkbox',checked:!!it.chain});const cl=$('label',{style:'display:flex;gap:8px;align-items:center;margin:0 0 10px;color:#ffb066;font-weight:700'});cl.append(chk,$('span',{textContent:'⛓ En cadena: cada post rebloguea el anterior, desde el marcado en adelante'}));list.append(cl);
   const KEY=()=>'rnc_chain_'+it.path+'_'+sel.value;
@@ -351,7 +352,7 @@ function showPosts(it,D,TAGS,labs){
     pub.disabled=true;await links();const TS=Date.now();
     let uuid=null;if(chk.checked){const bi=await api('/blog/'+blog+'/info');const BI=bi&&(bi.response||bi);uuid=BI&&BI.blog&&BI.blog.uuid;}
     let prev=null;try{prev=JSON.parse(localStorage.getItem(KEY())||'null');}catch(e){}
-    const items=picks.map(c=>{const i=+c.dataset.i;return {html:D[i],TAGS,label:labs[i]||('Post '+(i+1)),key:it.path+'#'+i,i,c,wait:chk.checked?true:null,
+    const items=picks.map(c=>{const i=+c.dataset.i;return {html:D[i],TAGS:(TG&&TG[i])||TAGS,label:labs[i]||('Post '+(i+1)),key:it.path+'#'+i,i,c,wait:chk.checked?true:null,
       chain:chk.checked?()=>(prev&&prev.next===i&&uuid)?{uuid,prev}:null:null};});
     const ok=await runBatch(blog,items,(n,a,w)=>{st.textContent=w?'Publicado '+(n+1)+' de '+picks.length+'. Espero '+w+' s antes del siguiente…':'Publicando '+(n+1)+' de '+picks.length+'…';},
       (x,res)=>{x.c.checked=false;x.c.disabled=true;if(res.restart)prev=null;

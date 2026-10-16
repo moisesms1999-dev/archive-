@@ -1,5 +1,14 @@
 [
  {
+  "name": "thine-infinity-choco-export-16oct",
+  "label": "Choco: el export del 16 oct (i-is-infinite-choclshipper, 59 posts, entero, en orden, el pinned de Mayday y los tags de cada post)",
+  "match": "choco|finity|infinit|survivor|choclship",
+  "pages": [
+   "choco-export-16oct/index.html"
+  ],
+  "strict": true
+ },
+ {
   "name": "thine-infinity-choco-export-14oct-noche",
   "label": "Choco: el export del 14 oct por la noche (the-choco-superfinity, 55 posts, entero, en orden, un solo blog con el gimmick dentro)",
   "match": "choco|finity|infinit|survivor",
@@ -73,7 +82,8 @@
    "choco-export-12oct/index.html",
    "choco-export-13oct/index.html",
    "choco-export-14oct/index.html",
-   "choco-export-14oct-noche/index.html"
+   "choco-export-14oct-noche/index.html",
+   "choco-export-16oct/index.html"
   ],
   "strict": true
  },
