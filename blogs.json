@@ -53,7 +53,8 @@
    "nah-reblog/index.html",
    "choco-enables-15oct/index.html",
    "choco-enables-15oct-v2/index.html",
-   "choco-psychotic-break-15oct/index.html"
+   "choco-psychotic-break-15oct/index.html",
+   "choco-preds-16oct/index.html"
   ]
  },
  {
@@ -214,6 +215,14 @@
   "match": "choco|finity|infinit|survivor",
   "pages": [
    "choco-psychotic-break-15oct/index.html"
+  ]
+ },
+ {
+  "name": "thine-infinity-choco-preds-16oct",
+  "label": "Choco: el anon \"considering how you accuse people as being preds…\" y la respuesta (16 oct), suelto",
+  "match": "choco|finity|infinit|survivor",
+  "pages": [
+   "choco-preds-16oct/index.html"
   ]
  },
  {
