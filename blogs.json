@@ -1,7 +1,7 @@
 [
  {
   "name": "thine-infinity-choco-export-18oct",
-  "label": "Choco: el export del 18 oct (it-is-me-infinite-choco, 73 posts, entero, en orden, el pinned de Mayday y los tags de cada post)",
+  "label": "Choco: el export del 18 oct (it-is-me-infinite-choco, 74 posts, entero, en orden, el pinned de Mayday y los tags de cada post)",
   "match": "choco|finity|infinit|survivor|choclship",
   "pages": [
    "choco-export-18oct/index.html"
