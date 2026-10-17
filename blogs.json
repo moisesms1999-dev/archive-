@@ -4,7 +4,8 @@
   "label": "Choco: el export del 16 oct (i-is-infinite-choclshipper, 59 posts, entero, en orden, el pinned de Mayday y los tags de cada post)",
   "match": "choco|finity|infinit|survivor|choclship",
   "pages": [
-   "choco-export-16oct/index.html"
+   "choco-export-16oct/index.html",
+   "choco-heads-up-17oct/index.html"
   ],
   "strict": true
  },
@@ -64,7 +65,8 @@
    "choco-enables-15oct-v2/index.html",
    "choco-psychotic-break-15oct/index.html",
    "choco-preds-16oct/index.html",
-   "choco-oomfs-16oct/index.html"
+   "choco-oomfs-16oct/index.html",
+   "choco-heads-up-17oct/index.html"
   ]
  },
  {
@@ -242,6 +244,14 @@
   "match": "choco|finity|infinit|survivor",
   "pages": [
    "choco-oomfs-16oct/index.html"
+  ]
+ },
+ {
+  "name": "thine-infinity-choco-heads-up-17oct",
+  "label": "Choco: \"Just a heads up, confessions-of-proshippers is back…\" (\"sue me\", 17 oct), suelto",
+  "match": "choco|finity|infinit|survivor",
+  "pages": [
+   "choco-heads-up-17oct/index.html"
   ]
  },
  {
