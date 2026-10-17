@@ -5,7 +5,8 @@
   "match": "choco|finity|infinit|survivor|choclship",
   "pages": [
    "choco-export-16oct/index.html",
-   "choco-heads-up-17oct/index.html"
+   "choco-heads-up-17oct/index.html",
+   "choco-half-of-the-people-17oct/index.html"
   ],
   "strict": true
  },
@@ -66,7 +67,8 @@
    "choco-psychotic-break-15oct/index.html",
    "choco-preds-16oct/index.html",
    "choco-oomfs-16oct/index.html",
-   "choco-heads-up-17oct/index.html"
+   "choco-heads-up-17oct/index.html",
+   "choco-half-of-the-people-17oct/index.html"
   ]
  },
  {
@@ -252,6 +254,14 @@
   "match": "choco|finity|infinit|survivor",
   "pages": [
    "choco-heads-up-17oct/index.html"
+  ]
+ },
+ {
+  "name": "thine-infinity-choco-half-of-the-people-17oct",
+  "label": "Choco: el anon \"half of the people you're still posting about…\" y la respuesta a Mayday (17 oct), suelto",
+  "match": "choco|finity|infinit|survivor",
+  "pages": [
+   "choco-half-of-the-people-17oct/index.html"
   ]
  },
  {
