@@ -9,6 +9,14 @@
   "strict": true
  },
  {
+  "name": "thine-infinity-choco-liy-17oct",
+  "label": "Choco: el reblog de Liy del 17 oct (regectedmalice: el anon de \"the sheer audacity of Choco's groomers\" y su respuesta), suelto",
+  "match": "choco|finity|infinit|survivor|choclship",
+  "pages": [
+   "choco-liy-17oct/index.html"
+  ]
+ },
+ {
   "name": "thine-infinity-choco-export-16oct",
   "label": "Choco: el export del 16 oct (i-is-infinite-choclshipper, 59 posts, entero, en orden, el pinned de Mayday y los tags de cada post)",
   "match": "choco|finity|infinit|survivor|choclship",
@@ -77,7 +85,8 @@
    "choco-preds-16oct/index.html",
    "choco-oomfs-16oct/index.html",
    "choco-heads-up-17oct/index.html",
-   "choco-half-of-the-people-17oct/index.html"
+   "choco-half-of-the-people-17oct/index.html",
+   "choco-liy-17oct/index.html"
   ]
  },
  {

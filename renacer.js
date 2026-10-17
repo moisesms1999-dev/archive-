@@ -199,6 +199,7 @@ function textBlocks(el,subtype){
 }
 function quoteBlocks(el){const out=[];const kids=el.children.length?[...el.children]:[el];
   for(const c of kids){if(c.tagName==='BLOCKQUOTE'){out.push(...quoteBlocks(c));continue;}
+    if(c.tagName==='UL'||c.tagName==='OL'){let n=0;for(const li of c.children){n++;const t=textBlocks(li,'indented');if(t.length){const p=c.tagName==='UL'?'• ':n+'. ';t[0].text=p+t[0].text;if(t[0].formatting)t[0].formatting=t[0].formatting.map(x=>Object.assign({},x,{start:x.start+p.length,end:x.end+p.length}));}out.push(...t);}continue;}
     if(c.tagName==='FIGURE'){const url=c.getAttribute('data-url')||((c.querySelector('iframe')||{}).src||'');if(url)out.push({type:'video',provider:'youtube',url:url.replace('/embed/','/watch?v=').replace(/\?feature=oembed/,'')});continue;}
     const img=c.tagName==='IMG'?c:c.querySelector('img');
     if(img&&!c.textContent.trim()){out.push({type:'image',media:[{url:img.getAttribute('src')}]});continue;}
