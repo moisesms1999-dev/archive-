@@ -237,9 +237,9 @@ function dropTrail(h,name){const m=h.match(new RegExp('^\\s*<p>(?:<a [^>]*>)?'+n
 const nimg=h=>(h.match(/<img /g)||[]).length;
 async function publishOne(blog,html,TAGS,label,key,chain,date){
   const T0=Date.now();let pre='';const say=s=>{pre+=s+'\n';};
-  const em=html.match(/^\s*<!--reblog ([\w-]+) (\d+)-->/);
+  const em=html.match(/^\s*<!--reblog ([\w-]+) (\d+)-->(?:<!--shot (https:[^\s<>"]+)-->)?/);
   if(em){html=html.slice(em[0].length);const bi=await api('/blog/'+em[1]+'/info');const BI=bi&&(bi.response||bi);const pu=BI&&BI.blog&&BI.blog.uuid;const PB=pu?await getPost(em[1],em[2]):null;
-    if(!PB||!PB.reblog_key||!pu){if(new RegExp('^\\s*<p>(?:<a [^>]*>)?'+em[1]+'(?:</a>)?:</p>\\s*<blockquote>').test(html))say('  (el post '+em[2]+' de '+em[1]+' ya no se puede leer: lo publico suelto, con su cita dentro)');else{log.textContent+=pre+'✗ '+label+' · no pude leer el post '+em[2]+' de '+em[1]+' para reblogarlo (¿borrado o privado?): lo salto y sigo\n';return {skip:true};}}
+    if(!PB||!PB.reblog_key||!pu){if(new RegExp('^\\s*<p>(?:<a [^>]*>)?'+em[1]+'(?:</a>)?:</p>\\s*<blockquote>').test(html)){say('  (el post '+em[2]+' de '+em[1]+' ya no se puede leer: lo publico suelto, con su cita dentro'+(em[3]?' y la captura de su post delante':'')+')');if(em[3])html='<p><img src="'+em[3]+'"/></p>'+html;}else{log.textContent+=pre+'✗ '+label+' · no pude leer el post '+em[2]+' de '+em[1]+' para reblogarlo (¿borrado o privado?): lo salto y sigo\n';return {skip:true};}}
     else{html=dropTrail(html,em[1]);chain={uuid:pu,prev:{id:em[2],key:PB.reblog_key}};say('  ↻ reblog de '+em[1]+'/'+em[2]);}}
   const rl=relink(html,blog);let Hh=rl.html;if(rl.n)say('  🔗 '+rl.n+' enlace(s) llevados a una copia viva');
   const tags=TAGS.slice(0,30).join(',');let isRe=!!chain,restart=false;let AK=null;
