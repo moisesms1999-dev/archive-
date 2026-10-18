@@ -1,5 +1,13 @@
 [
  {
+  "name": "thine-infinity-choco-god-complex-18oct",
+  "label": "Choco: el anon \"Your abusers have the biggest God Complex\" con tu imagen, \"Ditto!\" y \"Like I've already said though…\" (18 oct), suelto",
+  "match": "choco|finity|infinit|survivor|choclship",
+  "pages": [
+   "choco-god-complex-18oct/index.html"
+  ]
+ },
+ {
   "name": "thine-infinity-choco-export-18oct",
   "label": "Choco: el export del 18 oct (it-is-me-infinite-choco, 74 posts, entero, en orden, el pinned de Mayday y los tags de cada post)",
   "match": "choco|finity|infinit|survivor|choclship",
