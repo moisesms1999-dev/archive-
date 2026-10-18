@@ -19,10 +19,18 @@
  },
  {
   "name": "thine-infinity-choco-liy-17oct",
-  "label": "Choco: los tres reblogs de Liy del 17 oct (regectedmalice: \"the sheer audacity of Choco's groomers\", \"Strange how Choco's groomers are so scared…\" y \"One great example is infinitepyramidpanda\" con tu \"Yup!\" y la tarjeta ALL OF YOU), sueltos",
+  "label": "Choco: los dos reblogs de Liy del 17 oct (regectedmalice: \"the sheer audacity of Choco's groomers\" y \"Strange how Choco's groomers are so scared…\"), sueltos",
   "match": "choco|finity|infinit|survivor|choclship",
   "pages": [
    "choco-liy-17oct/index.html"
+  ]
+ },
+ {
+  "name": "thine-infinity-choco-liy-pyramid-17oct",
+  "label": "Choco: el reblog de Liy \"One great example is infinitepyramidpanda\" con tu \"Yup!\", la tarjeta ALL OF YOU y el enlace al Mayday (17 oct), suelto",
+  "match": "choco|finity|infinit|survivor|choclship",
+  "pages": [
+   "choco-liy-pyramid-17oct/index.html"
   ]
  },
  {
