@@ -1,5 +1,37 @@
 [
  {
+  "name": "thine-infinity-choco-junker-19oct",
+  "label": "Choco: \"So let me get this right…\" (junker, Interpol, Tumblr e Irlanda) con las 8 imágenes y los dos enlaces (19 oct), suelto",
+  "match": "choco|finity|infinit|survivor|choclship",
+  "pages": [
+   "choco-junker-ireland-19oct/index.html"
+  ]
+ },
+ {
+  "name": "thine-infinity-choco-for-fuck-sake-19oct",
+  "label": "Choco: la respuesta larga al anon \"For fuck sake just stop already\" (Overruled, ALL OF YOU, PUSSY BEHAVIOR, \"playing the long game\") (19 oct), suelto",
+  "match": "choco|finity|infinit|survivor|choclship",
+  "pages": [
+   "choco-for-fuck-sake-19oct/index.html"
+  ]
+ },
+ {
+  "name": "thine-infinity-choco-chomo-19oct",
+  "label": "Choco: \"Chomo: C-Choco you're so WEIRD for calling out predators…\" con la imagen y la tarjeta del post de Reddit (19 oct), suelto",
+  "match": "choco|finity|infinit|survivor|choclship",
+  "pages": [
+   "choco-chomo-19oct/index.html"
+  ]
+ },
+ {
+  "name": "thine-infinity-choco-i-am-18oct",
+  "label": "Choco: lo nuevo del 18 oct en i-am-choco-infinity (el anon \"all bark and no bite\", 8 reblogs y el ask de museof21stcentury), 10 posts",
+  "match": "choco|finity|infinit|survivor|choclship",
+  "pages": [
+   "choco-i-am-choco-infinity-18oct/index.html"
+  ]
+ },
+ {
   "name": "thine-infinity-choco-god-complex-18oct",
   "label": "Choco: el anon \"Your abusers have the biggest God Complex\" con tu imagen, \"Ditto!\" y los cuatro párrafos de después (18 oct, versión editada), suelto",
   "match": "choco|finity|infinit|survivor|choclship",
