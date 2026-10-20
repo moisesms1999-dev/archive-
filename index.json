@@ -381,5 +381,10 @@
   "path": "choco-export-20oct-tarde/index.html",
   "title": "Choco export, 20 oct por la tarde (entero, 78 posts, con los tags de cada post)",
   "about": "the-only-one-choco, export of 20 October in the evening: the whole blog, 78 posts in posting order, each post with its own tags."
+ },
+ {
+  "path": "choco-export-20oct-noche/index.html",
+  "title": "Choco export, 20 oct por la noche (entero, 79 posts, con los tags de cada post)",
+  "about": "el-choco-infinity, export of 20 October at night: the whole blog, 79 posts in posting order, each post with its own tags."
  }
 ]
