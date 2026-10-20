@@ -1,5 +1,13 @@
 [
  {
+  "name": "thine-infinity-choco-last-post-20oct",
+  "label": "Choco: \"Because some of you never learn…\" con el veredicto de phroggz del 19 oct, el veredicto anterior y sus dos tarjetas (20 oct), suelto",
+  "match": "choco|finity|infinit|survivor|choclship",
+  "pages": [
+   "choco-last-post-20oct/index.html"
+  ]
+ },
+ {
   "name": "thine-infinity-choco-export-20oct",
   "label": "Choco: el export del 20 oct (the-one-and-only-choco, 77 posts, entero, en orden, el pinned de Mayday y los tags de cada post)",
   "match": "choco|finity|infinit|survivor|choclship",
