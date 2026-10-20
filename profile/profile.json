@@ -2,7 +2,7 @@
  "sets": [
   {
    "id": "choco",
-   "label": "Choco: The Syskid (foto Choco, cabecera a elegir)",
+   "label": "Choco: The Syskid (fotos en orden: si una no entra, la siguiente; cabecera a elegir)",
    "title": "The Syskid",
    "description": "AUDHD BPD and OSDD CSA surviving mayhem gremlin chaos syschild, not associated with Chococritters, that's a Choco I exposed myself, creator of the Antibraincells tag and leader of Mirmology.",
    "avatar": "profile/choco_avatar.png",
@@ -34,7 +34,25 @@
     "page": "choco-export-20oct-tarde/index.html",
     "i": 30,
     "whole": "thine-infinity-choco-export-20oct-tarde"
-   }
+   },
+   "avatars": [
+    {
+     "file": "profile/choco_avatar.png",
+     "label": "Choco, el dibujo"
+    },
+    {
+     "file": "branding/avatar.png",
+     "label": "Choco, el dibujo de antes"
+    },
+    {
+     "file": "profile/choco_avatar_emblema.png",
+     "label": "el emblema"
+    },
+    {
+     "file": "profile/choco_avatar_mirmo.jpg",
+     "label": "Mirmo, el reparto"
+    }
+   ]
   },
   {
    "id": "gimmick",
