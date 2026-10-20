@@ -1,5 +1,14 @@
 [
  {
+  "name": "thine-infinity-choco-export-20oct",
+  "label": "Choco: el export del 20 oct (the-one-and-only-choco, 77 posts, entero, en orden, el pinned de Mayday y los tags de cada post)",
+  "match": "choco|finity|infinit|survivor|choclship",
+  "pages": [
+   "choco-export-20oct/index.html"
+  ],
+  "strict": true
+ },
+ {
   "name": "thine-infinity-choco-thy-19oct",
   "label": "Choco: \"Grooming ring's going to look real goofy…\" de thy-infinite-choco (borrado), rehecho entero desde la grabación: el post de driedbrain, el script de seguir, el vídeo, chloroporn, 55 notes, EXHIBIT 5, la triangulación, natchappie y la tarjeta de Reddit (19 oct), suelto",
   "match": "choco|finity|infinit|survivor|choclship",
@@ -173,7 +182,8 @@
    "choco-export-14oct-noche/index.html",
    "choco-export-16oct/index.html",
    "choco-export-17oct/index.html",
-   "choco-export-18oct/index.html"
+   "choco-export-18oct/index.html",
+   "choco-export-20oct/index.html"
   ],
   "strict": true
  },
