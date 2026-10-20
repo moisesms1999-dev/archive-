@@ -16,7 +16,7 @@ const $=(t,p={},...k)=>{const e=document.createElement(t);Object.assign(e,p);if(
 const html=document.documentElement.innerHTML;
 const TOK=(html.match(/"API_TOKEN":"([^"]+)"/)||[])[1];
 const CSRF=(html.match(/"csrfToken":"([^"]+)"/)||[])[1];
-const api=async(path,opts={})=>{
+const api0=async(path,opts={})=>{
   if(window.tumblr&&typeof window.tumblr.apiFetch==='function'){
     const o={method:opts.method||'GET'};if(opts.body)o.body=opts.body;if(opts.headers)o.headers=opts.headers;
     try{return await window.tumblr.apiFetch('/v2'+path,o);}catch(e){return {error:String(e&&(e.message||e)),body:e&&e.body};}
@@ -25,12 +25,16 @@ const api=async(path,opts={})=>{
   const r=await fetch('/api/v2'+path,{method:opts.method||'GET',credentials:'include',headers:hd,body:opts.body?(form?opts.body:JSON.stringify(opts.body)):undefined});
   let j=null;try{j=await r.json();}catch(e){}return j&&r.ok?j:{error:'HTTP '+r.status,detail:j};
 };
+const apiT=(path,opts,ms)=>new Promise(res=>{let done=false;const t=setTimeout(()=>{if(!done){done=true;res({error:'timeout',timeout:true});}},ms);api0(path,opts||{}).then(r=>{if(!done){done=true;clearTimeout(t);res(r);}},e=>{if(!done){done=true;clearTimeout(t);res({error:String(e&&(e.message||e))});}});});
+const api=(path,opts={},ms)=>apiT(path,opts,ms||((opts.method&&opts.method!=='GET')?180000:45000));
 const box=$('div',{id:'rnc',style:'position:fixed;inset:0;z-index:2147483647;background:#1a120b;color:#ffd9b0;font:16px/1.4 system-ui,sans-serif;overflow:auto;padding:16px 14px 40px'});
 const log=$('div',{style:'font-size:13px;color:#e7b98a;white-space:pre-wrap;max-height:34vh;overflow:auto;margin-top:10px'});
 const st=$('div',{style:'color:#9be59b;min-height:1.3em;margin:8px 0'});
 const close=$('button',{textContent:'✕ Cerrar',style:'position:absolute;top:10px;right:12px;background:#5a3a1e;color:#ffd9b0;border:0;border-radius:10px;padding:8px 12px;font-weight:700'});
 close.onclick=()=>box.remove();
 box.append(close,$('h2',{textContent:'🍪 Renacer',style:'color:#ff9a3c;margin:0 0 4px'}),$('div',{textContent:'modo: '+((window.tumblr&&typeof window.tumblr.apiFetch==='function')?'interno':'alternativo'),style:'font-size:11px;color:#a58a6a'}),$('p',{textContent:'Publica en el blog que elijas, de uno en uno y en orden, el blog entero de un toque. El ritmo lo eliges abajo: con un blog nuevo, con calma. Cada línea del registro dice cuánto tardó el post y cuánto de eso fue Tumblr trayendo las imágenes.',style:'color:#f3c99a;margin:0 0 12px'}));
+const tick=$('div',{style:'position:sticky;top:0;z-index:2;background:#3a2412;color:#ffcf6b;font-size:14px;font-weight:700;border-radius:10px;padding:8px 10px;margin:0 0 8px;display:none'});tick.setAttribute('role','status');tick.setAttribute('aria-live','polite');
+const say2=t=>{tick.textContent=t||'';tick.style.display=t?'block':'none';};box.insertBefore(tick,box.children[1]);
 document.body.append(box);
 let blogs=[];
 const u=await api('/user/info');
@@ -235,7 +239,15 @@ function askNPF(h){const sp=askSplit(h);if(!sp)return null;const qd=new DOMParse
   const AB=toNPF(extra+sp.rest);if(!QB.length||!AB.length)return null;return {content:QB.concat(AB),layout:[{type:'ask',blocks:QB.map((_,k)=>k)}]};}
 function dropTrail(h,name){const m=h.match(new RegExp('^\\s*<p>(?:<a [^>]*>)?'+name+'(?:</a>)?:</p>\\s*<blockquote>'));if(!m)return h;let d=1,i=m[0].length;const re=/<(\/?)blockquote>/g;re.lastIndex=i;let t;while((t=re.exec(h))){d+=t[1]?-1:1;if(!d)return h.slice(re.lastIndex);}return h;}
 const nimg=h=>(h.match(/<img /g)||[]).length;
-async function publishOne(blog,html,TAGS,label,key,chain,date){
+const sigC=C=>{let t='',n=0;(C||[]).forEach(b=>{if(!b)return;if(b.type==='text')t+=' '+(b.text||'');else if(b.type==='image')n++;});return {t:t.toLowerCase().replace(/[^a-z0-9]/g,''),n};};
+const sameSig=(a,b)=>{if(a.t.length>=20||b.t.length>=20){const k=Math.min(100,a.t.length,b.t.length);if(k<20)return false;return a.t.includes(b.t.slice(0,k))||b.t.includes(a.t.slice(0,k));}return a.n===b.n&&a.t===b.t;};
+async function findMine(blog,sg,since,tags,lim){const g=await api('/blog/'+blog+'/posts?npf=true&limit='+(lim||5),{},30000);const G=g&&(g.response||g);const P=(G&&G.posts)||[];
+  for(const p of P){if(!p||!p.content)continue;const ts=+(p.timestamp||0);if(since&&ts&&ts<since-180)continue;if(!sameSig(sg,sigC(p.content)))continue;
+    if(sg.t.length<20){const tg=(Array.isArray(p.tags)?p.tags:[]).map(x=>String(x).toLowerCase()).join(',');if(tg!==String(tags||'').toLowerCase())continue;}
+    const id=p.id_string||p.idString||(p.id&&String(p.id));if(id)return {id:String(id),key:p.reblog_key||p.reblogKey||null};}
+  return null;}
+const PT=120000;
+async function publishOne(blog,html,TAGS,label,key,chain,date,first){
   const T0=Date.now();let pre='';const say=s=>{pre+=s+'\n';};
   const em=html.match(/^\s*<!--reblog ([\w-]+) (\d+)-->(?:<!--shot (https:[^\s<>"]+)-->)?/);
   if(em){html=html.slice(em[0].length);const bi=await api('/blog/'+em[1]+'/info');const BI=bi&&(bi.response||bi);const pu=BI&&BI.blog&&BI.blog.uuid;const PB=pu?await getPost(em[1],em[2]):null;
@@ -248,8 +260,17 @@ async function publishOne(blog,html,TAGS,label,key,chain,date){
   if(isRe&&!chain.prev.key){const PP=await getPost(blog,chain.prev.id,2);if(PP&&PP.reblog_key)chain.prev.key=PP.reblog_key;}
   if(isRe&&!chain.uuid){const bi=await api('/blog/'+blog+'/info');const BI=bi&&(bi.response||bi);chain.uuid=BI&&BI.blog&&BI.blog.uuid;}
   if(isRe&&(!chain.prev.key||!chain.uuid)){say('  (reblog imposible: falta '+(chain.prev.key?'':'reblog key ')+(chain.uuid?'':'uuid del blog')+'; lo publico suelto)');isRe=false;}
-  let body=mk();const T1=Date.now();const post=()=>api('/blog/'+blog+'/posts',{method:'POST',body});
-  let r=await post();
+  let body=mk();const T1=Date.now();const mine=()=>sigC(body.content);const lab=label.length>70?label.slice(0,70)+'…':label;
+  const post=()=>{const t0=Date.now();const iv=setInterval(()=>{say2('⏳ Tumblr lleva '+Math.round((Date.now()-t0)/1000)+' s sin contestar con: '+lab);},30000);return api('/blog/'+blog+'/posts',{method:'POST',body},PT).then(x=>{clearInterval(iv);say2('');return x;});};
+  const look=async n=>{for(let k=0;k<n;k++){await sleep(k?15000:3000);const f=await findMine(blog,mine(),Math.floor(T1/1000),tags,5);if(f)return f;}return null;};
+  let r=null;
+  if(first){const f=await findMine(blog,mine(),0,tags,3);if(f){say('  (ya estaba en el blog de la vez anterior, aunque Tumblr no llegó a contestar: no lo repito)');r={response:{id_string:f.id,reblog_key:f.key}};}}
+  if(!r)r=await post();
+  for(let tryN=1;r&&r.timeout;tryN++){log.textContent+=pre+'  (Tumblr lleva 2 min sin contestar con este post: miro si ya está en el blog)\n';pre='';log.scrollTop=1e9;
+    const f=await look(6);if(f){say('  (Tumblr lo publicó aunque no contestó)');r={response:{id_string:f.id,reblog_key:f.key}};break;}
+    if(tryN>=2){log.textContent+='✗ '+label+' · Tumblr no contesta con este post (dos intentos de 2 min) y no aparece en el blog. Paro aquí para no repetir nada: vuelve a pulsar y sigue desde este. Si Tumblr te ha sacado algún aviso, está debajo del Renacer: ciérralo con ✕ Cerrar, míralo y vuelve a abrir el marcador.\n';log.scrollTop=1e9;return {stall:true};}
+    say('  (no está: lo intento otra vez)');r=await post();}
+  if(r&&r.error&&!/429|limit exceeded|rate limit|too many/i.test(why(r)+' '+String(r.error))){const f=await look(1);if(f){say('  (Tumblr dio error ['+why(r).trim()+'] pero el post sí quedó publicado: no lo repito)');r={response:{id_string:f.id,reblog_key:f.key}};}}
   if(r&&r.error&&/429|limit exceeded|rate limit|too many/i.test(why(r)+' '+String(r.error)))return {limit:true,why:why(r)};
   if(r&&r.error&&/<img src="(?!https:\/\/moisesms1999-dev\.github\.io\/)/.test(Hh)){const ci=await cleanImgs(Hh);if(ci.bad){say('  ('+ci.bad+' imagen(es) caída(s), quitada(s))');Hh=ci.html;body=mk();r=await post();}}
   if(r&&r.error&&date){if(!NODATE){NODATE=true;log.textContent+='  (Tumblr no aceptó la fecha ['+why(r)+']: sigo de uno en uno, con la hora de ahora)\n';}return {again:true};}
@@ -274,17 +295,20 @@ async function runBatch(blog,items,status,onOk){
   const st=new Array(N).fill(0);let active=0,stop=false,ok=0,hold=0,hT=null;
   const K=(LK&&LK.k)||{},owner={};items.forEach((it,m)=>{(K[it.key]||[]).forEach(id=>{owner[id]=m;});});
   const deps=items.map((it,n)=>it.wait?[...Array(n).keys()]:[...linkIds(it.html)].map(id=>owner[id]).filter(m=>m!==undefined&&m<n));
+  let started=0,WL=null,pumpRef=null;const wl=async()=>{try{if(navigator.wakeLock&&document.visibilityState==='visible')WL=await navigator.wakeLock.request('screen');}catch(e){}};await wl();
+  const onVis=()=>{if(document.visibilityState==='visible'){wl();if(pumpRef)pumpRef();}};document.addEventListener('visibilitychange',onVis);
   await new Promise(resolve=>{const pump=()=>{
     if(hold>Date.now()){clearTimeout(hT);hT=setTimeout(pump,hold-Date.now()+20);return;}
     while(!stop&&active<conc()){const n=st.indexOf(0);if(n<0)break;const it=items[n];
       if(deps[n].some(m=>st[m]!==2))break;
       st[n]=1;active++;status(n,active);const ch=it.chain?it.chain():null;
-      publishOne(blog,it.html,it.TAGS,it.label,it.key,ch,null).then(res=>{active--;
+      publishOne(blog,it.html,it.TAGS,it.label,it.key,ch,null,started++===0).then(res=>{active--;
         if(res&&res.again){st[n]=0;pump();return;}if(res&&res.skip){st[n]=2;pump();return;}
         if(res&&res.limit&&!it.retried){it.retried=true;SLOW=true;hold=Date.now()+5000;log.textContent+='  (Tumblr frena ['+res.why+']: espero 5 s y sigo de uno en uno)\n';st[n]=0;pump();return;}st[n]=2;
         if(res&&res.restart)log.textContent+='  (el post anterior de la cadena ya no existe: empiezo cadena nueva)\n';
         if(res&&res.id){ok++;onOk(it,res,n);const w=st.some(x=>x===0)?pace():0;if(w){hold=Date.now()+w;status(n,0,Math.round(w/1000));}}else{if(res&&res.limit)log.textContent+='✗ '+it.label+' · '+res.why+'\n';stop=true;}pump();},e=>{st[n]=2;active--;stop=true;log.textContent+='✗ '+it.label+' · '+String(e&&(e.message||e))+'\n';pump();});}
-    if(!active&&(stop||st.every(x=>x===2)))resolve();};pump();});
+    if(!active&&(stop||st.every(x=>x===2)))resolve();};pumpRef=pump;pump();});
+  document.removeEventListener('visibilitychange',onVis);try{if(WL)WL.release();}catch(e){}
   return ok;}
 async function loadPage(path){const h=await (await fetch(ARCH+path+'?'+Date.now())).text();const m=h.match(/const (?:D|P)=(\[[\s\S]*?\]);\s*const TAGS=("(?:[^"\\]|\\.)*")/);if(!m)return null;
   const base=new URL(path,ARCH).href.replace(/[^/]*$/,'');const D=JSON.parse(m[1]).map(x=>x.split('MEDIA/').join(base+'media/'));const TAGS=JSON.parse(m[2]).split(',').map(s=>s.trim()).filter(Boolean);
