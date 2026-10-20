@@ -1,5 +1,13 @@
 [
  {
+  "name": "thine-infinity-choco-if-i-might-add-20oct",
+  "label": "Choco: el anon \"if I might add: i find attempted murderer to be such an insulting accusation\" con tu respuesta (20 oct, 21:27), suelto",
+  "match": "choco|finity|infinit|survivor|choclship",
+  "pages": [
+   "choco-if-i-might-add-20oct/index.html"
+  ]
+ },
+ {
   "name": "thine-infinity-choco-export-20oct-noche",
   "label": "Choco: el export del 20 oct por la noche (el-choco-infinity, 79 posts, entero, en orden, el pinned de Mayday y los tags de cada post)",
   "match": "choco|finity|infinit|survivor|choclship",
