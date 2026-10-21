@@ -129,11 +129,20 @@ const kbox=$('div',{style:'background:#2a1a0e;border:1px solid #5a3a1e;border-ra
 const bK=$('button',{textContent:'🚫 Bloquear a todos los de mi lista de bloqueos',style:bstyle});
 const kst=$('div',{style:'color:#9be59b;font-size:14px;min-height:1.2em;margin-top:6px'});
 const klog=$('div',{style:'font-size:12px;color:#e7b98a;white-space:pre-wrap;max-height:18vh;overflow:auto'});
-kbox.append($('b',{textContent:'Bloqueos',style:'color:#ffb066'}),$('p',{textContent:'Nada más abrir el Renacer (o cambiar de blog arriba) se bloquea solo a todos los de la lista de bloqueos en ese blog. Los que ya tienes bloqueados se saltan, así que el botón se puede pulsar las veces que haga falta.',style:'font-size:13px;color:#e7b98a;margin:6px 0 0'}),bK,kst,klog);box.append(kbox);
+const nst=$('div',{style:'color:#9be59b;font-size:13px;min-height:1.2em;margin-top:4px'});
+kbox.append($('b',{textContent:'Bloqueos',style:'color:#ffb066'}),$('p',{textContent:'Nada más abrir el Renacer (o cambiar de blog arriba) se bloquea solo a todos los de la lista de bloqueos en ese blog, y el blog se pone en no compartir a quién sigues. Los que ya tienes bloqueados se saltan, así que el botón se puede pulsar las veces que haga falta.',style:'font-size:13px;color:#e7b98a;margin:6px 0 0'}),bK,nst,kst,klog);box.append(kbox);
 const kname=x=>x.replace(/#.*/,'').trim().toLowerCase().replace(/^@/,'').replace(/^https?:\/\//,'').replace(/^www\.tumblr\.com\//,'').replace(/\.tumblr\.com.*$/,'').replace(/[\/?].*$/,'');
 let KRUN=false;
+async function noShare(blog){const MK='rnc_nofol_'+blog;if(LS.get(MK,false)){nst.textContent='✓ '+blog+' no comparte a quién sigue.';return;}
+  nst.textContent='Poniendo '+blog+' en no compartir a quién sigue…';
+  const r=await api('/blog/'+blog+'/settings',{method:'POST',body:{share_following:false}});
+  if(!r||r.error||(r.meta&&r.meta.status>=400)){nst.textContent='✗ No pude quitar "compartir a quién sigues" en '+blog+': '+why(r)+'. Se reintenta solo la próxima vez que entres.';return;}
+  let v;try{const q=await api('/blog/'+blog+'/info?fields%5Bblogs%5D=share_following');const Q=q&&(q.response||q);const B=Q&&Q.blog;v=B?(B.share_following!==undefined?B.share_following:B.shareFollowing):undefined;}catch(e){}
+  if(v===true){nst.textContent='✗ Tumblr no aceptó quitar "compartir a quién sigues" en '+blog+'. Se reintenta solo la próxima vez que entres.';return;}
+  LS.set(MK,true);nst.textContent='✓ '+blog+' ya no comparte a quién sigue'+(v===undefined?' (Tumblr no me deja comprobarlo desde aquí: si ves la pestaña Siguiendo pública, dímelo)':'')+'.';}
 async function runBlocks(auto){const blog=sel.value;if(KRUN||!blog)return;KRUN=true;bK.disabled=true;
-  try{let t='';try{t=await (await fetch(ARCH+'bloqueos.txt?'+Date.now())).text();}catch(e){}
+  try{try{await noShare(blog);}catch(e){nst.textContent='✗ compartir seguidos: '+String(e&&e.message||e);}
+  let t='';try{t=await (await fetch(ARCH+'bloqueos.txt?'+Date.now())).text();}catch(e){}
   const L=[...new Set(t.split(/\r?\n/).map(kname).filter(x=>/^[a-z0-9-]+$/.test(x)))];const sig=L.slice().sort().join(',');const MK='rnc_blk_'+blog;
   if(!L.length){kst.textContent='La lista de bloqueos está vacía.';return;}
   if(auto&&LS.get(MK,'')===sig){kst.textContent='✓ La lista de bloqueos ('+L.length+') ya está aplicada en '+blog+'.';return;}
