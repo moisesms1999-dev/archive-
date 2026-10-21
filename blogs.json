@@ -1,5 +1,13 @@
 [
  {
+  "name": "thychocoinfinito-anon-aya1yai-21oct",
+  "label": "Choco: el anon sobre aya1yai y oddtripps con tu respuesta (21 oct, 16:44), suelto",
+  "match": "choco|finity|infinit|survivor|choclship",
+  "pages": [
+   "choco-anon-aya1yai-21oct/index.html"
+  ]
+ },
+ {
   "name": "thine-infinity-choco-if-i-might-add-20oct",
   "label": "Choco: el anon \"if I might add: i find attempted murderer to be such an insulting accusation\" con tu respuesta (20 oct, 21:27), suelto",
   "match": "choco|finity|infinit|survivor|choclship",
