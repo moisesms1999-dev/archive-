@@ -1,5 +1,14 @@
 [
  {
+  "name": "iamthesuperinfinitechoco-export-21oct",
+  "label": "Choco: el export del 21 oct (iamthesuperinfinitechoco, 85 posts, entero, en orden, el pinned de Mayday y los tags de cada post)",
+  "match": "choco|finity|infinit|survivor|choclship",
+  "pages": [
+   "choco-export-21oct/index.html"
+  ],
+  "strict": true
+ },
+ {
   "name": "thychocoinfinito-anon-aya1yai-21oct",
   "label": "Choco: thychocoinfinito del 21 oct, el anon sobre aya1yai y oddtripps con los dos posts que enlaza (Mayday y driedbrain), 3 posts en orden",
   "match": "choco|finity|infinit|survivor|choclship",
@@ -227,7 +236,8 @@
    "choco-export-18oct/index.html",
    "choco-export-20oct/index.html",
    "choco-export-20oct-tarde/index.html",
-   "choco-export-20oct-noche/index.html"
+   "choco-export-20oct-noche/index.html",
+   "choco-export-21oct/index.html"
   ],
   "strict": true
  },
