@@ -1,5 +1,14 @@
 [
  {
+  "name": "ultimate-infinite-choco-export-22oct",
+  "label": "Choco: el export del 22 oct (ultimate-infinite-choco, 102 posts, entero, en orden, el pinned de Mayday y los tags de cada post)",
+  "match": "choco|finity|infinit|survivor|choclship",
+  "pages": [
+   "choco-export-22oct/index.html"
+  ],
+  "strict": true
+ },
+ {
   "name": "thy-infinity-chocoo-pyramidpanda-admissions-22oct",
   "label": "Choco: \"infinitepyramidpanda reblogging your own admissions\" (22 oct, 19:11), suelto",
   "match": "choco|finity|infinit|survivor|choclship",
@@ -253,7 +262,8 @@
    "choco-export-20oct/index.html",
    "choco-export-20oct-tarde/index.html",
    "choco-export-20oct-noche/index.html",
-   "choco-export-21oct/index.html"
+   "choco-export-21oct/index.html",
+   "choco-export-22oct/index.html"
   ],
   "strict": true
  },
