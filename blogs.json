@@ -1,5 +1,13 @@
 [
  {
+  "name": "pro-choco-infinite-ship-anon-pyramidpanda-22oct",
+  "label": "Choco: el anon sobre infinitepyramidpanda con tu respuesta (22 oct, 13:35), suelto",
+  "match": "choco|finity|infinit|survivor|choclship",
+  "pages": [
+   "choco-anon-pyramidpanda-22oct/index.html"
+  ]
+ },
+ {
   "name": "iamthesuperinfinitechoco-export-21oct",
   "label": "Choco: el export del 21 oct (iamthesuperinfinitechoco, 84 posts, entero, en orden, el pinned de Mayday y los tags de cada post)",
   "match": "choco|finity|infinit|survivor|choclship",
