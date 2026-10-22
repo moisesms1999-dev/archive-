@@ -1,7 +1,7 @@
 [
  {
   "name": "ultimate-infinite-choco-export-22oct",
-  "label": "Choco: el export del 22 oct (ultimate-infinite-choco, 102 posts, entero, en orden, el pinned de Mayday y los tags de cada post)",
+  "label": "Choco: el export del 22 oct (ultimate-infinite-choco, 101 posts, entero, en orden, el pinned de Mayday y los tags de cada post)",
   "match": "choco|finity|infinit|survivor|choclship",
   "pages": [
    "choco-export-22oct/index.html"
