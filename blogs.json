@@ -1,5 +1,21 @@
 [
  {
+  "name": "super-infinite-chocooo-kkristian-barking-22oct",
+  "label": "Choco: \"When a 30+ year old KKRISTIAN man yaps about barking\" (super-infinite-chocooo, 22 oct, 22:20), suelto",
+  "match": "choco|finity|infinit|survivor|choclship",
+  "pages": [
+   "choco-kkristian-barking-22oct/index.html"
+  ]
+ },
+ {
+  "name": "super-infinite-chocooo-educate-groomers-22oct",
+  "label": "Choco: \"Here because we apparently need to educate child groomers\" (super-infinite-chocooo, 22 oct, 22:10), suelto",
+  "match": "choco|finity|infinit|survivor|choclship",
+  "pages": [
+   "choco-educate-groomers-22oct/index.html"
+  ]
+ },
+ {
   "name": "ultimate-infinite-choco-export-22oct",
   "label": "Choco: el export del 22 oct (ultimate-infinite-choco, 101 posts, entero, en orden, el pinned de Mayday y los tags de cada post)",
   "match": "choco|finity|infinit|survivor|choclship",
