@@ -50,7 +50,17 @@ const wbl=$('label',{style:'display:flex;gap:8px;align-items:center;margin:0 0 2
 PAR=$('select',{style:'width:100%;padding:9px;border-radius:10px;background:#1a120b;color:#ffd9b0;border:1px solid #5a3a1e;margin:8px 0 0'});
 [['c','🐢 Con calma: un post cada 30 a 60 s (el más seguro con un blog nuevo)'],['r','🚶 Rápido: un post cada 8 a 15 s'],['t','⚡ Turbo: sin espera (con un blog recién hecho, Tumblr lo tumba por spam)']].forEach(([v,t])=>PAR.append($('option',{value:v,textContent:t})));
 {const v=String(LS.get('rnc_pace','c'));PAR.value=['c','r','t'].includes(v)?v:'c';}PAR.onchange=()=>LS.set('rnc_pace',PAR.value);
-box.append(wbl,wbst,PAR,$('div',{style:'height:10px'}));
+const bgon=$('input',{type:'checkbox',checked:LS.get('rnc_bgon',true)});bgon.onchange=()=>LS.set('rnc_bgon',bgon.checked);
+const bgl=$('label',{style:'display:flex;gap:8px;align-items:center;margin:8px 0 0;color:#ffb066;font-weight:700;font-size:14px'});bgl.append(bgon,$('span',{textContent:'🔈 Seguir publicando aunque cambies de pestaña o de app (pone un sonido grave inaudible mientras publica)'}));
+box.append(wbl,wbst,PAR,bgl,$('div',{style:'height:10px'}));
+const KA={on:0,ctx:null,osc:null,el:null,url:null,
+start(){if(!bgon.checked)return;this.on++;if(this.on>1){this.poke();return;}
+try{const C=window.AudioContext||window.webkitAudioContext;if(C){const c=new C(),o=c.createOscillator(),g=c.createGain();o.type='sine';o.frequency.value=40;g.gain.value=0.0015;o.connect(g);g.connect(c.destination);o.start();this.ctx=c;this.osc=o;if(c.state!=='running')c.resume().catch(()=>{});}}catch(e){}
+try{const R=8000,N=R,d=new DataView(new ArrayBuffer(44+N*2));const w=(o,t)=>{for(let i=0;i<t.length;i++)d.setUint8(o+i,t.charCodeAt(i));};w(0,'RIFF');d.setUint32(4,36+N*2,true);w(8,'WAVE');w(12,'fmt ');d.setUint32(16,16,true);d.setUint16(20,1,true);d.setUint16(22,1,true);d.setUint32(24,R,true);d.setUint32(28,R*2,true);d.setUint16(32,2,true);d.setUint16(34,16,true);w(36,'data');d.setUint32(40,N*2,true);for(let i=0;i<N;i++)d.setInt16(44+i*2,Math.round(50*Math.sin(2*Math.PI*40*i/R)),true);
+this.url=URL.createObjectURL(new Blob([d.buffer],{type:'audio/wav'}));const el=new Audio(this.url);el.loop=true;el.play().catch(()=>{});this.el=el;
+if('mediaSession' in navigator&&window.MediaMetadata)navigator.mediaSession.metadata=new MediaMetadata({title:'Renacer: publicando',artist:'Renacer'});}catch(e){}},
+poke(){try{if(this.ctx&&this.ctx.state!=='running')this.ctx.resume().catch(()=>{});if(this.el&&this.el.paused)this.el.play().catch(()=>{});}catch(e){}},
+stop(){if(!this.on)return;this.on--;if(this.on)return;try{if(this.osc)this.osc.stop();if(this.ctx)this.ctx.close();}catch(e){}try{if(this.el){this.el.pause();this.el.removeAttribute('src');this.el.load();}if(this.url)URL.revokeObjectURL(this.url);}catch(e){}try{if('mediaSession' in navigator)navigator.mediaSession.metadata=null;}catch(e){}this.ctx=this.osc=this.el=this.url=null;}};
 let wbRunning=false;
 async function wbRun(){if(wbRunning)return;wbRunning=true;let done=0;
   for(;;){let k='rnc_wbq',q=LS.get(k,[]);if(!q.length){k='rnc_wbqi';q=LS.get(k,[]);}if(!q.length)break;const u=q[0];
@@ -106,12 +116,12 @@ fupd();sel.addEventListener('change',fupd);
 sp.value=LS.get('rnc_fpace','n');sp.onchange=()=>LS.set('rnc_fpace',sp.value);
 const nap=()=>sp.value==='t'?Promise.resolve():new Promise(r=>setTimeout(r,sp.value==='a'?800+Math.random()*800:sp.value==='f'?2000+Math.random()*2000:6000+Math.random()*6000));
 async function followAll(names,label){
-  bF.disabled=bL.disabled=true;let ok=0,n=0,capped=false;
+  bF.disabled=bL.disabled=true;KA.start();let ok=0,n=0,capped=false;
   for(const nm of names){if(ftoday()>=CAP){capped=true;break;}n++;fst.textContent=label+': '+n+' de '+names.length+' ('+nm+') · hoy '+ftoday()+' de '+CAP;
     const r=await api('/user/follow',{method:'POST',body:{url:'https://'+nm+'.tumblr.com'}});
     if(r&&!r.error&&!(r.meta&&r.meta.status>=400)){ok++;LS.set(fkey(),ftoday()+1);flog.textContent+='✓ '+nm+'\n';}else flog.textContent+='✗ '+nm+' · '+why(r)+'\n';
     flog.scrollTop=1e9;await nap();}
-  fst.textContent=label+': hecho, '+ok+' seguidos de '+names.length+'.'+(capped?' Tope de '+CAP+' follows al día en este blog (el límite de Tumblr): los que faltan, mañana; pasarse del límite es lo que los deja en fantasma.':'');bF.disabled=bL.disabled=false;if(typeof fupd==='function')fupd();
+  fst.textContent=label+': hecho, '+ok+' seguidos de '+names.length+'.'+(capped?' Tope de '+CAP+' follows al día en este blog (el límite de Tumblr): los que faltan, mañana; pasarse del límite es lo que los deja en fantasma.':'');bF.disabled=bL.disabled=false;KA.stop();if(typeof fupd==='function')fupd();
 }
 bF.onclick=async()=>{const blog=sel.value;fst.textContent='Leyendo seguidores de '+blog+'…';let users=[],off=0,total=0;
   for(let k=0;k<100;k++){const r=await api('/blog/'+blog+'/followers?limit=20&offset='+off);const R=r&&(r.response||r);
@@ -304,8 +314,8 @@ async function runBatch(blog,items,status,onOk){
   const st=new Array(N).fill(0);let active=0,stop=false,ok=0,hold=0,hT=null;
   const K=(LK&&LK.k)||{},owner={};items.forEach((it,m)=>{(K[it.key]||[]).forEach(id=>{owner[id]=m;});});
   const deps=items.map((it,n)=>it.wait?[...Array(n).keys()]:[...linkIds(it.html)].map(id=>owner[id]).filter(m=>m!==undefined&&m<n));
-  let started=0,WL=null,pumpRef=null;const wl=async()=>{try{if(navigator.wakeLock&&document.visibilityState==='visible')WL=await navigator.wakeLock.request('screen');}catch(e){}};await wl();
-  const onVis=()=>{if(document.visibilityState==='visible'){wl();if(pumpRef)pumpRef();}};document.addEventListener('visibilitychange',onVis);
+  let started=0,WL=null,pumpRef=null;KA.start();const wl=async()=>{try{if(navigator.wakeLock&&document.visibilityState==='visible')WL=await navigator.wakeLock.request('screen');}catch(e){}};await wl();
+  const onVis=()=>{KA.poke();if(document.visibilityState==='visible'){wl();if(pumpRef)pumpRef();}};document.addEventListener('visibilitychange',onVis);
   await new Promise(resolve=>{const pump=()=>{
     if(hold>Date.now()){clearTimeout(hT);hT=setTimeout(pump,hold-Date.now()+20);return;}
     while(!stop&&active<conc()){const n=st.indexOf(0);if(n<0)break;const it=items[n];
@@ -317,7 +327,7 @@ async function runBatch(blog,items,status,onOk){
         if(res&&res.restart)log.textContent+='  (el post anterior de la cadena ya no existe: empiezo cadena nueva)\n';
         if(res&&res.id){ok++;onOk(it,res,n);const w=st.some(x=>x===0)?pace():0;if(w){hold=Date.now()+w;status(n,0,Math.round(w/1000));}}else{if(res&&res.limit)log.textContent+='✗ '+it.label+' · '+res.why+'\n';stop=true;}pump();},e=>{st[n]=2;active--;stop=true;log.textContent+='✗ '+it.label+' · '+String(e&&(e.message||e))+'\n';pump();});}
     if(!active&&(stop||st.every(x=>x===2)))resolve();};pumpRef=pump;pump();});
-  document.removeEventListener('visibilitychange',onVis);try{if(WL)WL.release();}catch(e){}
+  document.removeEventListener('visibilitychange',onVis);KA.stop();try{if(WL)WL.release();}catch(e){}
   return ok;}
 async function loadPage(path){const h=await (await fetch(ARCH+path+'?'+Date.now())).text();const m=h.match(/const (?:D|P)=(\[[\s\S]*?\]);\s*const TAGS=("(?:[^"\\]|\\.)*")/);if(!m)return null;
   const base=new URL(path,ARCH).href.replace(/[^/]*$/,'');const D=JSON.parse(m[1]).map(x=>x.split('MEDIA/').join(base+'media/'));const TAGS=JSON.parse(m[2]).split(',').map(s=>s.trim()).filter(Boolean);
