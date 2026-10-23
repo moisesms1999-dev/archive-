@@ -87,6 +87,7 @@ fbox.append($('b',{textContent:'Seguidores',style:'color:#ffb066'}),sp,fnote,bF,
 /* Perfil: título, bio, foto, cabecera, colores y pinned de un toque */
 const pbox=$('div',{style:'background:#2a1a0e;border:1px solid #5a3a1e;border-radius:12px;padding:10px;margin:0 0 12px'});
 let PROF=null;const prof=async()=>{if(PROF)return PROF;try{PROF=await (await fetch(ARCH+'profile/profile.json?'+Date.now())).json();}catch(e){PROF={sets:[]};}return PROF;};
+const pinExtra=async key=>{if(!key)return [];try{const P=await prof();for(const S of (P.sets||[])){if(S.pinned&&S.pinned.page+'#'+S.pinned.i===key)return S.pinned.extra_tags||[];}}catch(e){}return [];};
 const selst='width:100%;padding:9px;border-radius:10px;background:#1a120b;color:#ffd9b0;border:1px solid #5a3a1e;margin-top:6px';
 const psel=$('select',{style:selst}),phsel=$('select',{style:selst});
 const pck=(t,on)=>{const l=$('label',{style:'display:inline-block;margin:6px 12px 0 0;font-size:14px'});const c=$('input',{type:'checkbox',checked:on!==false});l.append(c,' '+t);return [l,c];};
@@ -100,6 +101,14 @@ const b64=b=>new Promise((ok,ko)=>{const r=new FileReader();r.onload=()=>ok(Stri
 bP.onclick=async()=>{const blog=sel.value;const S=PROF&&PROF.sets[+psel.value];if(!blog||!S){pst.textContent='Elige blog y juego.';return;}bP.disabled=true;plog.textContent='';const say=t=>{plog.textContent+=t+'\n';};pst.textContent='Poniendo el perfil en '+blog+'…';
   try{
     if(cT.checked||cB.checked){const body={};if(cT.checked)body.title=S.title;if(cB.checked)body.description=S.description.replace(/\n/g,'<br />');const r=await api('/blog/'+blog+'/settings',{method:'POST',body});say(r&&!r.error?'✓ '+[cT.checked?'título':'',cB.checked?'bio':''].filter(Boolean).join(' y '):'✗ título/bio: '+why(r));}
+    if(S.settings){const K=Object.keys(S.settings);const cc=k=>k.replace(/_([a-z])/g,(m,c)=>c.toUpperCase());
+      const read=async()=>{try{const q=await api('/blog/'+blog+'/info?fields%5Bblogs%5D='+K.join(','));const B=q&&(q.response||q)&&(q.response||q).blog;if(!B)return null;const o={};K.forEach(k=>{o[k]=B[k]!==undefined?B[k]:B[cc(k)];});return o;}catch(e){return null;}};
+      let r=await api('/blog/'+blog+'/settings',{method:'POST',body:S.settings});let v=await read();
+      const bad=()=>v&&K.some(k=>v[k]!==undefined&&v[k]!==S.settings[k]);
+      if(!r||r.error||(r.meta&&r.meta.status>=400)||bad()){const b2={};K.forEach(k=>{b2[cc(k)]=S.settings[k];});r=await api('/blog/'+blog+'/settings',{method:'POST',body:b2});v=await read();}
+      const lab={ask_enabled:'preguntas (asks) activadas',ask_allow_anonymous:'anónimos activados',messaging_allow_follows_only:'mensajes solo de quien sigues'};
+      if(!r||r.error||(r.meta&&r.meta.status>=400))say('✗ asks y mensajes: '+why(r));
+      else K.forEach(k=>{const x=v&&v[k];say((x===undefined?'✓ ':x===S.settings[k]?'✓ ':'✗ ')+(lab[k]||k)+(x===undefined?' (Tumblr no me deja comprobarlo desde aquí: míralo en Ajustes si quieres)':x===S.settings[k]?'':' (Tumblr no lo dejó puesto)'));});}
     if(cC.checked&&S.theme){const r=await api('/blog/'+blog+'/theme_settings',{method:'POST',body:S.theme});say(r&&!r.error?'✓ colores y letra':'✗ colores: '+why(r));}
     if(cA.checked&&(S.avatars||S.avatar)){const AV=(S.avatars&&S.avatars.length?S.avatars:[{file:S.avatar,label:'foto'}]).map(a=>typeof a==='string'?{file:a,label:a.split('/').pop()}:a);let okA=false;for(let k=0;k<AV.length&&!okA;k++){const A=AV[k];const nx=k+1<AV.length?' → pruebo la siguiente':'';try{const b=await (await fetch(ARCH+A.file)).blob();const r=await api('/blog/'+blog+'/avatar',{method:'POST',body:{data:await b64(b)}});if(!r||r.error){say('✗ foto '+(k+1)+' ('+A.label+'): '+why(r)+nx);continue;}await new Promise(z=>setTimeout(z,6000));const bi=await api('/blog/'+blog+'/info');const BI=bi&&(bi.response||bi);const au=JSON.stringify((BI&&BI.blog&&BI.blog.avatar)||'');if(/default_avatar|media_violation/.test(au)){say('✗ foto '+(k+1)+' ('+A.label+'): Tumblr no la dejó puesta'+nx);continue;}okA=true;say('✓ foto ('+A.label+')');}catch(e){say('✗ foto '+(k+1)+' ('+A.label+'): '+String(e&&(e.message||e))+nx);}}if(!okA)say('✗ foto: no entró ninguna de las '+AV.length);}
     if(cH.checked&&S.headers&&S.headers.length){const H=S.headers[+phsel.value||0];const b=await (await fetch(ARCH+H.file)).blob();const fd=new FormData();fd.append('data',new File([b],H.file.split('/').pop(),{type:b.type}));fd.append('header_stretch',String(!(S.theme&&S.theme.header_stretch===false)));const r=await api('/blog/'+blog+'/header',{method:'POST',body:fd,headers:{'Content-Type':'multipart/form-data'}});say(r&&!r.error?'✓ cabecera ('+H.label+')':'✗ cabecera: '+why(r));}
@@ -273,6 +282,7 @@ async function publishOne(blog,html,TAGS,label,key,chain,date,first){
     if(!PB||!PB.reblog_key||!pu){if(new RegExp('^\\s*<p>(?:<a [^>]*>)?'+em[1]+'(?:</a>)?:</p>\\s*<blockquote>').test(html)){say('  (el post '+em[2]+' de '+em[1]+' ya no se puede leer: lo publico suelto, con su cita dentro'+(em[3]?' y la captura de su post delante':'')+')');if(em[3])html='<p><img src="'+em[3]+'"/></p>'+html;}else{log.textContent+=pre+'✗ '+label+' · no pude leer el post '+em[2]+' de '+em[1]+' para reblogarlo (¿borrado o privado?): lo salto y sigo\n';return {skip:true};}}
     else{html=dropTrail(html,em[1]);chain={uuid:pu,prev:{id:em[2],key:PB.reblog_key}};say('  ↻ reblog de '+em[1]+'/'+em[2]);}}
   const rl=relink(html,blog);let Hh=rl.html;if(rl.n)say('  🔗 '+rl.n+' enlace(s) llevados a una copia viva');
+  {const XT=await pinExtra(key);if(XT.length){const low=XT.map(x=>x.toLowerCase());TAGS=[...TAGS.filter(x=>!low.includes(String(x).toLowerCase())).slice(0,30-XT.length),...XT];}}
   const tags=TAGS.slice(0,30).join(',');let isRe=!!chain,restart=false;let AK=null;
   const mk=()=>{AK=(chain||ASKOFF)?null:askNPF(Hh);const body={content:AK?AK.content:toNPF(Hh),tags,state:'published'};if(AK)body.layout=AK.layout;if(date)body.date=date;
     if(isRe){body.parent_tumblelog_uuid=chain.uuid;body.parent_post_id=String(chain.prev.id);body.reblog_key=chain.prev.key;}return body;};

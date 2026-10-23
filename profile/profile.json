@@ -33,7 +33,11 @@
     "id": "831196480787333121",
     "page": "choco-export-22oct/index.html",
     "i": 31,
-    "whole": "ultimate-infinite-choco-export-22oct"
+    "whole": "ultimate-infinite-choco-export-22oct",
+    "extra_tags": [
+     "Choco victims",
+     "⬅️ Known tag about my abusers"
+    ]
    },
    "avatars": [
     {
@@ -56,7 +60,12 @@
      "file": "profile/choco_avatar_mirmo.jpg",
      "label": "Mirmo, el reparto"
     }
-   ]
+   ],
+   "settings": {
+    "ask_enabled": true,
+    "ask_allow_anonymous": true,
+    "messaging_allow_follows_only": true
+   }
   },
   {
    "id": "gimmick",
