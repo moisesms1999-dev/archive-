@@ -1,5 +1,13 @@
 [
  {
+  "name": "chocthinefinite-obsessing-24oct",
+  "label": "Choco: \"Some of you really like being caught obsessing\" (chocthinefinite, 24 oct, 13:55), suelto, con sus tags",
+  "match": "choco|finity|infinit|survivor|choclship",
+  "pages": [
+   "choco-obsessing-24oct/index.html"
+  ]
+ },
+ {
   "name": "the-choco-ship-export-24oct",
   "label": "Choco: el export del 24 oct (the-choco-ship, 87 posts, entero, en orden, el pinned de Mayday y los tags de cada post)",
   "match": "choco|finity|infinit|survivor|choclship",
