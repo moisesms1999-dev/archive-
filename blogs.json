@@ -1,5 +1,13 @@
 [
  {
+  "name": "chocthinefinite-nier-ask-24oct",
+  "label": "Choco: ask \"Is your post about Nier still crashing out?\" (chocthinefinite, 24 oct, 14:32), suelto, con sus tags",
+  "match": "choco|finity|infinit|survivor|choclship",
+  "pages": [
+   "choco-nier-ask-24oct/index.html"
+  ]
+ },
+ {
   "name": "chocthinefinite-obsessing-24oct",
   "label": "Choco: \"Some of you really like being caught obsessing\" (chocthinefinite, 24 oct, 13:55), suelto, con sus tags",
   "match": "choco|finity|infinit|survivor|choclship",
