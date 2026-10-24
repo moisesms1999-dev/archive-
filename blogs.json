@@ -1,5 +1,13 @@
 [
  {
+  "name": "chocthinefinite-never-learn-ask-24oct",
+  "label": "Choco: ask \"That thing will never learn, will it?\" (chocthinefinite, 24 oct, 15:18), suelto, con sus tags",
+  "match": "choco|finity|infinit|survivor|choclship",
+  "pages": [
+   "choco-never-learn-ask-24oct/index.html"
+  ]
+ },
+ {
   "name": "chocthinefinite-nier-ask-24oct",
   "label": "Choco: ask \"Is your post about Nier still crashing out?\" (chocthinefinite, 24 oct, 14:32), suelto, con sus tags",
   "match": "choco|finity|infinit|survivor|choclship",
