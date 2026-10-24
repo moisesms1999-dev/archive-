@@ -1,5 +1,13 @@
 [
  {
+  "name": "chocthinefinite-so-we-have-ask-24oct",
+  "label": "Choco: ask \"So we have a paedophile, a suicide baiting psychopath...\" (chocthinefinite, 24 oct, 17:15), suelto, con sus tags",
+  "match": "choco|finity|infinit|survivor|choclship",
+  "pages": [
+   "choco-so-we-have-ask-24oct/index.html"
+  ]
+ },
+ {
   "name": "chocthinefinite-boots-ask-24oct",
   "label": "Choco: ask \"Hopefully Nier and Ezra are comfortable in those nice new pair of boots\" (chocthinefinite, 24 oct, 16:50), suelto, con sus tags",
   "match": "choco|finity|infinit|survivor|choclship",
