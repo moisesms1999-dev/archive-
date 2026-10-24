@@ -1,50 +1,10 @@
 [
  {
-  "name": "chocthinefinite-so-we-have-ask-24oct",
-  "label": "Choco: ask \"So we have a paedophile, a suicide baiting psychopath...\" (chocthinefinite, 24 oct, 17:15), suelto, con sus tags",
+  "name": "chocthinefinite-24oct",
+  "label": "Choco: chocthinefinite, todo lo nuevo después del export del 24 oct (9 posts, en orden, de 13:55 a 17:31, con sus tags)",
   "match": "choco|finity|infinit|survivor|choclship",
   "pages": [
-   "choco-so-we-have-ask-24oct/index.html"
-  ]
- },
- {
-  "name": "chocthinefinite-boots-ask-24oct",
-  "label": "Choco: ask \"Hopefully Nier and Ezra are comfortable in those nice new pair of boots\" (chocthinefinite, 24 oct, 16:50), suelto, con sus tags",
-  "match": "choco|finity|infinit|survivor|choclship",
-  "pages": [
-   "choco-boots-ask-24oct/index.html"
-  ]
- },
- {
-  "name": "chocthinefinite-shoe-fits-24oct",
-  "label": "Choco: \"Something Something everything I take offense to is an insult\" (chocthinefinite, 24 oct, 16:27), suelto, con sus tags",
-  "match": "choco|finity|infinit|survivor|choclship",
-  "pages": [
-   "choco-shoe-fits-24oct/index.html"
-  ]
- },
- {
-  "name": "chocthinefinite-never-learn-ask-24oct",
-  "label": "Choco: ask \"That thing will never learn, will it?\" (chocthinefinite, 24 oct, 15:18), suelto, con sus tags",
-  "match": "choco|finity|infinit|survivor|choclship",
-  "pages": [
-   "choco-never-learn-ask-24oct/index.html"
-  ]
- },
- {
-  "name": "chocthinefinite-nier-ask-24oct",
-  "label": "Choco: ask \"Is your post about Nier still crashing out?\" (chocthinefinite, 24 oct, 14:32), suelto, con sus tags",
-  "match": "choco|finity|infinit|survivor|choclship",
-  "pages": [
-   "choco-nier-ask-24oct/index.html"
-  ]
- },
- {
-  "name": "chocthinefinite-obsessing-24oct",
-  "label": "Choco: \"Some of you really like being caught obsessing\" (chocthinefinite, 24 oct, 13:55), suelto, con sus tags",
-  "match": "choco|finity|infinit|survivor|choclship",
-  "pages": [
-   "choco-obsessing-24oct/index.html"
+   "choco-chocthinefinite-24oct/index.html"
   ]
  },
  {
