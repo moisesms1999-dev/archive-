@@ -1,5 +1,13 @@
 [
  {
+  "name": "theinfinitychocolate-oxygen-24oct",
+  "label": "Choco: \"Some of you are painfully aware you don't deserve the oxygen you steal\" (theinfinitychocolate, 24 oct, 03:02), suelto, con sus tags",
+  "match": "choco|finity|infinit|survivor|choclship",
+  "pages": [
+   "choco-oxygen-24oct/index.html"
+  ]
+ },
+ {
   "name": "soychocpshipfinity-lmaooooo-23oct",
   "label": "Choco: \"LMAOOOOO, cope harder\" (soychocpshipfinity, 23 oct, 09:54), versión actualizada, suelto, con sus tags",
   "match": "choco|finity|infinit|survivor|choclship",
