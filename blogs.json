@@ -1,5 +1,13 @@
 [
  {
+  "name": "chocthinefinite-shoe-fits-24oct",
+  "label": "Choco: \"Something Something everything I take offense to is an insult\" (chocthinefinite, 24 oct, 16:27), suelto, con sus tags",
+  "match": "choco|finity|infinit|survivor|choclship",
+  "pages": [
+   "choco-shoe-fits-24oct/index.html"
+  ]
+ },
+ {
   "name": "chocthinefinite-never-learn-ask-24oct",
   "label": "Choco: ask \"That thing will never learn, will it?\" (chocthinefinite, 24 oct, 15:18), suelto, con sus tags",
   "match": "choco|finity|infinit|survivor|choclship",
