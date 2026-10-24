@@ -1,5 +1,14 @@
 [
  {
+  "name": "the-choco-ship-export-24oct",
+  "label": "Choco: el export del 24 oct (the-choco-ship, 87 posts, entero, en orden, el pinned de Mayday y los tags de cada post)",
+  "match": "choco|finity|infinit|survivor|choclship",
+  "pages": [
+   "choco-export-24oct/index.html"
+  ],
+  "strict": true
+ },
+ {
   "name": "theinfinitychocolate-oxygen-24oct",
   "label": "Choco: \"Some of you are painfully aware you don't deserve the oxygen you steal\" (theinfinitychocolate, 24 oct, 03:02), suelto, con sus tags",
   "match": "choco|finity|infinit|survivor|choclship",
@@ -295,7 +304,8 @@
    "choco-export-20oct-tarde/index.html",
    "choco-export-20oct-noche/index.html",
    "choco-export-21oct/index.html",
-   "choco-export-22oct/index.html"
+   "choco-export-22oct/index.html",
+   "choco-export-24oct/index.html"
   ],
   "strict": true
  },
