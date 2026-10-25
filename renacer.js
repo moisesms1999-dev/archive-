@@ -275,6 +275,23 @@ async function findMine(blog,sg,since,tags,lim){const g=await api('/blog/'+blog+
     const id=p.id_string||p.idString||(p.id&&String(p.id));if(id)return {id:String(id),key:p.reblog_key||p.reblogKey||null};}
   return null;}
 const PT=120000;
+async function askInbox(blog,AK,tags,date,say){
+  const nq=AK.layout[0].blocks.length,Q=AK.content.slice(0,nq),A=AK.content.slice(nq);
+  if(!Q.length||!A.length||Q.some(b=>!b||b.type!=='text'))return null;
+  const s=await api('/blog/'+blog+'/posts',{method:'POST',body:{content:Q,layout:[{type:'ask',blocks:Q.map((_,k)=>k)}],send_to_facebook:false,send_to_twitter:false,context:'Blog',state:'ask'}});
+  if(!s||s.error){say('  (Tumblr no dejó mandar el ask al buzón: '+why(s||{}).trim()+')');return null;}
+  const S=s.response||s;let sid=S&&(S.id_string||S.id)?String(S.id_string||S.id):null;
+  const nt=C=>(C||[]).map(b=>(b&&b.text)||'').join(' ').toLowerCase().replace(/[^a-z0-9]/g,'');const qt=nt(Q).slice(0,80);let QQ=Q;
+  for(let k=0;k<5;k++){await sleep(k?2500:1000);const g=await api('/user/inbox/'+blog);const G=g&&(g.response||g);const L=(G&&(G.posts||G.submissions||G.items))||[];
+    const f=L.find(p=>p&&(sid?String(p.id_string||p.id)===sid:nt(p.content).startsWith(qt)));
+    if(f){sid=String(f.id_string||f.id);const lay=(f.layout||[]).find(l=>l&&l.type==='ask');if(lay&&lay.blocks&&lay.blocks.length&&f.content&&lay.blocks.every(i=>f.content[i]))QQ=lay.blocks.map(i=>f.content[i]);break;}}
+  if(!sid){say('  (el ask no apareció en el buzón)');return null;}
+  const body={content:QQ.concat(A),layout:[{type:'ask',blocks:QQ.map((_,k)=>k)}],state:'published',tags};if(date)body.date=date;
+  let r=await api('/blog/'+blog+'/posts/'+sid,{method:'PUT',body});
+  if(r&&r.error&&date){delete body.date;r=await api('/blog/'+blog+'/posts/'+sid,{method:'PUT',body});}
+  if(!r||r.error){say('  (no pude contestar el ask del buzón: '+why(r||{}).trim()+'; lo quito del buzón)');await api('/blog/'+blog+'/post/delete',{method:'POST',body:{id:sid}});return null;}
+  const R=r.response||r;return {response:{id_string:String(R.id_string||R.id||sid),reblog_key:R.reblog_key||null}};
+}
 async function publishOne(blog,html,TAGS,label,key,chain,date,first){
   const T0=Date.now();let pre='';const say=s=>{pre+=s+'\n';};
   const em=html.match(/^\s*<!--reblog ([\w-]+) (\d+)-->(?:<!--shot (https:[^\s<>"]+)-->)?/);
@@ -294,6 +311,7 @@ async function publishOne(blog,html,TAGS,label,key,chain,date,first){
   const look=async n=>{for(let k=0;k<n;k++){await sleep(k?15000:3000);const f=await findMine(blog,mine(),Math.floor(T1/1000),tags,5);if(f)return f;}return null;};
   let r=null;
   if(first){const f=await findMine(blog,mine(),0,tags,3);if(f){say('  (ya estaba en el blog de la vez anterior, aunque Tumblr no llegó a contestar: no lo repito)');r={response:{id_string:f.id,reblog_key:f.key}};}}
+  if(!r&&AK&&!isRe){const q=await askInbox(blog,AK,tags,date,say);if(q){r=q;say('  📮 ask mandado al buzón de '+blog+' y contestado');}}
   if(!r)r=await post();
   for(let tryN=1;r&&r.timeout;tryN++){log.textContent+=pre+'  (Tumblr lleva 2 min sin contestar con este post: miro si ya está en el blog)\n';pre='';log.scrollTop=1e9;
     const f=await look(6);if(f){say('  (Tumblr lo publicó aunque no contestó)');r={response:{id_string:f.id,reblog_key:f.key}};break;}
