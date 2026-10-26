@@ -1,5 +1,13 @@
 [
  {
+  "name": "choco-vent-ghosted-26oct",
+  "label": "Choco: vent \"I still remember when one of the groomers sent my inbox an ask crashing out\" (chocomegainffinite, después del export del 27 oct), suelto, con sus tags",
+  "match": "choco|finity|infinit|survivor|choclship",
+  "pages": [
+   "choco-vent-ghosted-26oct/index.html"
+  ]
+ },
+ {
   "name": "chocomegainffinite-export-27oct",
   "label": "Choco: el export del 27 oct (chocomegainffinite, 105 posts, entero, en orden, el pinned de Mayday y los tags de cada post)",
   "match": "choco|finity|infinit|survivor|choclship",
