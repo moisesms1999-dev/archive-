@@ -1,5 +1,14 @@
 [
  {
+  "name": "chocomegainffinite-export-27oct",
+  "label": "Choco: el export del 27 oct (chocomegainffinite, 105 posts, entero, en orden, el pinned de Mayday y los tags de cada post)",
+  "match": "choco|finity|infinit|survivor|choclship",
+  "pages": [
+   "choco-export-27oct/index.html"
+  ],
+  "strict": true
+ },
+ {
   "name": "chocomegafinity-export-26oct",
   "label": "Choco: el export del 26 oct (chocomegafinity, 104 posts, entero, en orden, el pinned de Mayday y los tags de cada post)",
   "match": "choco|finity|infinit|survivor|choclship",
@@ -331,7 +340,8 @@
    "choco-export-21oct/index.html",
    "choco-export-22oct/index.html",
    "choco-export-24oct/index.html",
-   "choco-export-26oct/index.html"
+   "choco-export-26oct/index.html",
+   "choco-export-27oct/index.html"
   ],
   "strict": true
  },

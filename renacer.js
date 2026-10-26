@@ -16,10 +16,11 @@ const $=(t,p={},...k)=>{const e=document.createElement(t);Object.assign(e,p);if(
 const html=document.documentElement.innerHTML;
 const TOK=(html.match(/"API_TOKEN":"([^"]+)"/)||[])[1];
 const CSRF=(html.match(/"csrfToken":"([^"]+)"/)||[])[1];
+const snk=o=>Array.isArray(o)?o.map(snk):(o&&typeof o==='object'&&Object.getPrototypeOf(o)===Object.prototype)?Object.fromEntries(Object.entries(o).map(([k,v])=>[k.replace(/[A-Z]/g,c=>'_'+c.toLowerCase()),snk(v)])):o;
 const api0=async(path,opts={})=>{
   if(window.tumblr&&typeof window.tumblr.apiFetch==='function'){
     const o={method:opts.method||'GET'};if(opts.body)o.body=opts.body;if(opts.headers)o.headers=opts.headers;
-    try{return await window.tumblr.apiFetch('/v2'+path,o);}catch(e){return {error:String(e&&(e.message||e)),body:e&&e.body};}
+    try{return snk(await window.tumblr.apiFetch('/v2'+path,o));}catch(e){return {error:String(e&&(e.message||e)),body:e&&e.body};}
   }
   const form=opts.body instanceof FormData;const hd={'Authorization':'Bearer '+TOK,'X-Version':'redpop/3/0//redpop/','X-CSRF':CSRF||''};if(!form)hd['Content-Type']='application/json';
   const r=await fetch('/api/v2'+path,{method:opts.method||'GET',credentials:'include',headers:hd,body:opts.body?(form?opts.body:JSON.stringify(opts.body)):undefined});
@@ -329,7 +330,7 @@ async function publishOne(blog,html,TAGS,label,key,chain,date,first){
     if(x&&!x.error){r=x;say('  (como HTML, igual que pegarlo)');}else say('  · HTML: '+why(x));}
   const tA=Date.now()-T1;const RR=r&&(r.response||r);const id=RR&&(RR.id_string||RR.id);
   if(!id){log.textContent+=pre+'✗ '+label+' · '+why(r)+'\n';log.scrollTop=1e9;return {restart};}
-  if(AK){const PQ=await getPost(blog,id,2);if(PQ&&!(PQ.layout||[]).some(l=>l&&l.type==='ask')){log.textContent+=pre+'  (Tumblr quitó la cajita del ask: lo borro y los asks van como texto)\n';await api('/blog/'+blog+'/post/delete',{method:'POST',body:{id:String(id)}});ASKOFF=true;return publishOne(blog,html,TAGS,label,key,chain,date);}}
+  if(AK){const PQ=await getPost(blog,id,2);if(PQ&&!(PQ.layout||[]).some(l=>l&&l.type==='ask')){log.textContent+=pre+'  (Tumblr quitó la cajita del ask: lo borro y los asks van como texto)\n';await api('/blog/'+blog+'/post/delete',{method:'POST',body:{id:String(id)}});ASKOFF=true;const r2=await publishOne(blog,html,TAGS,label,key,chain,date);ASKOFF=false;return r2;}}
   const ni=nimg(Hh);log.textContent+=pre+'✓ '+label+(isRe?' (reblog)':'')+' → '+id+' · '+secs(Date.now()-T0)+(ni?' ('+ni+' img, Tumblr tardó '+secs(tA)+')':'')+'\n';log.scrollTop=1e9;
   const nu='https://www.tumblr.com/'+blog+'/'+id;remember(blog,key,nu);
   let wi=[],rk=(RR&&RR.reblog_key)||null;if(wbon.checked){try{const PP=await getPost1(blog,id);if(PP){rk=rk||PP.reblog_key;wi=wbImgs(PP.content);}}catch(e){}}
