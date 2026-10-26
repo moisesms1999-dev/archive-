@@ -1,5 +1,10 @@
 [
  {
+  "path": "choco-export-26oct/index.html",
+  "title": "Choco export, 26 oct (chocomegafinity, entero, 104 posts, con los tags de cada post)",
+  "about": "chocomegafinity, export of 26 October: the whole blog, 104 posts in posting order, each post with its own tags."
+ },
+ {
   "path": "everything/index.html",
   "title": "Everything",
   "about": "All posts: call-outs, the coinedbank anons, the evidence chain, threads, gallery, videos, posts."
@@ -461,10 +466,5 @@
   "path": "choco-es-infinity-25oct/index.html",
   "title": "Choco, choco-es-infinity (25 oct, 3 post(s) nuevo(s), en orden, con los tags de cada post)",
   "about": "Everything new on choco-es-infinity after the republishing of 25 October, in posting order, oldest first: the posts, the asks (they go out as asks) and the reblogs. Every post keeps its own tags."
- },
- {
-  "path": "choco-export-26oct/index.html",
-  "title": "Choco export, 26 oct (chocomegafinity, entero, 104 posts, con los tags de cada post)",
-  "about": "chocomegafinity, export of 26 October: the whole blog, 104 posts in posting order, each post with its own tags."
  }
 ]
