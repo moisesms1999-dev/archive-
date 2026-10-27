@@ -1,5 +1,13 @@
 [
  {
+  "name": "omegachocofinity-27oct",
+  "label": "Choco: omegachocofinity, todo lo nuevo (27 oct, 1 post(s), en orden, hasta las 12:59, con sus tags)",
+  "match": "choco|finity|infinit|survivor|choclship",
+  "pages": [
+   "choco-omegachocofinity-27oct/index.html"
+  ]
+ },
+ {
   "name": "choco-vent-ghosted-26oct",
   "label": "Choco: vent \"I still remember when one of the groomers sent my inbox an ask crashing out\" (chocomegainffinite, después del export del 27 oct), suelto, con sus tags",
   "match": "choco|finity|infinit|survivor|choclship",
