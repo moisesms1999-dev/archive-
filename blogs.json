@@ -1,5 +1,13 @@
 [
  {
+  "name": "expertforce-27oct",
+  "label": "Choco: expertforce, el meme de h28731 (27 oct, 1 post(s), en orden, hasta las 18:08, con sus tags)",
+  "match": "choco|finity|infinit|survivor|choclship",
+  "pages": [
+   "choco-expertforce-27oct/index.html"
+  ]
+ },
+ {
   "name": "chocomegainffinite-export-27oct-plus",
   "label": "Choco: el export del 27 oct + lo nuevo (108 posts: chocomegainffinite entero y luego el vent, el ask de omegachocofinity y el \"Taking L's\", en orden, sin repetidos, con sus tags)",
   "match": "choco|finity|infinit|survivor|choclship",
