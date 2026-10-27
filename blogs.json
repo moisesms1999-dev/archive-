@@ -1,5 +1,13 @@
 [
  {
+  "name": "chocosuperfinote-27oct",
+  "label": "Choco: chocosuperfinote, todo lo nuevo (27 oct, 1 post(s), en orden, hasta las 15:23, con sus tags)",
+  "match": "choco|finity|infinit|survivor|choclship",
+  "pages": [
+   "choco-chocosuperfinote-27oct/index.html"
+  ]
+ },
+ {
   "name": "omegachocofinity-27oct",
   "label": "Choco: omegachocofinity, todo lo nuevo (27 oct, 1 post(s), en orden, hasta las 12:59, con sus tags)",
   "match": "choco|finity|infinit|survivor|choclship",
