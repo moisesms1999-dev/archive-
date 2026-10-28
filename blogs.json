@@ -1,5 +1,14 @@
 [
  {
+  "name": "chocomegainffinite-export-27oct-plus",
+  "label": "Choco: el export del 27 oct + lo nuevo (111 posts: chocomegainffinite entero y luego el vent, el ask de omegachocofinity, el \"Taking L's\", el meme de h28731, el ask de \"Whores from all ends\" y el post a racooninthebox con el vídeo, en orden, sin repetidos, con sus tags)",
+  "match": "choco|finity|infinit|survivor|choclship",
+  "pages": [
+   "choco-export-27oct-plus/index.html"
+  ],
+  "strict": true
+ },
+ {
   "name": "racoon-28oct",
   "label": "Choco: thechoomega, \"I hate you because you're in my tags\" a racooninthebox (28 oct, 1 post(s), en orden, hasta las 22:39, con sus tags)",
   "match": "choco|finity|infinit|survivor|choclship",
@@ -22,15 +31,6 @@
   "pages": [
    "choco-expertforce-27oct/index.html"
   ]
- },
- {
-  "name": "chocomegainffinite-export-27oct-plus",
-  "label": "Choco: el export del 27 oct + lo nuevo (108 posts: chocomegainffinite entero y luego el vent, el ask de omegachocofinity y el \"Taking L's\", en orden, sin repetidos, con sus tags)",
-  "match": "choco|finity|infinit|survivor|choclship",
-  "pages": [
-   "choco-export-27oct-plus/index.html"
-  ],
-  "strict": true
  },
  {
   "name": "chocosuperfinote-27oct",
