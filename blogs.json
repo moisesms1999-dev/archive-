@@ -1,5 +1,13 @@
 [
  {
+  "name": "snookums-28oct",
+  "label": "Choco: infinitefinitychoco, el ask de \"Whores from all ends of the political spectrum\" (28 oct, 1 post(s), en orden, hasta las 16:48, con sus tags)",
+  "match": "choco|finity|infinit|survivor|choclship",
+  "pages": [
+   "choco-snookums-28oct/index.html"
+  ]
+ },
+ {
   "name": "expertforce-27oct",
   "label": "Choco: expertforce, el meme de h28731 (27 oct, 1 post(s), en orden, hasta las 18:08, con sus tags)",
   "match": "choco|finity|infinit|survivor|choclship",
