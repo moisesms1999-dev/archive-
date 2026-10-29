@@ -234,11 +234,19 @@ function quoteBlocks(el){const out=[];const kids=el.children.length?[...el.child
   for(const c of kids){if(c.tagName==='BLOCKQUOTE'){out.push(...quoteBlocks(c));continue;}
     if(c.tagName==='UL'||c.tagName==='OL'){let n=0;for(const li of c.children){n++;const t=textBlocks(li,'indented');if(t.length){const p=c.tagName==='UL'?'• ':n+'. ';t[0].text=p+t[0].text;if(t[0].formatting)t[0].formatting=t[0].formatting.map(x=>Object.assign({},x,{start:x.start+p.length,end:x.end+p.length}));}out.push(...t);}continue;}
     if(c.tagName==='FIGURE'){const url=c.getAttribute('data-url')||((c.querySelector('iframe')||{}).src||'');if(url)out.push({type:'video',provider:'youtube',url:url.replace('/embed/','/watch?v=').replace(/\?feature=oembed/,'')});continue;}
+    {const vd=c.tagName==='VIDEO'?c:c.querySelector('video');if(vd&&!c.textContent.trim()){const b=vidBlock(vd);if(b)out.push(b);continue;}}
     const img=c.tagName==='IMG'?c:c.querySelector('img');
     if(img&&!c.textContent.trim()){out.push({type:'image',media:[{url:img.getAttribute('src')}]});continue;}
     if(img){const t=textBlocks(c,'indented');out.push(...t);c.querySelectorAll('img').forEach(im=>out.push({type:'image',media:[{url:im.getAttribute('src')}]}));continue;}
     out.push(...textBlocks(c,'indented'));}
   return out;}
+let VIDN=0,VIDOFF=false;
+function vidBlock(v){const s=v.getAttribute('src')||(v.querySelector('source')&&v.querySelector('source').getAttribute('src'))||'';if(!/^https?:/.test(s))return null;
+  if(VIDOFF)return {type:'link',url:s};return {type:'video',media:{type:'video/mp4',identifier:'video'+(++VIDN)},_src:s};}
+const hasVid=b=>!!(b&&b.content&&b.content.some(x=>x&&x._src));
+async function vidForm(body){const c=JSON.parse(JSON.stringify(body));const V=c.content.filter(x=>x&&x._src);const fd=new FormData();
+  for(const x of V){const r=await fetch(x._src);if(!r.ok)throw new Error('vídeo '+r.status);const bl=await r.blob();fd.append(x.media.identifier,new File([bl],x.media.identifier+'.mp4',{type:'video/mp4'}));delete x._src;}
+  fd.append('json',JSON.stringify(c));return fd;}
 function toNPF(h){
   const doc=new DOMParser().parseFromString('<div>'+h+'</div>','text/html');const root=doc.body.firstChild;const C=[];
   for(const el of root.children){
@@ -246,6 +254,7 @@ function toNPF(h){
     if(tag==='FIGURE'){const url=el.getAttribute('data-url')||((el.querySelector('iframe')||{}).src||'');if(url)C.push({type:'video',provider:'youtube',url:url.replace('/embed/','/watch?v=').replace(/\?feature=oembed/,'')});continue;}
     const as=el.querySelectorAll?el.querySelectorAll('a'):[];
     if(tag==='P'&&as.length===1&&!el.querySelector('img')&&el.textContent.trim()===as[0].textContent.trim()&&/^https?:/.test(as[0].getAttribute('href')||'')){C.push({type:'link',url:as[0].getAttribute('href'),title:as[0].textContent.trim()});continue;}
+    {const vd=tag==='VIDEO'?el:el.querySelector('video');if(vd&&!el.textContent.trim()){const b=vidBlock(vd);if(b)C.push(b);continue;}}
     const img=el.tagName==='IMG'?el:el.querySelector('img');
     if(img&&!el.textContent.trim()){C.push({type:'image',media:[{url:img.getAttribute('src')}]});continue;}
     if(tag==='BLOCKQUOTE'){C.push(...quoteBlocks(el));continue;}
@@ -302,18 +311,19 @@ async function publishOne(blog,html,TAGS,label,key,chain,date,first){
   const rl=relink(html,blog);let Hh=rl.html;if(rl.n)say('  🔗 '+rl.n+' enlace(s) llevados a una copia viva');
   {const XT=await pinExtra(key);if(XT.length){const low=XT.map(x=>x.toLowerCase());TAGS=[...TAGS.filter(x=>!low.includes(String(x).toLowerCase())).slice(0,30-XT.length),...XT];}}
   const tags=TAGS.slice(0,30).join(',');let isRe=!!chain,restart=false;let AK=null;
-  const mk=()=>{AK=(chain||ASKOFF)?null:askNPF(Hh);const body={content:AK?AK.content:toNPF(Hh),tags,state:'published'};if(AK)body.layout=AK.layout;if(date)body.date=date;
+  const mk=()=>{AK=(chain||ASKOFF)?null:askNPF(Hh);if(hasVid(AK))AK=null;const body={content:AK?AK.content:toNPF(Hh),tags,state:'published'};if(AK)body.layout=AK.layout;if(date)body.date=date;
     if(isRe){body.parent_tumblelog_uuid=chain.uuid;body.parent_post_id=String(chain.prev.id);body.reblog_key=chain.prev.key;}return body;};
   if(isRe&&!chain.prev.key){const PP=await getPost(blog,chain.prev.id,2);if(PP&&PP.reblog_key)chain.prev.key=PP.reblog_key;}
   if(isRe&&!chain.uuid){const bi=await api('/blog/'+blog+'/info');const BI=bi&&(bi.response||bi);chain.uuid=BI&&BI.blog&&BI.blog.uuid;}
   if(isRe&&(!chain.prev.key||!chain.uuid)){say('  (reblog imposible: falta '+(chain.prev.key?'':'reblog key ')+(chain.uuid?'':'uuid del blog')+'; lo publico suelto)');isRe=false;}
   let body=mk();const T1=Date.now();const mine=()=>sigC(body.content);const lab=label.length>70?label.slice(0,70)+'…':label;
-  const post=()=>{const t0=Date.now();const iv=setInterval(()=>{say2('⏳ Tumblr lleva '+Math.round((Date.now()-t0)/1000)+' s sin contestar con: '+lab);},30000);return api('/blog/'+blog+'/posts',{method:'POST',body},PT).then(x=>{clearInterval(iv);say2('');return x;});};
+  const post=()=>{const t0=Date.now();const iv=setInterval(()=>{say2('⏳ Tumblr lleva '+Math.round((Date.now()-t0)/1000)+' s sin contestar con: '+lab);},30000);const send=async()=>{if(!hasVid(body))return api('/blog/'+blog+'/posts',{method:'POST',body},PT);let fd;try{fd=await vidForm(body);}catch(e){return {error:'no pude bajar el vídeo: '+(e&&e.message||e),vidfail:true};}say('  🎬 subiendo el vídeo a Tumblr');return api('/blog/'+blog+'/posts',{method:'POST',body:fd,headers:{'Content-Type':'multipart/form-data'}},PT);};return send().then(x=>{clearInterval(iv);say2('');return x;});};
   const look=async n=>{for(let k=0;k<n;k++){await sleep(k?15000:3000);const f=await findMine(blog,mine(),Math.floor(T1/1000),tags,5);if(f)return f;}return null;};
   let r=null;
   if(first){const f=await findMine(blog,mine(),0,tags,3);if(f){say('  (ya estaba en el blog de la vez anterior, aunque Tumblr no llegó a contestar: no lo repito)');r={response:{id_string:f.id,reblog_key:f.key}};}}
   if(!r&&AK&&!isRe){const q=await askInbox(blog,AK,tags,date,say);if(q){r=q;say('  📮 ask mandado al buzón de '+blog+' y contestado');}}
   if(!r)r=await post();
+  if(r&&r.error&&!r.timeout&&hasVid(body)&&!/429|limit exceeded|rate limit|too many/i.test(why(r)+' '+String(r.error))){const f=await look(1);if(f){say('  (Tumblr dio error pero el post con vídeo sí quedó publicado: no lo repito)');r={response:{id_string:f.id,reblog_key:f.key}};}else{say('  (Tumblr no aceptó el vídeo subido ['+why(r).trim()+']: va como enlace al vídeo)');VIDOFF=true;body=mk();VIDOFF=false;r=await post();}}
   for(let tryN=1;r&&r.timeout;tryN++){log.textContent+=pre+'  (Tumblr lleva 2 min sin contestar con este post: miro si ya está en el blog)\n';pre='';log.scrollTop=1e9;
     const f=await look(6);if(f){say('  (Tumblr lo publicó aunque no contestó)');r={response:{id_string:f.id,reblog_key:f.key}};break;}
     if(tryN>=2){log.textContent+='✗ '+label+' · Tumblr no contesta con este post (dos intentos de 2 min) y no aparece en el blog. Paro aquí para no repetir nada: vuelve a pulsar y sigue desde este. Si Tumblr te ha sacado algún aviso, está debajo del Renacer: ciérralo con ✕ Cerrar, míralo y vuelve a abrir el marcador.\n';log.scrollTop=1e9;return {stall:true};}
