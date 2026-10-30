@@ -1,12 +1,20 @@
 [
  {
   "name": "chocomegainffinite-export-27oct-plus",
-  "label": "Choco: el export del 27 oct + lo nuevo (112 posts: chocomegainffinite entero y luego el vent, el ask de omegachocofinity, el \"Taking L's\", el meme de h28731, el ask de \"Whores from all ends\", el post a racooninthebox con el vídeo y el de chocomegathefinite que lo vuelve a subir con 14 capturas, en orden, sin repetidos, con sus tags)",
+  "label": "Choco: el export del 27 oct + lo nuevo (113 posts: chocomegainffinite entero y luego el vent, el ask de omegachocofinity, el \"Taking L's\", el meme de h28731, el ask de \"Whores from all ends\", el post a racooninthebox con el vídeo el de chocomegathefinite que lo vuelve a subir con 14 capturas y el \"Food for thought\", en orden, sin repetidos, con sus tags)",
   "match": "choco|finity|infinit|survivor|choclship",
   "pages": [
    "choco-export-27oct-plus/index.html"
   ],
   "strict": true
+ },
+ {
+  "name": "food-for-thought-30oct",
+  "label": "Choco: chocothefinity, \"Food for thought\" (30 oct, 1 post(s), en orden, hasta las 01:16, con sus tags)",
+  "match": "choco|finity|infinit|survivor|choclship",
+  "pages": [
+   "choco-food-for-thought-30oct/index.html"
+  ]
  },
  {
   "name": "chocomegathefinite-29oct",
