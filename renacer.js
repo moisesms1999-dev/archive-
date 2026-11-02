@@ -178,6 +178,32 @@ async function runBlocks(auto){const blog=sel.value;if(KRUN||!blog)return;KRUN=t
   kst.textContent=todo.length?(auto?'Al entrar: ':'')+ok+' bloqueados nuevos en '+blog+(todo.length-ok?', '+(todo.length-ok)+' no se pudieron (mira abajo): se reintentan solos la próxima vez que entres':'')+'. De la lista, bloqueados: '+(L.length-todo.length+ok)+' de '+L.length+'.':'✓ Ya los tienes a todos bloqueados en '+blog+'.';
   }finally{KRUN=false;bK.disabled=false;}}
 bK.onclick=()=>runBlocks(false);sel.addEventListener('change',()=>runBlocks(true));setTimeout(()=>runBlocks(true),1200);
+/* Respuestas fijas: mis respuestas en un post ajeno y luego bloquear, de un toque */
+const rbox=$('div',{style:'background:#2a1a0e;border:1px solid #5a3a1e;border-radius:12px;padding:10px;margin:0 0 12px'});
+const rst=$('div',{style:'color:#9be59b;font-size:14px;min-height:1.2em;margin-top:6px'});const rlog=$('div',{style:'font-size:12px;color:#e7b98a;white-space:pre-wrap;max-height:18vh;overflow:auto'});
+const rin=$('div');rbox.append($('b',{textContent:'💬 Respuestas fijas',style:'color:#ffb066'}),$('p',{textContent:'Pega tus respuestas en el post, desde el blog elegido arriba, y después bloquea. Solo cuando pulsas. Si una respuesta ya salió desde este blog, no se repite.',style:'font-size:12px;color:#a58a6a;margin:4px 0'}),rin,rst,rlog);box.append(rbox);
+const RMAX=1975;
+const rparts=(pre,parts)=>{const all=parts.join('\n\n');if((pre+all).length<=RMAX)return [pre+all];const out=[];
+  for(const p of parts){let s=p;while((pre+s).length>RMAX){let cut=s.lastIndexOf('. ',RMAX-pre.length-1);if(cut<200)cut=s.lastIndexOf(' ',RMAX-pre.length-1);out.push(pre+s.slice(0,cut+1).trim());s=s.slice(cut+1).trim();}out.push(pre+s);}return out;};
+async function runReply(E,btn){const blog=sel.value;if(!blog)return;btn.disabled=true;rlog.textContent='';const say=t=>{rlog.textContent+=t+'\n';rlog.scrollTop=1e9;};
+  try{const P=E.post;rst.textContent='Leyendo el post de '+P.blog+'…';
+    const PP=await getPost(P.blog,P.id,3);const key=PP&&(PP.reblog_key||PP.reblogKey);
+    if(!key){rst.textContent='✗ No pude leer el post de '+P.blog+' (¿borrado, o te tiene bloqueado?). Paso al bloqueo.';}
+    else for(const R of E.replies){const MK='rnc_rep_'+blog+'_'+R.target;if(LS.get(MK,false)){say('· La respuesta a '+R.target+' ya salió desde '+blog+': no la repito.');continue;}
+      const q=await api('/blog/'+P.blog+'/post/'+P.id+'/replies/'+R.target+'/permalink');const Q=q&&(q.response||q);const E0=Q&&Q.timeline&&Q.timeline.elements&&Q.timeline.elements[0];
+      if(!E0){say('✗ No encuentro la respuesta '+R.target+' en el post: '+why(q||{}));continue;}
+      const root=String(E0.id||E0.reply_id);const kids=(E0.children&&E0.children.elements)||[];const T=String(E0.id||E0.reply_id)===R.target?E0:kids.find(k=>String(k.id||k.reply_id)===R.target);
+      const pre=(T&&T!==E0)?'@'+(T.blog_name||(T.blog&&T.blog.name)||P.blog)+' ':'';let ok=true;
+      for(const txt of rparts(pre,R.parts)){rst.textContent='Respondiendo desde '+blog+'…';
+        const r=await api('/user/post/reply',{method:'POST',body:{post_id:P.id,reply_text:txt,reblog_key:key,tumblelog:P.blog,reply_as:blog,parent_reply_id:root,target_reply_id:R.target}});
+        if(!r||r.error||(r.meta&&r.meta.status>=400)){ok=false;say('✗ Respuesta a '+R.target+': '+why(r||{}));break;}
+        say('✓ Respuesta a '+R.target+' publicada ('+txt.length+' caracteres).');await sleep(2500+Math.random()*1500);}
+      if(ok)LS.set(MK,true);}
+    for(const nm of E.block||[]){rst.textContent='Bloqueando a '+nm+'…';const r=await api('/blog/'+blog+'/blocks',{method:'POST',body:{blocked_tumblelog:nm}});
+      say((r&&!r.error&&!(r.meta&&r.meta.status>=400))?'✓ '+nm+' bloqueado en '+blog:'✗ '+nm+': '+why(r||{}));await sleep(800);}
+    rst.textContent='Hecho en '+blog+'. Mira abajo cada paso.';
+  }finally{btn.disabled=false;}}
+fetch(ARCH+'respuestas.json?'+Date.now()).then(r=>r.json()).then(L=>{L.forEach(E=>{const b=$('button',{textContent:'💬 '+E.label,style:bstyle});b.onclick=()=>runReply(E,b);rin.append(b);});}).catch(()=>{rst.textContent='No pude cargar las respuestas fijas.';});
 const abox=$('div',{style:'background:#2a1a0e;border:1px solid #5a3a1e;border-radius:12px;padding:10px;margin:0 0 12px'});
 const bA=$('button',{textContent:'🎨 Cabecera y foto de perfil',style:'display:block;width:100%;text-align:left;background:#5a3a1e;color:#ffd9b0;border:0;border-radius:10px;padding:11px;font-weight:700'});
 const ain=$('div');abox.append(bA,ain);box.append(abox);
