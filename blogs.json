@@ -1,12 +1,20 @@
 [
  {
   "name": "chocomegainffinite-export-27oct-plus",
-  "label": "Choco: el export del 27 oct + lo nuevo (124 posts: chocomegainffinite entero y luego el vent, el ask de omegachocofinity, el \"Taking L's\", el meme de h28731, el ask de \"Whores from all ends\", el post a racooninthebox con el vídeo el de chocomegathefinite que lo vuelve a subir con 14 capturas, el \"Food for thought\", el \"GraveKKKandy caught lying, again\" los dos asks del 30 oct (\"I'm not a fan of you\" y \"Idk if you saw Grave\") lo del 1 y 2 nov en thymostinfinitechoco y el \"I KNOW you desperate Chomo\" del 3 nov, en orden, sin repetidos, con sus tags)",
+  "label": "Choco: el export del 27 oct + lo nuevo (125 posts: chocomegainffinite entero y luego el vent, el ask de omegachocofinity, el \"Taking L's\", el meme de h28731, el ask de \"Whores from all ends\", el post a racooninthebox con el vídeo el de chocomegathefinite que lo vuelve a subir con 14 capturas, el \"Food for thought\", el \"GraveKKKandy caught lying, again\" los dos asks del 30 oct (\"I'm not a fan of you\" y \"Idk if you saw Grave\") lo del 1 y 2 nov en thymostinfinitechoco el \"I KNOW you desperate Chomo\" y el ask \"Ah yes, a Nazi\" del 3 nov, en orden, sin repetidos, con sus tags)",
   "match": "choco|finity|infinit|survivor|choclship",
   "pages": [
    "choco-export-27oct-plus/index.html"
   ],
   "strict": true
+ },
+ {
+  "name": "ah-yes-nazi-3nov",
+  "label": "Choco: imtheinfinitychoco, \"Ah yes, a Nazi and proven child predator\" (3 nov, 1 post(s), en orden, hasta las 03:47, con sus tags)",
+  "match": "choco|finity|infinit|survivor|choclship",
+  "pages": [
+   "choco-ah-yes-nazi-3nov/index.html"
+  ]
  },
  {
   "name": "i-know-chomo-3nov",
