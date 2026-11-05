@@ -1,5 +1,13 @@
 [
  {
+  "name": "google-translate-5nov",
+  "label": "Choco: thymostchocoinfinite, \"If you're going to use Google translate to pretend…\" (5 nov, 1 post(s), en orden, hasta las 20:59, con sus tags)",
+  "match": "choco|finity|infinit|survivor|choclship",
+  "pages": [
+   "choco-google-translate-5nov/index.html"
+  ]
+ },
+ {
   "name": "finished-document-5nov",
   "label": "Choco: chocofinite, \"Is there a finish product of the summer situation document?\" (5 nov, 1 post(s), en orden, hasta las 15:19, con sus tags)",
   "match": "choco|finity|infinit|survivor|choclship",
