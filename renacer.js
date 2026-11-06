@@ -53,7 +53,9 @@ PAR=$('select',{style:'width:100%;padding:9px;border-radius:10px;background:#1a1
 {const v=String(LS.get('rnc_pace','c'));PAR.value=['c','r','t'].includes(v)?v:'c';}PAR.onchange=()=>LS.set('rnc_pace',PAR.value);
 const bgon=$('input',{type:'checkbox',checked:LS.get('rnc_bgon',true)});bgon.onchange=()=>LS.set('rnc_bgon',bgon.checked);
 const bgl=$('label',{style:'display:flex;gap:8px;align-items:center;margin:8px 0 0;color:#ffb066;font-weight:700;font-size:14px'});bgl.append(bgon,$('span',{textContent:'🔈 Seguir publicando aunque cambies de pestaña o de app (pone un sonido grave inaudible mientras publica)'}));
-box.append(wbl,wbst,PAR,bgl,$('div',{style:'height:10px'}));
+const ovr=$('input',{type:'checkbox',checked:LS.get('rnc_ovr',true)});ovr.onchange=()=>LS.set('rnc_ovr',ovr.checked);
+const ovl=$('label',{style:'display:flex;gap:8px;align-items:center;margin:8px 0 0;color:#ffb066;font-weight:700;font-size:14px'});ovl.append(ovr,$('span',{textContent:'✏️ Si el post ya está en el blog elegido, lo sobrescribe con la versión del archivo en vez de publicar otro'}));
+box.append(wbl,wbst,PAR,ovl,bgl,$('div',{style:'height:10px'}));
 const KA={on:0,ctx:null,osc:null,el:null,url:null,
 start(){if(!bgon.checked)return;this.on++;if(this.on>1){this.poke();return;}
 try{const C=window.AudioContext||window.webkitAudioContext;if(C){const c=new C(),o=c.createOscillator(),g=c.createGain();o.type='sine';o.frequency.value=40;g.gain.value=0.0015;o.connect(g);g.connect(c.destination);o.start();this.ctx=c;this.osc=o;if(c.state!=='running')c.resume().catch(()=>{});}}catch(e){}
@@ -328,6 +330,9 @@ async function askInbox(blog,AK,tags,date,say){
   if(!r||r.error){say('  (no pude contestar el ask del buzón: '+why(r||{}).trim()+'; lo quito del buzón)');await api('/blog/'+blog+'/post/delete',{method:'POST',body:{id:sid}});return null;}
   const R=r.response||r;return {response:{id_string:String(R.id_string||R.id||sid),reblog_key:R.reblog_key||null}};
 }
+async function findExisting(blog,key){const ids=((LK&&LK.k)||{})[key]||[];const T=(LK&&LK.t)||{};const M=(LS.get('rnc_links',{})[blog])||{};const cand=[];
+  ids.forEach(id=>{const x=T[id];if(x&&x.b===blog)cand.push(String(id));const u=M[id];if(u){const m=String(u).match(/\/(\d{15,})(?:[\/?#]|$)/);if(m)cand.push(m[1]);}});
+  for(const id of [...new Set(cand)]){const PP=await getPost(blog,id);if(PP)return {id,key:PP.reblog_key||null};}return null;}
 async function publishOne(blog,html,TAGS,label,key,chain,date,first){
   const T0=Date.now();let pre='';const say=s=>{pre+=s+'\n';};
   const em=html.match(/^\s*<!--reblog ([\w-]+) (\d+)-->(?:<!--shot (https:[^\s<>"]+)-->)?/);
@@ -345,6 +350,16 @@ async function publishOne(blog,html,TAGS,label,key,chain,date,first){
   let body=mk();const T1=Date.now();const mine=()=>sigC(body.content);const lab=label.length>70?label.slice(0,70)+'…':label;
   const post=()=>{const t0=Date.now();const iv=setInterval(()=>{say2('⏳ Tumblr lleva '+Math.round((Date.now()-t0)/1000)+' s sin contestar con: '+lab);},30000);const send=async()=>{if(!hasVid(body))return api('/blog/'+blog+'/posts',{method:'POST',body},PT);let fd;try{fd=await vidForm(body);}catch(e){return {error:'no pude bajar el vídeo: '+(e&&e.message||e),vidfail:true};}say('  🎬 subiendo el vídeo a Tumblr');return api('/blog/'+blog+'/posts',{method:'POST',body:fd,headers:{'Content-Type':'multipart/form-data'}},PT);};return send().then(x=>{clearInterval(iv);say2('');return x;});};
   const look=async n=>{for(let k=0;k<n;k++){await sleep(k?15000:3000);const f=await findMine(blog,mine(),Math.floor(T1/1000),tags,5);if(f)return f;}return null;};
+  if(ovr.checked&&!isRe&&key){const ex=await findExisting(blog,key);if(ex){
+    const put=async b=>{if(!hasVid(b))return api('/blog/'+blog+'/posts/'+ex.id,{method:'PUT',body:b},PT);let fd;try{fd=await vidForm(b);}catch(e){return {error:'no pude bajar el vídeo: '+(e&&e.message||e)};}return api('/blog/'+blog+'/posts/'+ex.id,{method:'PUT',body:fd,headers:{'Content-Type':'multipart/form-data'}},PT);};
+    let b2=mk();delete b2.date;let rr=await put(b2);
+    if(rr&&rr.error&&AK){ASKOFF=true;b2=mk();ASKOFF=false;delete b2.date;rr=await put(b2);}
+    const ni=nimg(Hh);
+    if(!rr||rr.error){log.textContent+=pre+'✗ '+label+' · ya estaba en el blog ('+ex.id+') y Tumblr no dejó sobrescribirlo: '+why(rr||{}).trim()+'. No publico otro para no duplicarlo.\n';log.scrollTop=1e9;return {};}
+    const nu='https://www.tumblr.com/'+blog+'/'+ex.id;remember(blog,key,nu);
+    log.textContent+=pre+'✓ '+label+' → '+ex.id+' · sobrescrito, no publicado de nuevo · '+secs(Date.now()-T0)+(ni?' ('+ni+' img)':'')+'\n';log.scrollTop=1e9;
+    let wi=[];if(wbon.checked){try{const PP=await getPost1(blog,ex.id);if(PP)wi=wbImgs(PP.content);}catch(e){}}wbAdd(nu,wi);
+    return {id:String(ex.id),key:ex.key,ms:Date.now()-T0,api:Date.now()-T1,img:ni,edited:true};}}
   let r=null;
   if(first){const f=await findMine(blog,mine(),0,tags,3);if(f){say('  (ya estaba en el blog de la vez anterior, aunque Tumblr no llegó a contestar: no lo repito)');r={response:{id_string:f.id,reblog_key:f.key}};}}
   if(!r&&AK&&!isRe){const q=await askInbox(blog,AK,tags,date,say);if(q){r=q;say('  📮 ask mandado al buzón de '+blog+' y contestado');}}
