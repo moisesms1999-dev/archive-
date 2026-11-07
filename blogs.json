@@ -1,5 +1,13 @@
 [
  {
+  "name": "block-dont-report-7nov",
+  "label": "Choco: the-infinite-shipchoco, \"Block don't report\" you fucking thought (7 nov, 1 post)",
+  "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
+  "pages": [
+   "choco-block-dont-report-7nov/index.html"
+  ]
+ },
+ {
   "name": "perfect-doc-7nov",
   "label": "Choco: the-infinite-shipchoco, el ask \"Your document was perfect.\" (7 nov, 1 post)",
   "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
