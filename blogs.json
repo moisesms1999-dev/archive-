@@ -1,5 +1,13 @@
 [
  {
+  "name": "police-ask-7nov",
+  "label": "Choco: the-infinite-shipchoco, el ask de la \"police investigation\" (7 nov, 1 post)",
+  "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
+  "pages": [
+   "choco-police-ask-7nov/index.html"
+  ]
+ },
+ {
   "name": "standard-day-7nov",
   "label": "Choco: the-infinite-shipchoco, \"Standard day calling out a grooming ring…\" (7 nov, 1 post)",
   "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
