@@ -1,5 +1,13 @@
 [
  {
+  "name": "perfect-doc-7nov",
+  "label": "Choco: the-infinite-shipchoco, el ask \"Your document was perfect.\" (7 nov, 1 post)",
+  "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
+  "pages": [
+   "choco-perfect-doc-7nov/index.html"
+  ]
+ },
+ {
   "name": "even-people-7nov",
   "label": "Choco: the-infinite-shipchoco, el ask \"EVEN PEOPLE AGAINST YOU\" (7 nov, 1 post)",
   "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
