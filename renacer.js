@@ -237,6 +237,9 @@ async function cleanImgs(h){const us=[...new Set([...h.matchAll(/<img src="([^"]
   for(let k=0;k<us.length;k+=8){const part=us.slice(k,k+8);const r=await Promise.all(part.map(imgOK));part.forEach((u,j)=>{if(!r[j])bad.push(u);});}
   let out=h;for(const u of bad){out=out.split('<p><img src="'+u+'"></p>').join('').split('<img src="'+u+'">').join('');}
   return {html:out,bad:bad.length};}
+const NPFC={joey:'#ff4930',monica:'#ff8a00',rachel:'#e8d738',ross:'#00cf35',chandler:'#00b8ff',niles:'#ff62ce',frasier:'#7c5cff'};
+function subOf(el){const t=el.tagName,c=el.classList;if(t==='H1')return 'heading1';if(t==='H2')return 'heading2';if(c&&c.contains('npf_quote'))return 'quote';if(c&&c.contains('npf_chat'))return 'chat';if(c&&c.contains('npf_quirky'))return 'quirky';return undefined;}
+function colorOf(n){const m=(n.getAttribute('class')||'').match(/npf_color_(\w+)/);if(m&&NPFC[m[1]])return NPFC[m[1]];const st=(n.getAttribute('style')||'').match(/color:\s*(#[0-9a-f]{6})/i);return st?st[1]:null;}
 function inline(node,acc){
   for(const n of node.childNodes){
     if(n.nodeType===3){acc.text+=n.nodeValue;continue;}
@@ -247,6 +250,8 @@ function inline(node,acc){
     if(tag==='B'||tag==='STRONG')acc.fmt.push({start:s,end:e,type:'bold'});
     else if(tag==='I'||tag==='EM')acc.fmt.push({start:s,end:e,type:'italic'}); else if(tag==='S'||tag==='STRIKE'||tag==='DEL')acc.fmt.push({start:s,end:e,type:'strikethrough'});
     else if(tag==='A'&&n.getAttribute('href'))acc.fmt.push({start:s,end:e,type:'link',url:n.getAttribute('href')});
+    else if(tag==='SMALL')acc.fmt.push({start:s,end:e,type:'small'});
+    else if(tag==='SPAN'||tag==='FONT'){const hx=colorOf(n);if(hx)acc.fmt.push({start:s,end:e,type:'color',hex:hx});}
   }
   return acc;
 }
@@ -287,7 +292,7 @@ function toNPF(h){
     if(img&&!el.textContent.trim()){C.push({type:'image',media:[{url:img.getAttribute('src')}]});continue;}
     if(tag==='BLOCKQUOTE'){C.push(...quoteBlocks(el));continue;}
     if(tag==='UL'||tag==='OL'){for(const li of el.children)C.push(...textBlocks(li,tag==='UL'?'unordered-list-item':'ordered-list-item'));continue;}
-    C.push(...textBlocks(el));
+    C.push(...textBlocks(el,subOf(el)));
   }
   return C;
 }
