@@ -1,5 +1,13 @@
 [
  {
+  "name": "even-people-7nov",
+  "label": "Choco: the-infinite-shipchoco, el ask \"EVEN PEOPLE AGAINST YOU\" (7 nov, 1 post)",
+  "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
+  "pages": [
+   "choco-even-people-7nov/index.html"
+  ]
+ },
+ {
   "name": "morphine-ask-7nov",
   "label": "Choco: the-infinite-shipchoco, el ask sobre paris-philly y morphine-dr1p (7 nov, 1 post)",
   "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
