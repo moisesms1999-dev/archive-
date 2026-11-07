@@ -1,5 +1,13 @@
 [
  {
+  "name": "overruled-paris-7nov",
+  "label": "Choco: \"paris-philly: OVERRULED.\" (7 nov, 1 post, con sus tags)",
+  "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite",
+  "pages": [
+   "choco-overruled-paris-7nov/index.html"
+  ]
+ },
+ {
   "name": "export-7nov",
   "label": "Choco: thymostchocoinfinite y chocotheshippity (5-7 nov, 23 post(s), en orden, hasta el 7 nov 12:00, con sus tags)",
   "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite",
