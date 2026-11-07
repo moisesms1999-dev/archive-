@@ -1,5 +1,13 @@
 [
  {
+  "name": "pinned-7nov",
+  "label": "Choco: the-infinite-shipchoco, el fijado del 7 nov (1 post)",
+  "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
+  "pages": [
+   "choco-pinned-7nov/index.html"
+  ]
+ },
+ {
   "name": "overruled-paris-7nov",
   "label": "Choco: \"paris-philly: OVERRULED.\" (7 nov, 1 post, con sus tags)",
   "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite",
