@@ -1,5 +1,13 @@
 [
  {
+  "name": "slashmoth-anon-7nov",
+  "label": "Choco: the-infinite-shipchoco, el ask del enlace a slashmoth (\"pot stirring anon\", 7 nov, 1 post)",
+  "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
+  "pages": [
+   "choco-slashmoth-anon-7nov/index.html"
+  ]
+ },
+ {
   "name": "block-dont-report-7nov",
   "label": "Choco: the-infinite-shipchoco, \"Block don't report\" you fucking thought (7 nov, 1 post)",
   "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
