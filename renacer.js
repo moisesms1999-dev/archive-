@@ -296,7 +296,7 @@ const sleep=ms=>new Promise(z=>setTimeout(z,ms));
 const secs=ms=>ms<9500?(ms/1000).toFixed(1).replace('.0','')+' s':ms<90000?Math.round(ms/1000)+' s':Math.floor(ms/60000)+' min '+Math.round(ms%60000/1000)+' s';
 async function getPost1(blog,id){const g=await api('/blog/'+blog+'/posts/'+id+'?npf=true');const G=g&&(g.response||g);const PP=G&&(G.posts&&G.posts[0]||G);return PP&&PP.reblog_key?PP:null;}
 async function getPost(blog,id,tries){tries=tries||1;for(const q of ['/blog/'+blog+'/posts/'+id+'?npf=true','/blog/'+blog+'/posts/'+id,'/blog/'+blog+'/posts?id='+id+'&npf=true']){for(let k=0;k<tries;k++){const g=await api(q);const G=g&&(g.response||g);const PP=G&&(G.posts&&G.posts[0]||G);if(PP&&PP.reblog_key)return PP;if(g&&/404|not found|no such/i.test(why(g)+' '+String(g.error||'')))break;await sleep(600);}}return null;}
-let ASKOFF=false;
+let ASKOFF=false;let USED=new Set();
 function askSplit(h){const m=h.match(/^\s*<p><b>Anonymous asked:<\/b><\/p>\s*/);if(!m)return null;let i=m[0].length;const qs=[];
   if(/^\s*<blockquote[^>]*>/.test(h.slice(i))){const o=h.slice(i).match(/^\s*<blockquote[^>]*>/);let d=1,j=i+o[0].length;const re=/<(\/?)blockquote[^>]*>/g;re.lastIndex=j;let t,end=-1;while((t=re.exec(h))){d+=t[1]?-1:1;if(!d){end=re.lastIndex;break;}}if(end<0)return null;qs.push(h.slice(i+o[0].length,t.index));i=end;}
   if(!qs.length)return null;return {q:qs.join(''),rest:h.slice(i)};}
@@ -335,7 +335,7 @@ async function findExisting(blog,key,sg){const ids=((LK&&LK.k)||{})[key]||[];con
   ids.forEach(id=>{const x=T[id];if(x&&x.b===blog)cand.push(String(id));const u=M[id];if(u){const m=String(u).match(/\/(\d{15,})(?:[\/?#]|$)/);if(m)cand.push(m[1]);}});
   for(const id of [...new Set(cand)]){const PP=(await getPost(blog,id))||(await getAny(blog,id));if(PP)return {id,key:PP.reblog_key||null};}
   if(sg&&sg.t&&sg.t.length>=20){for(const off of [0,20,40]){const g=await api('/blog/'+blog+'/posts?npf=true&limit=20&offset='+off,{},30000);const G=g&&(g.response||g);const P=(G&&G.posts)||[];
-    for(const p of P){if(!p||!p.content||(p.trail&&p.trail.length)||p.parent_post_id)continue;if(sameSig(sg,sigC(p.content)))return {id:String(p.id_string||p.id),key:p.reblog_key||null,bySig:true};}
+    for(const p of P){if(!p||!p.content||(p.trail&&p.trail.length)||p.parent_post_id)continue;if(USED.has(String(p.id_string||p.id)))continue;if(sameSig(sg,sigC(p.content)))return {id:String(p.id_string||p.id),key:p.reblog_key||null,bySig:true};}
     if(P.length<20)break;}}
   return null;}
 async function publishOne(blog,html,TAGS,label,key,chain,date,first){
@@ -360,7 +360,7 @@ async function publishOne(blog,html,TAGS,label,key,chain,date,first){
     let b2=mk();delete b2.date;let rr=await put(b2);
     if(rr&&rr.error&&AK){ASKOFF=true;b2=mk();ASKOFF=false;delete b2.date;rr=await put(b2);}
     const ni=nimg(Hh);
-    if(!rr||rr.error){log.textContent+=pre+'✗ '+label+' · ya estaba en el blog ('+ex.id+') y Tumblr no dejó sobrescribirlo: '+why(rr||{}).trim()+'. No publico otro para no duplicarlo.\n';log.scrollTop=1e9;return {};}
+    if(!rr||rr.error){log.textContent+=pre+'✗ '+label+' · ya estaba en el blog ('+ex.id+') y Tumblr no dejó sobrescribirlo: '+why(rr||{}).trim()+'. No publico otro para no duplicarlo; sigo con el siguiente.\n';log.scrollTop=1e9;return {skip:true,failed:true};}
     const nu='https://www.tumblr.com/'+blog+'/'+ex.id;remember(blog,key,nu);
     log.textContent+=pre+'✓ '+label+' → '+ex.id+' · sobrescrito, no publicado de nuevo · '+secs(Date.now()-T0)+(ni?' ('+ni+' img)':'')+'\n';log.scrollTop=1e9;
     let wi=[];if(wbon.checked){try{const PP=await getPost1(blog,ex.id);if(PP)wi=wbImgs(PP.content);}catch(e){}}wbAdd(nu,wi);
@@ -396,7 +396,7 @@ async function publishOne(blog,html,TAGS,label,key,chain,date,first){
 function linkIds(h){const T=(LK&&LK.t)||{};const s=new Set();h.replace(/href="([^"]*)"/g,(a,u)=>{const m=u.replace(/&amp;/g,'&').match(TRX);if(m&&T[m[3]])s.add(m[3]);return a;});return s;}
 async function runBatch(blog,items,status,onOk){
   const conc=()=>1;const pace=()=>{const v=PAR&&PAR.value;return v==='t'?0:v==='r'?8000+Math.random()*7000:30000+Math.random()*30000;};const N=items.length;
-  const st=new Array(N).fill(0);let active=0,stop=false,ok=0,hold=0,hT=null;
+  const st=new Array(N).fill(0);let active=0,stop=false,ok=0,hold=0,hT=null,bad=0,fails=0;USED=new Set();
   const K=(LK&&LK.k)||{},owner={};items.forEach((it,m)=>{(K[it.key]||[]).forEach(id=>{owner[id]=m;});});
   const deps=items.map((it,n)=>it.wait?[...Array(n).keys()]:[...linkIds(it.html)].map(id=>owner[id]).filter(m=>m!==undefined&&m<n));
   let started=0,WL=null,pumpRef=null;KA.start();const wl=async()=>{try{if(navigator.wakeLock&&document.visibilityState==='visible')WL=await navigator.wakeLock.request('screen');}catch(e){}};await wl();
@@ -407,11 +407,11 @@ async function runBatch(blog,items,status,onOk){
       if(deps[n].some(m=>st[m]!==2))break;
       st[n]=1;active++;status(n,active);const ch=it.chain?it.chain():null;
       publishOne(blog,it.html,it.TAGS,it.label,it.key,ch,null,started++===0).then(res=>{active--;
-        if(res&&res.again){st[n]=0;pump();return;}if(res&&res.skip){st[n]=2;pump();return;}
+        if(res&&res.again){st[n]=0;pump();return;}if(res&&res.skip){st[n]=2;if(res.failed)fails++;pump();return;}
         if(res&&res.limit&&!it.retried){it.retried=true;SLOW=true;hold=Date.now()+5000;log.textContent+='  (Tumblr frena ['+res.why+']: espero 5 s y sigo de uno en uno)\n';st[n]=0;pump();return;}st[n]=2;
         if(res&&res.restart)log.textContent+='  (el post anterior de la cadena ya no existe: empiezo cadena nueva)\n';
-        if(res&&res.id){ok++;onOk(it,res,n);const w=st.some(x=>x===0)?pace():0;if(w){hold=Date.now()+w;status(n,0,Math.round(w/1000));}}else{if(res&&res.limit)log.textContent+='✗ '+it.label+' · '+res.why+'\n';stop=true;}pump();},e=>{st[n]=2;active--;stop=true;log.textContent+='✗ '+it.label+' · '+String(e&&(e.message||e))+'\n';pump();});}
-    if(!active&&(stop||st.every(x=>x===2)))resolve();};pumpRef=pump;pump();});
+        if(res&&res.id){ok++;bad=0;USED.add(String(res.id));onOk(it,res,n);const w=st.some(x=>x===0)?pace():0;if(w){hold=Date.now()+w;status(n,0,Math.round(w/1000));}}else if(res&&(res.limit||res.stall)){if(res.limit)log.textContent+='✗ '+it.label+' · '+res.why+'\n';stop=true;}else{fails++;if(++bad>=3){stop=true;log.textContent+='  (tres posts seguidos sin salir: paro aquí; vuelve a pulsar y sigue desde el primero que falta)\n';}else log.textContent+='  (este no salió: sigo con el siguiente; queda pendiente para la próxima tanda)\n';}pump();},e=>{st[n]=2;active--;fails++;log.textContent+='✗ '+it.label+' · '+String(e&&(e.message||e))+'\n';if(++bad>=3){stop=true;log.textContent+='  (tres posts seguidos sin salir: paro aquí)\n';}pump();});}
+    if(!active&&(stop||st.every(x=>x===2))){if(fails)log.textContent+='  ('+fails+' post(s) de esta tanda no salieron; siguen pendientes)\n';resolve();}};pumpRef=pump;pump();});
   document.removeEventListener('visibilitychange',onVis);KA.stop();try{if(WL)WL.release();}catch(e){}
   return ok;}
 async function loadPage(path){const h=await (await fetch(ARCH+path+'?'+Date.now())).text();const m=h.match(/const (?:D|P)=(\[[\s\S]*?\]);\s*const TAGS=("(?:[^"\\]|\\.)*")/);if(!m)return null;

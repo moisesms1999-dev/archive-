@@ -1,5 +1,13 @@
 [
  {
+  "name": "export-7nov",
+  "label": "Choco: thymostchocoinfinite y chocotheshippity (5-7 nov, 15 post(s), en orden, hasta el 7 nov 01:17, con sus tags)",
+  "match": "choco|finity|infinit|survivor|choclship|shippity",
+  "pages": [
+   "choco-export-7nov/index.html"
+  ]
+ },
+ {
   "name": "google-translate-5nov",
   "label": "Choco: thymostchocoinfinite, \"If you're going to use Google translate to pretend…\" (5 nov, 1 post(s), en orden, hasta las 20:59, con sus tags)",
   "match": "choco|finity|infinit|survivor|choclship",
