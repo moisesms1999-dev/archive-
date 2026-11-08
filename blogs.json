@@ -1,5 +1,13 @@
 [
  {
+  "name": "hypocrisy-ask-8nov",
+  "label": "Choco: the-infinite-shipchoco, el ask \"Anti-Choco Hypocrisy!\" (8 nov, 1 post)",
+  "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
+  "pages": [
+   "choco-hypocrisy-ask-8nov/index.html"
+  ]
+ },
+ {
   "name": "slashmoth-anon-7nov",
   "label": "Choco: the-infinite-shipchoco, el ask del enlace a slashmoth (\"pot stirring anon\", 7 nov, 1 post)",
   "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
