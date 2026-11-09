@@ -1,5 +1,13 @@
 [
  {
+  "name": "infinity-choco-8-9nov",
+  "label": "Choco: the-infinity-choco (8-9 nov, 18 posts)",
+  "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
+  "pages": [
+   "choco-infinity-choco-8-9nov/index.html"
+  ]
+ },
+ {
   "name": "hypocrisy-ask-8nov",
   "label": "Choco: the-infinite-shipchoco, el ask \"Anti-Choco Hypocrisy!\" (8 nov, 1 post)",
   "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
