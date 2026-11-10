@@ -1,5 +1,13 @@
 [
  {
+  "name": "only-one-anon-10nov",
+  "label": "Choco: the-only-one-oo-choco, el ask \"This has to be bot behavior…\" (10 nov, 1 post, con sus tags)",
+  "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
+  "pages": [
+   "choco-only-one-anon-10nov/index.html"
+  ]
+ },
+ {
   "name": "big-doubts-10nov",
   "label": "Choco: the-infinity-choco, el ask \"big doubts on people actually following you\" (10 nov, 1 post, con sus tags)",
   "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",

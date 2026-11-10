@@ -99,4 +99,5 @@ exclude:
   - "registro/choco-vpn-17oct/media"
   - "silence-chain/media"
   - "ungrooming-chain/media"
+  - "choco-only-one-anon-10nov/media"
   - "shared.json"
