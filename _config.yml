@@ -100,4 +100,5 @@ exclude:
   - "silence-chain/media"
   - "ungrooming-chain/media"
   - "choco-only-one-anon-10nov/media"
+  - "choco-ezra-aloof-10nov/media"
   - "shared.json"
