@@ -1,5 +1,13 @@
 [
  {
+  "name": "per-the-course-11nov",
+  "label": "Choco: i-amchoco-infinite, el ask del enlace a proship-froggo (\"Per the course.\", 11 nov, 1 post, con sus tags)",
+  "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
+  "pages": [
+   "choco-per-the-course-11nov/index.html"
+  ]
+ },
+ {
   "name": "ezra-aloof-10nov",
   "label": "Choco: the-only-one-oo-choco, el ask \"Kinda weird Ezra tries to act aloof…\" (10 nov, 1 post, con sus tags)",
   "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
