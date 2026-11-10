@@ -1,5 +1,5 @@
 javascript:(async()=>{
-const ARCH='https://moisesms1999-dev.github.io/archive-/';
+const ARCH='https://moisesms1999-dev.github.io/archive-/';const RAWB='https://raw.githubusercontent.com/moisesms1999-dev/archive-/main/';
 {const old=document.getElementById('rnc');if(old)old.remove();}
 const LS={get:(k,d)=>{try{const v=localStorage.getItem(k);return v?JSON.parse(v):d;}catch(e){return d;}},set:(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}};
 let PAR=null,NODATE=false,SLOW=false;
@@ -233,7 +233,7 @@ bA.onclick=async()=>{ain.innerHTML='';let K=[];try{K=await (await fetch(ARCH+'br
 const list=$('div');box.append(list,st,log);
 
 const imgOK=u=>new Promise(res=>{const im=new Image();let done=false;const t=setTimeout(()=>{if(!done){done=true;res(false);}},9000);im.onload=()=>{if(!done){done=true;clearTimeout(t);res(im.naturalWidth>0);}};im.onerror=()=>{if(!done){done=true;clearTimeout(t);res(false);}};im.src=u;});
-async function cleanImgs(h){const us=[...new Set([...h.matchAll(/<img src="([^"]+)"/g)].map(m=>m[1]))].filter(u=>!u.startsWith(ARCH));const bad=[];
+async function cleanImgs(h){const us=[...new Set([...h.matchAll(/<img src="([^"]+)"/g)].map(m=>m[1]))].filter(u=>!u.startsWith(ARCH)&&!u.startsWith(RAWB));const bad=[];
   for(let k=0;k<us.length;k+=8){const part=us.slice(k,k+8);const r=await Promise.all(part.map(imgOK));part.forEach((u,j)=>{if(!r[j])bad.push(u);});}
   let out=h;for(const u of bad){out=out.split('<p><img src="'+u+'"></p>').join('').split('<img src="'+u+'">').join('');}
   return {html:out,bad:bad.length};}
@@ -381,7 +381,7 @@ async function publishOne(blog,html,TAGS,label,key,chain,date,first){
     say('  (no está: lo intento otra vez)');r=await post();}
   if(r&&r.error&&!/429|limit exceeded|rate limit|too many/i.test(why(r)+' '+String(r.error))){const f=await look(1);if(f){say('  (Tumblr dio error ['+why(r).trim()+'] pero el post sí quedó publicado: no lo repito)');r={response:{id_string:f.id,reblog_key:f.key}};}}
   if(r&&r.error&&/429|limit exceeded|rate limit|too many/i.test(why(r)+' '+String(r.error)))return {limit:true,why:why(r)};
-  if(r&&r.error&&/<img src="(?!https:\/\/moisesms1999-dev\.github\.io\/)/.test(Hh)){const ci=await cleanImgs(Hh);if(ci.bad){say('  ('+ci.bad+' imagen(es) caída(s), quitada(s))');Hh=ci.html;body=mk();r=await post();}}
+  if(r&&r.error&&/<img src="(?!https:\/\/(?:moisesms1999-dev\.github\.io|raw\.githubusercontent\.com)\/)/.test(Hh)){const ci=await cleanImgs(Hh);if(ci.bad){say('  ('+ci.bad+' imagen(es) caída(s), quitada(s))');Hh=ci.html;body=mk();r=await post();}}
   if(r&&r.error&&date){if(!NODATE){NODATE=true;log.textContent+='  (Tumblr no aceptó la fecha ['+why(r)+']: sigo de uno en uno, con la hora de ahora)\n';}return {again:true};}
   if(AK){if(r&&r.error){say('  (Tumblr no aceptó la cajita del ask: '+why(r)+'; va como texto)');ASKOFF=true;body=mk();r=await post();ASKOFF=false;}else say('  💬 en su cajita de ask');}
   if(r&&r.error&&isRe&&/404|not found/i.test(why(r)+String(r.error))){isRe=false;restart=true;body=mk();r=await post();}
@@ -420,7 +420,7 @@ async function runBatch(blog,items,status,onOk){
   document.removeEventListener('visibilitychange',onVis);KA.stop();try{if(WL)WL.release();}catch(e){}
   return ok;}
 async function loadPage(path){const h=await (await fetch(ARCH+path+'?'+Date.now())).text();const m=h.match(/const (?:D|P)=(\[[\s\S]*?\]);\s*const TAGS=("(?:[^"\\]|\\.)*")/);if(!m)return null;
-  const base=new URL(path,ARCH).href.replace(/[^/]*$/,'');const D=JSON.parse(m[1]).map(x=>x.split('MEDIA/').join(base+'media/'));const TAGS=JSON.parse(m[2]).split(',').map(s=>s.trim()).filter(Boolean);
+  const base=new URL(path,ARCH).href.replace(/[^/]*$/,'');const D=JSON.parse(m[1]).map(x=>x.split('MEDIA/').join(base.replace(ARCH,RAWB)+'media/'));const TAGS=JSON.parse(m[2]).split(',').map(s=>s.trim()).filter(Boolean);
   const labs={};let lm;const lre=/data-i="(\d+)"[^>]*>(?:<span[^>]*>[^<]*<\/span>)?<span class="t">([^<]*)<\/span>/g;while((lm=lre.exec(h)))labs[+lm[1]]=lm[2].replace(/&quot;/g,'"').replace(/&#x27;/g,"'").replace(/&amp;/g,'&');
   let TG=null;const tg=h.match(/const TG=(\[[\s\S]*?\]);<\/script>/);if(tg){try{TG=JSON.parse(tg[1]);}catch(e){TG=null;}}
   return {D,TAGS,labs,TG};}
