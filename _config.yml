@@ -110,4 +110,6 @@ exclude:
   - "choco-friends-along-the-way-11nov/media"
   - "choco-tiktok-timmy-11nov/media"
   - "choco-difference-is-nothing-11nov/media"
+  - "choco-internet-safety-11nov/media"
+  - "choco-set-the-pace-11nov/media"
   - "shared.json"

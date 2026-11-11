@@ -1,5 +1,21 @@
 [
  {
+  "name": "set-the-pace-11nov",
+  "label": "Choco: i-amchoco-infinite, el ask \"ROLF, I don't care about the drama…\" (11 nov, 1 post, con sus tags)",
+  "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
+  "pages": [
+   "choco-set-the-pace-11nov/index.html"
+  ]
+ },
+ {
+  "name": "internet-safety-11nov",
+  "label": "Choco: i-amchoco-infinite, el ask \"A Choco stalker with amnesia?\" (11 nov, 1 post, con sus tags)",
+  "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
+  "pages": [
+   "choco-internet-safety-11nov/index.html"
+  ]
+ },
+ {
   "name": "difference-is-nothing-11nov",
   "label": "Choco: i-amchoco-infinite, el ask \"The antis had no argument to this…\" (11 nov, 1 post, con sus tags)",
   "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
