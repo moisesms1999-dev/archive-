@@ -1,5 +1,13 @@
 [
  {
+  "name": "dedicated-fanbase-11nov",
+  "label": "Choco: i-amchoco-infinite, el ask \"Reminds me of the racooninthebox and the phroggz losers…\" (11 nov, 1 post, con sus tags)",
+  "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
+  "pages": [
+   "choco-dedicated-fanbase-11nov/index.html"
+  ]
+ },
+ {
   "name": "ditto-11nov",
   "label": "Choco: i-amchoco-infinite, el ask \"Are they new to the internet?\" (11 nov, 1 post, con sus tags)",
   "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
