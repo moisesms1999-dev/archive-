@@ -115,4 +115,5 @@ exclude:
   - "choco-ditto-11nov/media"
   - "choco-dedicated-fanbase-11nov/media"
   - "choco-axolotl-11nov/media"
+  - "choco-fav-muglox-11nov/media"
   - "shared.json"

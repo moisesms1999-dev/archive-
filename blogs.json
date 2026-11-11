@@ -1,5 +1,13 @@
 [
  {
+  "name": "fav-muglox-11nov",
+  "label": "Choco: i-amchoco-infinite, el ask \"If u like mirumo de pon what's ur fav muglox?\" (11 nov, 1 post, con sus tags)",
+  "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
+  "pages": [
+   "choco-fav-muglox-11nov/index.html"
+  ]
+ },
+ {
   "name": "axolotl-11nov",
   "label": "Choco: i-amchoco-infinite, el ask \"Choco how's it feel to be a primordial eldritch creature…\" (11 nov, 1 post, con sus tags)",
   "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
