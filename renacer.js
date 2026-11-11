@@ -333,11 +333,11 @@ async function askInbox(blog,AK,tags,date,say){
   const R=r.response||r;return {response:{id_string:String(R.id_string||R.id||sid),reblog_key:R.reblog_key||null}};
 }
 async function getAny(blog,id){const g=await api('/blog/'+blog+'/posts/'+id+'?npf=true');const G=g&&(g.response||g);const PP=G&&(G.posts&&G.posts[0]||G);return PP&&!PP.error&&(PP.id||PP.id_string||PP.content)?PP:null;}
-async function findExisting(blog,key,sg){const ids=((LK&&LK.k)||{})[key]||[];const T=(LK&&LK.t)||{};const M=(LS.get('rnc_links',{})[blog])||{};const cand=[];
+async function findExisting(blog,key,sg){const ids=((LK&&LK.k)||{})[key]||[];const T=(LK&&LK.t)||{};const M=(LS.get('rnc_links',{})[blog])||{};const cand=[];const ORIG=new Set();Object.values((LK&&LK.k)||{}).forEach(v=>(v||[]).forEach(x=>ORIG.add(String(x))));
   ids.forEach(id=>{const x=T[id];if(x&&x.b===blog)cand.push(String(id));const u=M[id];if(u){const m=String(u).match(/\/(\d{15,})(?:[\/?#]|$)/);if(m)cand.push(m[1]);}});
-  for(const id of [...new Set(cand)]){const PP=(await getPost(blog,id))||(await getAny(blog,id));if(PP)return {id,key:PP.reblog_key||null};}
+  for(const id of [...new Set(cand)]){const PP=(await getPost(blog,id))||(await getAny(blog,id));if(PP)return {id,key:PP.reblog_key||null,orig:ORIG.has(String(id))};}
   if(sg&&sg.t&&sg.t.length>=20){if(!BL||BL.blog!==blog)BL={blog,pages:[]};for(const [pi,off] of [[0,0],[1,20],[2,40]]){let P=BL.pages[pi];if(!P){const g=await api('/blog/'+blog+'/posts?npf=true&limit=20&offset='+off,{},30000);const G=g&&(g.response||g);P=(G&&G.posts)||[];BL.pages[pi]=P;}
-    for(const p of P){if(!p||!p.content||(p.trail&&p.trail.length)||p.parent_post_id)continue;if(USED.has(String(p.id_string||p.id)))continue;if(sameSig(sg,sigC(p.content)))return {id:String(p.id_string||p.id),key:p.reblog_key||null,bySig:true};}
+    for(const p of P){if(!p||!p.content||(p.trail&&p.trail.length)||p.parent_post_id)continue;if(USED.has(String(p.id_string||p.id)))continue;if(sameSig(sg,sigC(p.content)))return {id:String(p.id_string||p.id),key:p.reblog_key||null,bySig:true,orig:ORIG.has(String(p.id_string||p.id))};}
     if(P.length<20)break;}}
   return null;}
 async function publishOne(blog,html,TAGS,label,key,chain,date,first,G){
@@ -357,7 +357,7 @@ async function publishOne(blog,html,TAGS,label,key,chain,date,first,G){
   let body=mk();const T1=Date.now();const mine=()=>sigC(body.content);const lab=label.length>70?label.slice(0,70)+'…':label;
   const post=()=>{const t0=Date.now();const iv=setInterval(()=>{say2('⏳ Tumblr lleva '+Math.round((Date.now()-t0)/1000)+' s sin contestar con: '+lab);},30000);const send=async()=>{if(!hasVid(body))return api('/blog/'+blog+'/posts',{method:'POST',body},PT);let fd;try{fd=await vidForm(body);}catch(e){return {error:'no pude bajar el vídeo: '+(e&&e.message||e),vidfail:true};}say('  🎬 subiendo el vídeo a Tumblr');return api('/blog/'+blog+'/posts',{method:'POST',body:fd,headers:{'Content-Type':'multipart/form-data'}},PT);};return send().then(x=>{clearInterval(iv);say2('');return x;});};
   const look=async n=>{for(let k=0;k<n;k++){await sleep(k?(FAST()?5000:15000):3000);const f=await findMine(blog,mine(),Math.floor(T1/1000),tags,5);if(f)return f;}return null;};
-  if(ovr.checked&&!isRe&&key){const ex=await findExisting(blog,key,mine());if(ex){if(ex.bySig)say('  (lo encontré en el blog por su texto: es el mismo post)');
+  if(ovr.checked&&!isRe&&key){const ex=await findExisting(blog,key,mine());if(ex){if(ex.orig){const nu0='https://www.tumblr.com/'+blog+'/'+ex.id;remember(blog,key,nu0);log.textContent+=pre+'= '+label+' · el original ya está en este blog ('+ex.id+'): no lo toco\n';log.scrollTop=1e9;return {id:String(ex.id),key:ex.key,ms:Date.now()-T0,api:0,img:0,edited:false,orig:true};}if(ex.bySig)say('  (lo encontré en el blog por su texto: es el mismo post)');
     const put=async b=>{if(!hasVid(b))return api('/blog/'+blog+'/posts/'+ex.id,{method:'PUT',body:b},PT);let fd;try{fd=await vidForm(b);}catch(e){return {error:'no pude bajar el vídeo: '+(e&&e.message||e)};}return api('/blog/'+blog+'/posts/'+ex.id,{method:'PUT',body:fd,headers:{'Content-Type':'multipart/form-data'}},PT);};
     let b2=mk();delete b2.date;if(G)await G.wait;let rr=await put(b2);if(G)G.release();
     if(rr&&rr.error&&AK){ASKOFF=true;b2=mk();ASKOFF=false;delete b2.date;rr=await put(b2);}
