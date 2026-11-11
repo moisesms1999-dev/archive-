@@ -114,4 +114,5 @@ exclude:
   - "choco-set-the-pace-11nov/media"
   - "choco-ditto-11nov/media"
   - "choco-dedicated-fanbase-11nov/media"
+  - "choco-axolotl-11nov/media"
   - "shared.json"
