@@ -84,7 +84,7 @@ const bstyle='display:block;width:100%;text-align:left;background:#5a3a1e;color:
 const bF=$('button',{textContent:'👥 Seguir a todos mis seguidores',style:bstyle});
 const bL=$('button',{textContent:'📋 Seguir a mi lista fija',style:bstyle});
 const sp=$('select',{style:'width:100%;padding:9px;border-radius:10px;background:#1a120b;color:#ffd9b0;border:1px solid #5a3a1e;margin-top:6px'});sp.append($('option',{value:'n',textContent:'Normal (uno cada 6 a 12 s; el seguro con un blog nuevo)'}),$('option',{value:'f',textContent:'Rápido (uno cada 2 a 4 s)'}),$('option',{value:'a',textContent:'Como antes (uno cada 0,8 a 1,6 s)'}),$('option',{value:'t',textContent:'Turbo (sin espera)'}));
-const CAP=200;const fkey=()=>'rnc_fday_'+sel.value+'_'+new Date().toISOString().slice(0,10);const ftoday=()=>LS.get(fkey(),0);
+const CAP=200;const fkey=()=>'rnc_fts_'+sel.value;const fts=()=>{const n=Date.now();let a=LS.get(fkey(),null);if(!Array.isArray(a)){a=[];const k0=new Date(n).toISOString().slice(0,10),k1=new Date(n-864e5).toISOString().slice(0,10),m0=Date.parse(k0+'T00:00:00Z');const c1=LS.get('rnc_fday_'+sel.value+'_'+k1,0),c0=LS.get('rnc_fday_'+sel.value+'_'+k0,0);for(let i=0;i<c1;i++)a.push(m0);for(let i=0;i<c0;i++)a.push(n);}a=a.filter(t=>n-t<864e5);LS.set(fkey(),a);return a;};const ftoday=()=>fts().length;const fadd=()=>{const a=fts();a.push(Date.now());LS.set(fkey(),a);};const fwhen=()=>{const a=fts();if(a.length<CAP)return 'ya';const t=new Date(a[a.length-CAP]+864e5);return 'a partir de las '+t.toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit'})+(t.toDateString()!==new Date().toDateString()?' de mañana':'');};async function followingSet(){const S=new Set();let off=0;for(let k=0;k<250;k++){const r=await api('/user/following?limit=20&offset='+off);const R=r&&(r.response||r);if(!R||!R.blogs)break;R.blogs.forEach(b=>b&&b.name&&S.add(String(b.name).toLowerCase()));if(R.blogs.length<20)break;off+=20;}return S;}
 const fnote=$('div',{style:'font-size:12px;color:#a58a6a;margin-top:4px'});
 fbox.append($('b',{textContent:'Seguidores',style:'color:#ffb066'}),sp,fnote,bF,bL,fst,flog);box.append(fbox);
 /* Perfil: título, bio, foto, cabecera, colores y pinned de un toque */
@@ -123,7 +123,7 @@ bP.onclick=async()=>{const blog=sel.value;const S=PROF&&PROF.sets[+psel.value];i
   }catch(e){say('✗ '+String(e&&(e.message||e)));pst.textContent='Algo falló; mira el registro.';}
   bP.disabled=false;};
 pbox.append($('b',{textContent:'🪪 Perfil',style:'color:#ffb066'}),psel,phsel,$('div',{},lT,lB,lA,lH,lC,lP),pnote,bP,pst,plog);box.append(pbox);
-const fupd=()=>{fnote.textContent='Tope: '+CAP+' follows al día por blog, el límite de Tumblr (hoy llevas '+ftoday()+' en '+sel.value+'); del 201 en adelante Tumblr dice OK pero no sigue a nadie. Con el blog recién hecho, pon foto y cabecera y publica algo antes de seguir.';};
+const fupd=()=>{fnote.textContent='Tope: '+CAP+' follows cada 24 horas por blog, contadas hora a hora (no se reinicia a medianoche), el límite de Tumblr. Llevas '+ftoday()+' en '+sel.value+(ftoday()>=CAP?'; puedes seguir otra vez '+fwhen():'')+'. Del 201 en adelante Tumblr dice OK pero no sigue a nadie. Los que ya sigues se saltan solos. Con el blog recién hecho, pon foto y cabecera y publica algo antes de seguir.';};
 fupd();sel.addEventListener('change',fupd);
 sp.value=LS.get('rnc_fpace','n');sp.onchange=()=>LS.set('rnc_fpace',sp.value);
 const nap=()=>sp.value==='t'?Promise.resolve():new Promise(r=>setTimeout(r,sp.value==='a'?800+Math.random()*800:sp.value==='f'?2000+Math.random()*2000:6000+Math.random()*6000));
@@ -131,22 +131,21 @@ async function followAll(names,label){
   bF.disabled=bL.disabled=true;KA.start();let ok=0,n=0,capped=false;
   for(const nm of names){if(ftoday()>=CAP){capped=true;break;}n++;fst.textContent=label+': '+n+' de '+names.length+' ('+nm+') · hoy '+ftoday()+' de '+CAP;
     const r=await api('/user/follow',{method:'POST',body:{url:'https://'+nm+'.tumblr.com'}});
-    if(r&&!r.error&&!(r.meta&&r.meta.status>=400)){ok++;LS.set(fkey(),ftoday()+1);flog.textContent+='✓ '+nm+'\n';}else flog.textContent+='✗ '+nm+' · '+why(r)+'\n';
+    if(r&&!r.error&&!(r.meta&&r.meta.status>=400)){ok++;fadd();flog.textContent+='✓ '+nm+'\n';}else flog.textContent+='✗ '+nm+' · '+why(r)+'\n';
     flog.scrollTop=1e9;await nap();}
-  fst.textContent=label+': hecho, '+ok+' seguidos de '+names.length+'.'+(capped?' Tope de '+CAP+' follows al día en este blog (el límite de Tumblr): los que faltan, mañana; pasarse del límite es lo que los deja en fantasma.':'');bF.disabled=bL.disabled=false;KA.stop();if(typeof fupd==='function')fupd();
+  fst.textContent=label+': hecho, '+ok+' seguidos de '+names.length+'.'+(capped?' Tope de '+CAP+' follows en 24 horas en este blog (el límite de Tumblr): los que faltan, '+fwhen()+', y se salta solo a los que ya sigues; pasarse del límite es lo que los deja en fantasma.':'');bF.disabled=bL.disabled=false;KA.stop();if(typeof fupd==='function')fupd();
 }
 bF.onclick=async()=>{const blog=sel.value;fst.textContent='Leyendo seguidores de '+blog+'…';let users=[],off=0,total=0;
   for(let k=0;k<100;k++){const r=await api('/blog/'+blog+'/followers?limit=20&offset='+off);const R=r&&(r.response||r);
     if(!R||!R.users){fst.textContent='No pude leer los seguidores: '+JSON.stringify(r).slice(0,150);return;}
     total=R.total_users||0;users=users.concat(R.users);if(R.users.length<20||users.length>=total)break;off+=20;}
-  const todo=users.filter(x=>!x.following).map(x=>x.name);
+  const F0=await followingSet();const todo=users.filter(x=>!x.following&&!F0.has(String(x.name).toLowerCase())).map(x=>x.name);
   flog.textContent='Seguidores: '+total+'. Por seguir: '+todo.length+'\n';
   if(!todo.length){fst.textContent='Ya los sigues a todos.';return;}
   followAll(todo,'Seguidores');};
 bL.onclick=async()=>{fst.textContent='Leyendo la lista…';let t='';try{t=await (await fetch(ARCH+'lista.txt?'+Date.now())).text();}catch(e){}
   const L=[...new Set(t.split(/\r?\n/).map(x=>x.trim().toLowerCase().replace(/^@/,'')).filter(Boolean))];
-  if(!L.length){fst.textContent='La lista está vacía.';return;}
-  followAll(L,'Lista fija');};
+  if(!L.length){fst.textContent='La lista está vacía.';return;}fst.textContent='Mirando a quién sigues ya…';const F=await followingSet();const todo=L.filter(x=>!F.has(x));flog.textContent='Lista fija: '+L.length+'. Ya los sigues: '+(L.length-todo.length)+'. Por seguir: '+todo.length+'\n';if(!todo.length){fst.textContent='Ya sigues a todos los de la lista.';return;}followAll(todo,'Lista fija');};
 const kbox=$('div',{style:'background:#2a1a0e;border:1px solid #5a3a1e;border-radius:12px;padding:10px;margin:0 0 12px'});
 const bK=$('button',{textContent:'🚫 Bloquear a todos los de mi lista de bloqueos',style:bstyle});
 const kst=$('div',{style:'color:#9be59b;font-size:14px;min-height:1.2em;margin-top:6px'});
