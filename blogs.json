@@ -1,5 +1,13 @@
 [
  {
+  "name": "callouts-lgw-strat-26oct",
+  "label": "Choco: \"Lol, cope harder loser…\" con el call-out a lost-gamblers-wish (26 oct, 1 post, con sus tags)",
+  "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
+  "pages": [
+   "choco-callouts-lgw-strat-26oct/index.html"
+  ]
+ },
+ {
   "name": "fav-muglox-11nov",
   "label": "Choco: i-amchoco-infinite, el ask \"If u like mirumo de pon what's ur fav muglox?\" (11 nov, 1 post, con sus tags)",
   "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
