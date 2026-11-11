@@ -1,5 +1,13 @@
 [
  {
+  "name": "friends-along-the-way-11nov",
+  "label": "Choco: i-amchoco-infinite, el ask \"Guys you don't understand…\" (11 nov, 1 post, con sus tags)",
+  "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
+  "pages": [
+   "choco-friends-along-the-way-11nov/index.html"
+  ]
+ },
+ {
   "name": "free-entertainment-11nov",
   "label": "Choco: i-amchoco-infinite, el ask \"We're genuinely here for the lolz too…\" (11 nov, 1 post, con sus tags)",
   "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
