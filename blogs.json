@@ -1,5 +1,13 @@
 [
  {
+  "name": "tiktok-timmy-11nov",
+  "label": "Choco: i-amchoco-infinite, el ask \"You can tell that's a TikTok Timmy…\" (11 nov, 1 post, con sus tags)",
+  "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
+  "pages": [
+   "choco-tiktok-timmy-11nov/index.html"
+  ]
+ },
+ {
   "name": "friends-along-the-way-11nov",
   "label": "Choco: i-amchoco-infinite, el ask \"Guys you don't understand…\" (11 nov, 1 post, con sus tags)",
   "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
