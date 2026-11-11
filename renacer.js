@@ -49,7 +49,7 @@ const wbon=$('input',{type:'checkbox',checked:LS.get('rnc_wbon',true)});wbon.onc
 const wbst=$('div',{style:'font-size:12px;color:#a58a6a;margin:2px 0 0 28px;min-height:1em'});
 const wbl=$('label',{style:'display:flex;gap:8px;align-items:center;margin:0 0 2px;color:#ffb066;font-weight:700;font-size:14px'});wbl.append(wbon,$('span',{textContent:'🗄 Guardar cada post nuevo en el Wayback Machine, para que sus enlaces no mueran'}));
 PAR=$('select',{style:'width:100%;padding:9px;border-radius:10px;background:#1a120b;color:#ffd9b0;border:1px solid #5a3a1e;margin:8px 0 0'});
-[['c','🐢 Con calma: un post cada 30 a 60 s (el más seguro con un blog nuevo)'],['r','🚶 Rápido: un post cada 8 a 15 s'],['t','⚡ Turbo: sin espera, de uno en uno y en orden (con un blog recién hecho, Tumblr lo tumba por spam)'],['m','🚀 Turbo máximo: hasta 4 posts a la vez (el orden puede bailar un poco)']].forEach(([v,t])=>PAR.append($('option',{value:v,textContent:t})));
+[['c','🐢 Con calma: un post cada 30 a 60 s (el más seguro con un blog nuevo)'],['r','🚶 Rápido: un post cada 8 a 15 s'],['t','⚡ Turbo: sin espera, de uno en uno y en orden (con un blog recién hecho, Tumblr lo tumba por spam)'],['m','🚀 Turbo máximo: prepara hasta 4 posts a la vez y los publica en orden']].forEach(([v,t])=>PAR.append($('option',{value:v,textContent:t})));
 {const v=String(LS.get('rnc_pace','c'));PAR.value=['c','r','t','m'].includes(v)?v:'c';}PAR.onchange=()=>LS.set('rnc_pace',PAR.value);
 const bgon=$('input',{type:'checkbox',checked:LS.get('rnc_bgon',true)});bgon.onchange=()=>LS.set('rnc_bgon',bgon.checked);
 const bgl=$('label',{style:'display:flex;gap:8px;align-items:center;margin:8px 0 0;color:#ffb066;font-weight:700;font-size:14px'});bgl.append(bgon,$('span',{textContent:'🔈 Seguir publicando aunque cambies de pestaña o de app (pone un sonido grave inaudible mientras publica)'}));
@@ -340,7 +340,7 @@ async function findExisting(blog,key,sg){const ids=((LK&&LK.k)||{})[key]||[];con
     for(const p of P){if(!p||!p.content||(p.trail&&p.trail.length)||p.parent_post_id)continue;if(USED.has(String(p.id_string||p.id)))continue;if(sameSig(sg,sigC(p.content)))return {id:String(p.id_string||p.id),key:p.reblog_key||null,bySig:true};}
     if(P.length<20)break;}}
   return null;}
-async function publishOne(blog,html,TAGS,label,key,chain,date,first){
+async function publishOne(blog,html,TAGS,label,key,chain,date,first,G){
   const T0=Date.now();let pre='';const say=s=>{pre+=s+'\n';};
   const em=html.match(/^\s*<!--reblog ([\w-]+) (\d+)-->(?:<!--shot (https:[^\s<>"]+)-->)?/);
   if(em){html=html.slice(em[0].length);const bi=await api('/blog/'+em[1]+'/info');const BI=bi&&(bi.response||bi);const pu=BI&&BI.blog&&BI.blog.uuid;const PB=pu?await getPost(em[1],em[2]):null;
@@ -359,7 +359,7 @@ async function publishOne(blog,html,TAGS,label,key,chain,date,first){
   const look=async n=>{for(let k=0;k<n;k++){await sleep(k?(FAST()?5000:15000):3000);const f=await findMine(blog,mine(),Math.floor(T1/1000),tags,5);if(f)return f;}return null;};
   if(ovr.checked&&!isRe&&key){const ex=await findExisting(blog,key,mine());if(ex){if(ex.bySig)say('  (lo encontré en el blog por su texto: es el mismo post)');
     const put=async b=>{if(!hasVid(b))return api('/blog/'+blog+'/posts/'+ex.id,{method:'PUT',body:b},PT);let fd;try{fd=await vidForm(b);}catch(e){return {error:'no pude bajar el vídeo: '+(e&&e.message||e)};}return api('/blog/'+blog+'/posts/'+ex.id,{method:'PUT',body:fd,headers:{'Content-Type':'multipart/form-data'}},PT);};
-    let b2=mk();delete b2.date;let rr=await put(b2);
+    let b2=mk();delete b2.date;if(G)await G.wait;let rr=await put(b2);if(G)G.release();
     if(rr&&rr.error&&AK){ASKOFF=true;b2=mk();ASKOFF=false;delete b2.date;rr=await put(b2);}
     const ni=nimg(Hh);
     if(!rr||rr.error){log.textContent+=pre+'✗ '+label+' · ya estaba en el blog ('+ex.id+') y Tumblr no dejó sobrescribirlo: '+why(rr||{}).trim()+'. No publico otro para no duplicarlo; sigo con el siguiente.\n';log.scrollTop=1e9;return {skip:true,failed:true};}
@@ -369,8 +369,8 @@ async function publishOne(blog,html,TAGS,label,key,chain,date,first){
     return {id:String(ex.id),key:ex.key,ms:Date.now()-T0,api:Date.now()-T1,img:ni,edited:true};}}
   let r=null,viaInbox=false;
   if(first){const f=await findMine(blog,mine(),0,tags,3);if(f){say('  (ya estaba en el blog de la vez anterior, aunque Tumblr no llegó a contestar: no lo repito)');r={response:{id_string:f.id,reblog_key:f.key}};}}
-  if(!r&&AK&&!isRe){const q=await askInbox(blog,AK,tags,date,say);if(q){r=q;viaInbox=true;say('  📮 ask mandado al buzón de '+blog+' y contestado');}}
-  if(!r)r=await post();
+  if(G)await G.wait;if(!r&&AK&&!isRe){const q=await askInbox(blog,AK,tags,date,say);if(q){r=q;viaInbox=true;say('  📮 ask mandado al buzón de '+blog+' y contestado');}}
+  if(!r)r=await post();if(G)G.release();
   if(r&&r.error&&!r.timeout&&hasVid(body)&&!/429|limit exceeded|rate limit|too many/i.test(why(r)+' '+String(r.error))){const f=await look(1);if(f){say('  (Tumblr dio error pero el post con vídeo sí quedó publicado: no lo repito)');r={response:{id_string:f.id,reblog_key:f.key}};}else{say('  (Tumblr no aceptó el vídeo subido ['+why(r).trim()+']: va como enlace al vídeo)');VIDOFF=true;body=mk();VIDOFF=false;r=await post();}}
   for(let tryN=1;r&&r.timeout;tryN++){log.textContent+=pre+'  (Tumblr lleva 2 min sin contestar con este post: miro si ya está en el blog)\n';pre='';log.scrollTop=1e9;
     const f=await look(6);if(f){say('  (Tumblr lo publicó aunque no contestó)');r={response:{id_string:f.id,reblog_key:f.key}};break;}
@@ -401,18 +401,18 @@ async function runBatch(blog,items,status,onOk){
   const st=new Array(N).fill(0);let active=0,stop=false,ok=0,hold=0,hT=null,bad=0,fails=0;USED=new Set();
   const K=(LK&&LK.k)||{},owner={};items.forEach((it,m)=>{(K[it.key]||[]).forEach(id=>{owner[id]=m;});});
   const deps=items.map((it,n)=>it.wait?[...Array(n).keys()]:[...linkIds(it.html)].map(id=>owner[id]).filter(m=>m!==undefined&&m<n));
-  let started=0,WL=null,pumpRef=null;KA.start();const wl=async()=>{try{if(navigator.wakeLock&&document.visibilityState==='visible')WL=await navigator.wakeLock.request('screen');}catch(e){}};await wl();
+  let started=0,WL=null,pumpRef=null,prevPub=Promise.resolve();KA.start();const wl=async()=>{try{if(navigator.wakeLock&&document.visibilityState==='visible')WL=await navigator.wakeLock.request('screen');}catch(e){}};await wl();
   const onVis=()=>{KA.poke();if(document.visibilityState==='visible'){wl();if(pumpRef)pumpRef();}};document.addEventListener('visibilitychange',onVis);
   await new Promise(resolve=>{const pump=()=>{
     if(hold>Date.now()){clearTimeout(hT);hT=setTimeout(pump,hold-Date.now()+20);return;}
     while(!stop&&active<conc()){const n=st.indexOf(0);if(n<0)break;const it=items[n];
       if(deps[n].some(m=>st[m]!==2))break;
-      st[n]=1;active++;status(n,active);const ch=it.chain?it.chain():null;
-      publishOne(blog,it.html,it.TAGS,it.label,it.key,ch,null,started++===0).then(res=>{active--;
+      st[n]=1;active++;status(n,active);const ch=it.chain?it.chain():null;let rel;const G={wait:prevPub,release:()=>rel&&rel()};prevPub=new Promise(z=>{rel=z;});
+      publishOne(blog,it.html,it.TAGS,it.label,it.key,ch,null,started++===0,G).then(res=>{G.release();active--;
         if(res&&res.again){st[n]=0;pump();return;}if(res&&res.skip){st[n]=2;if(res.failed)fails++;pump();return;}
         if(res&&res.limit&&!it.retried){it.retried=true;SLOW=true;hold=Date.now()+5000;log.textContent+='  (Tumblr frena ['+res.why+']: espero 5 s y sigo de uno en uno)\n';st[n]=0;pump();return;}st[n]=2;
         if(res&&res.restart)log.textContent+='  (el post anterior de la cadena ya no existe: empiezo cadena nueva)\n';
-        if(res&&res.id){ok++;bad=0;USED.add(String(res.id));onOk(it,res,n);const w=st.some(x=>x===0)?pace():0;if(w){hold=Date.now()+w;status(n,0,Math.round(w/1000));}}else if(res&&(res.limit||res.stall)){if(res.limit)log.textContent+='✗ '+it.label+' · '+res.why+'\n';stop=true;}else{fails++;if(++bad>=3){stop=true;log.textContent+='  (tres posts seguidos sin salir: paro aquí; vuelve a pulsar y sigue desde el primero que falta)\n';}else log.textContent+='  (este no salió: sigo con el siguiente; queda pendiente para la próxima tanda)\n';}pump();},e=>{st[n]=2;active--;fails++;log.textContent+='✗ '+it.label+' · '+String(e&&(e.message||e))+'\n';if(++bad>=3){stop=true;log.textContent+='  (tres posts seguidos sin salir: paro aquí)\n';}pump();});}
+        if(res&&res.id){ok++;bad=0;USED.add(String(res.id));onOk(it,res,n);const w=st.some(x=>x===0)?pace():0;if(w){hold=Date.now()+w;status(n,0,Math.round(w/1000));}}else if(res&&(res.limit||res.stall)){if(res.limit)log.textContent+='✗ '+it.label+' · '+res.why+'\n';stop=true;}else{fails++;if(++bad>=3){stop=true;log.textContent+='  (tres posts seguidos sin salir: paro aquí; vuelve a pulsar y sigue desde el primero que falta)\n';}else log.textContent+='  (este no salió: sigo con el siguiente; queda pendiente para la próxima tanda)\n';}pump();},e=>{G.release();st[n]=2;active--;fails++;log.textContent+='✗ '+it.label+' · '+String(e&&(e.message||e))+'\n';if(++bad>=3){stop=true;log.textContent+='  (tres posts seguidos sin salir: paro aquí)\n';}pump();});}
     if(!active&&(stop||st.every(x=>x===2))){if(fails)log.textContent+='  ('+fails+' post(s) de esta tanda no salieron; siguen pendientes)\n';resolve();}};pumpRef=pump;pump();});
   document.removeEventListener('visibilitychange',onVis);KA.stop();try{if(WL)WL.release();}catch(e){}
   return ok;}
