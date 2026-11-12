@@ -1,5 +1,13 @@
 [
  {
+  "name": "grooming-ring-12nov",
+  "label": "Choco: i-amchoco-infinite, el ask \"You have allowed a child about the age of 12 or 13…\" (12 nov, 1 post, con sus tags)",
+  "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
+  "pages": [
+   "choco-grooming-ring-12nov/index.html"
+  ]
+ },
+ {
   "name": "callouts-lgw-strat-26oct",
   "label": "Choco: \"Lol, cope harder loser…\" con el call-out a lost-gamblers-wish (26 oct, 1 post, con sus tags)",
   "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
