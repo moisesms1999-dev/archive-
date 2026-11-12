@@ -120,4 +120,5 @@ exclude:
   - "choco-damagedcode-12nov/media"
   - "choco-slenderman-8nov/media"
   - "choco-address-the-lie-12nov/media"
+  - "choco-imitation-12nov/media"
   - "shared.json"
