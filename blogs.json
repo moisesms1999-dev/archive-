@@ -1,5 +1,13 @@
 [
  {
+  "name": "address-the-lie-12nov",
+  "label": "Choco: i-amchoco-infinite, el ask \"Address the lie.\" (12 nov, 1 post, con sus tags)",
+  "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
+  "pages": [
+   "choco-address-the-lie-12nov/index.html"
+  ]
+ },
+ {
   "name": "slenderman-8nov",
   "label": "Choco: the-infinity-choco, el ask \"Ain't this the bitch that went on about Mirmo being fictional…\" (8 nov, 1 post, con sus tags)",
   "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
