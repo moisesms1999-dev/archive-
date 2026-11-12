@@ -117,4 +117,5 @@ exclude:
   - "choco-axolotl-11nov/media"
   - "choco-fav-muglox-11nov/media"
   - "choco-grooming-ring-12nov/media"
+  - "choco-damagedcode-12nov/media"
   - "shared.json"

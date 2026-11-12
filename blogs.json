@@ -1,5 +1,13 @@
 [
  {
+  "name": "damagedcode-12nov",
+  "label": "Choco: i-amchoco-infinite, el ask \"Love how charquilolsho backpedaled…\" (12 nov, 1 post, con sus tags)",
+  "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
+  "pages": [
+   "choco-damagedcode-12nov/index.html"
+  ]
+ },
+ {
   "name": "grooming-ring-12nov",
   "label": "Choco: i-amchoco-infinite, el ask \"You have allowed a child about the age of 12 or 13…\" (12 nov, 1 post, con sus tags)",
   "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
