@@ -1,5 +1,13 @@
 [
  {
+  "name": "slenderman-8nov",
+  "label": "Choco: the-infinity-choco, el ask \"Ain't this the bitch that went on about Mirmo being fictional…\" (8 nov, 1 post, con sus tags)",
+  "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
+  "pages": [
+   "choco-slenderman-8nov/index.html"
+  ]
+ },
+ {
   "name": "damagedcode-12nov",
   "label": "Choco: i-amchoco-infinite, el ask \"Love how charquilolsho backpedaled…\" (12 nov, 1 post, con sus tags)",
   "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
