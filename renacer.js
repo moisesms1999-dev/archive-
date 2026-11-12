@@ -325,8 +325,8 @@ async function askInbox(blog,AK,tags,date,say){
     const f=L.find(p=>p&&(sid?String(p.id_string||p.id)===sid:nt(p.content).startsWith(qt)));
     if(f){sid=String(f.id_string||f.id);const lay=(f.layout||[]).find(l=>l&&l.type==='ask');if(lay&&lay.blocks&&lay.blocks.length&&f.content&&lay.blocks.every(i=>f.content[i]))QQ=lay.blocks.map(i=>f.content[i]);break;}}
   if(!sid){say('  (el ask no apareció en el buzón)');return null;}
-  const body={content:QQ.concat(A),layout:[{type:'ask',blocks:QQ.map((_,k)=>k)}],state:'published',tags};if(date)body.date=date;
-  let r=await api('/blog/'+blog+'/posts/'+sid,{method:'PUT',body});
+  const QL=QQ.map((b,k)=>{const o=Q[k];return (o&&o.formatting&&o.formatting.length&&b&&String(b.text||'').trim()===String(o.text||'').trim())?Object.assign({},b,{formatting:o.formatting}):b;});const LK2=QL.some((b,k)=>b!==QQ[k]);const body={content:QL.concat(A),layout:[{type:'ask',blocks:QL.map((_,k)=>k)}],state:'published',tags};if(date)body.date=date;
+  let r=await api('/blog/'+blog+'/posts/'+sid,{method:'PUT',body});if(r&&r.error&&LK2){body.content=QQ.concat(A);r=await api('/blog/'+blog+'/posts/'+sid,{method:'PUT',body});if(!(r&&r.error))say('  (Tumblr no dejó poner los enlaces de la pregunta como enlace: salen como texto)');}
   if(r&&r.error&&date){delete body.date;r=await api('/blog/'+blog+'/posts/'+sid,{method:'PUT',body});}
   if(!r||r.error){say('  (no pude contestar el ask del buzón: '+why(r||{}).trim()+'; lo quito del buzón)');await api('/blog/'+blog+'/post/delete',{method:'POST',body:{id:sid}});return null;}
   const R=r.response||r;return {response:{id_string:String(R.id_string||R.id||sid),reblog_key:R.reblog_key||null}};
