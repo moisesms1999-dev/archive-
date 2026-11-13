@@ -127,4 +127,5 @@ exclude:
   - "choco-giri-evidence-13nov/media"
   - "choco-actually-sanctuarium-ask-13nov/media"
   - "choco-signed-g-ask-13nov/media"
+  - "choco-liar-13nov/media"
   - "shared.json"
