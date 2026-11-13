@@ -1,5 +1,13 @@
 [
  {
+  "name": "giri-evidence-13nov",
+  "label": "Choco: el reblog \"“Shit evidence” is when people have hundreds of thousands of receipts…\" (13 nov, 1 post, con toda la cadena)",
+  "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
+  "pages": [
+   "choco-giri-evidence-13nov/index.html"
+  ]
+ },
+ {
   "name": "burner-is-sanctuarium-13nov",
   "label": "Choco: el post \"Now that's been established the burner account is Sanctuarium…\" (13 nov, 1 post, con sus imágenes y sus tags)",
   "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
