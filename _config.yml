@@ -125,4 +125,5 @@ exclude:
   - "choco-adult-spaces-ask-13nov/media"
   - "choco-burner-is-sanctuarium-13nov/media"
   - "choco-giri-evidence-13nov/media"
+  - "choco-actually-sanctuarium-ask-13nov/media"
   - "shared.json"
