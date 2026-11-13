@@ -1,5 +1,13 @@
 [
  {
+  "name": "26-year-old-13nov",
+  "label": "Choco: el post \"You're a 26 year old, you should be ashamed of yourself…\" (13 nov, 1 post, con sus imágenes y su tag)",
+  "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
+  "pages": [
+   "choco-26-year-old-13nov/index.html"
+  ]
+ },
+ {
   "name": "imitation-12nov",
   "label": "Choco: i-amchoco-infinite, el ask \"Another issue I have with most accounts Choco exposed…\" (12 nov, 1 post, con sus tags)",
   "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
