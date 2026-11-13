@@ -1,5 +1,13 @@
 [
  {
+  "name": "signed-g-ask-13nov",
+  "label": "Choco: i-amchoco-infinite, el ask \"Signed G as in Grace!\" (13 nov, 1 post, con sus tags)",
+  "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
+  "pages": [
+   "choco-signed-g-ask-13nov/index.html"
+  ]
+ },
+ {
   "name": "actually-sanctuarium-ask-13nov",
   "label": "Choco: i-amchoco-infinite, el ask \"HELP NOT THEM ACTUALLY BEING SANCTUARIUM\" (13 nov, 1 post, con sus tags)",
   "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
