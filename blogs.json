@@ -1,10 +1,10 @@
 [
  {
-  "name": "pinned-13nov",
-  "label": "Choco: SOBRESCRIBIR el pinned \"LMAOOO GET FUCKED CHOMO!…\" con las imágenes a tamaño completo y los documentos con vista previa (no publica otro)",
+  "name": "pinned-sobrescribir-13nov",
+  "label": "Choco: SOBRESCRIBIR el pinned \"LMAOOO GET FUCKED CHOMO!…\" con las imágenes a tamaño completo y BORRAR el duplicado de las 10:42 (no publica nada nuevo)",
   "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
   "pages": [
-   "choco-pinned-13nov/index.html"
+   "choco-pinned-ow-13nov/index.html"
   ]
  },
  {
