@@ -1,5 +1,13 @@
 [
  {
+  "name": "pinned-13nov",
+  "label": "Choco: i-amchoco-infinite, el pinned \"LMAOOO GET FUCKED CHOMO! THERE WE HAVE IT FOLKS…\", con las imágenes a tamaño completo (13 nov, 1 post, con sus tags)",
+  "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
+  "pages": [
+   "choco-pinned-13nov/index.html"
+  ]
+ },
+ {
   "name": "adult-spaces-ask-13nov",
   "label": "Choco: i-amchoco-infinite, el ask \"I can't be the only person who is disgusted by how many minors are allowed into adult spaces…\" (13 nov, 1 post, con sus tags)",
   "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
