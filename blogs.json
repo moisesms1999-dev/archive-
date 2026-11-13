@@ -1,5 +1,13 @@
 [
  {
+  "name": "burner-is-sanctuarium-13nov",
+  "label": "Choco: el post \"Now that's been established the burner account is Sanctuarium…\" (13 nov, 1 post, con sus imágenes y sus tags)",
+  "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
+  "pages": [
+   "choco-burner-is-sanctuarium-13nov/index.html"
+  ]
+ },
+ {
   "name": "pinned-sobrescribir-13nov",
   "label": "Choco: SOBRESCRIBIR el pinned \"LMAOOO GET FUCKED CHOMO!…\" con las imágenes a tamaño completo y BORRAR el duplicado de las 10:42 (no publica nada nuevo)",
   "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
