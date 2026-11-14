@@ -1,5 +1,13 @@
 [
  {
+  "name": "bruh-ppl-ask-14nov",
+  "label": "Choco: thischocosfinity, el ask \"Bruh ppl have done nothing but start shit with you…\" (14 nov, 1 post, con sus tags)",
+  "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
+  "pages": [
+   "choco-bruh-ppl-ask-14nov/index.html"
+  ]
+ },
+ {
   "name": "cartoon-villain-14nov",
   "label": "Choco: el post \"You sound like a cartoon villain coming out from the church…\" (14 nov, 1 post, con sus imágenes y su tag)",
   "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
