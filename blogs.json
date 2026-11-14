@@ -1,5 +1,13 @@
 [
  {
+  "name": "sending-yourself-asks-ask-14nov",
+  "label": "Choco: thischocosfinity, el ask \"Sanctuarium everyone knows you're sending yourself asks…\" (14 nov, 1 post, con sus tags)",
+  "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
+  "pages": [
+   "choco-sending-yourself-asks-ask-14nov/index.html"
+  ]
+ },
+ {
   "name": "last-word-screenshots-14nov",
   "label": "Choco: el post \"Choco's screenshots displaying my interaction with Sanctuaroum…\" (14 nov, 1 post, con 25 de sus imágenes y sus tags)",
   "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
