@@ -1,5 +1,13 @@
 [
  {
+  "name": "fifty-asks-ask-14nov",
+  "label": "Choco: thischocosfinity, el ask \"Damn you sent yourself fifty asks?…\" (14 nov, 1 post, con sus tags)",
+  "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
+  "pages": [
+   "choco-fifty-asks-ask-14nov/index.html"
+  ]
+ },
+ {
   "name": "sending-yourself-asks-ask-14nov",
   "label": "Choco: thischocosfinity, el ask \"Sanctuarium everyone knows you're sending yourself asks…\" (14 nov, 1 post, con sus tags)",
   "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
