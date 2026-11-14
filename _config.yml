@@ -132,4 +132,5 @@ exclude:
   - "choco-faking-being-choco-14nov/media"
   - "choco-known-liar-14nov/media"
   - "choco-anti-chocos-back-again-ask-14nov/media"
+  - "choco-cartoon-villain-14nov/media"
   - "shared.json"

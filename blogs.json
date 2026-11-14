@@ -1,5 +1,13 @@
 [
  {
+  "name": "cartoon-villain-14nov",
+  "label": "Choco: el post \"You sound like a cartoon villain coming out from the church…\" (14 nov, 1 post, con sus imágenes y su tag)",
+  "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
+  "pages": [
+   "choco-cartoon-villain-14nov/index.html"
+  ]
+ },
+ {
   "name": "anti-chocos-back-again-ask-14nov",
   "label": "Choco: thischocosfinity, el ask \"Anti chocos back again at pretending to be a good person…\" (14 nov, 1 post, con sus tags)",
   "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
