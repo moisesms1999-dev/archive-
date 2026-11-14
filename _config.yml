@@ -139,4 +139,5 @@ exclude:
   - "choco-last-word-screenshots-14nov/media"
   - "choco-sending-yourself-asks-ask-14nov/media"
   - "choco-fifty-asks-ask-14nov/media"
+  - "choco-spawns-in-the-tags-ask-14nov/media"
   - "shared.json"

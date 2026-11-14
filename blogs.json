@@ -1,5 +1,13 @@
 [
  {
+  "name": "spawns-in-the-tags-ask-14nov",
+  "label": "Choco: thischocosfinity, el ask \"*person nobody heard of ever spawns in the tags*\" (14 nov, 1 post, con sus tags)",
+  "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
+  "pages": [
+   "choco-spawns-in-the-tags-ask-14nov/index.html"
+  ]
+ },
+ {
   "name": "fifty-asks-ask-14nov",
   "label": "Choco: thischocosfinity, el ask \"Damn you sent yourself fifty asks?…\" (14 nov, 1 post, con sus tags)",
   "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
