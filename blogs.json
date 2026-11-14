@@ -1,5 +1,13 @@
 [
  {
+  "name": "sending-strobes-14nov",
+  "label": "Choco: el post \"@clown-named-choco is sending strobes…\" (14 nov, 1 post, con sus imágenes y su tag)",
+  "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
+  "pages": [
+   "choco-sending-strobes-14nov/index.html"
+  ]
+ },
+ {
   "name": "liar-13nov",
   "label": "Choco: el post \"Liar. You couldn't handle that Choco called you out…\" (13 nov, 1 post, con sus imágenes y su tag)",
   "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
