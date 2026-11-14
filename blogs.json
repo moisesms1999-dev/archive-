@@ -1,5 +1,13 @@
 [
  {
+  "name": "anti-harassment-ask-14nov",
+  "label": "Choco: thischocosfinity, el ask \"Anti harassment is when faux Proshippers start stalking and harassment campaigns…\" (14 nov, 1 post, con sus tags)",
+  "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
+  "pages": [
+   "choco-anti-harassment-ask-14nov/index.html"
+  ]
+ },
+ {
   "name": "spawns-in-the-tags-ask-14nov",
   "label": "Choco: thischocosfinity, el ask \"*person nobody heard of ever spawns in the tags*\" (14 nov, 1 post, con sus tags)",
   "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
