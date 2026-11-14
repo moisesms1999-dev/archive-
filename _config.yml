@@ -129,4 +129,5 @@ exclude:
   - "choco-signed-g-ask-13nov/media"
   - "choco-liar-13nov/media"
   - "choco-sending-strobes-14nov/media"
+  - "choco-faking-being-choco-14nov/media"
   - "shared.json"

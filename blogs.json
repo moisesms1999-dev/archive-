@@ -1,5 +1,13 @@
 [
  {
+  "name": "faking-being-choco-14nov",
+  "label": "Choco: el post \"Based on the account and the previous fake accounts Sanctuarium is faking being Choco…\" (14 nov, 1 post, con sus imágenes y su tag)",
+  "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
+  "pages": [
+   "choco-faking-being-choco-14nov/index.html"
+  ]
+ },
+ {
   "name": "sending-strobes-14nov",
   "label": "Choco: el post \"@clown-named-choco is sending strobes…\" (14 nov, 1 post, con sus imágenes y su tag)",
   "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
