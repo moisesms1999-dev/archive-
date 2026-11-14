@@ -1,5 +1,13 @@
 [
  {
+  "name": "not-just-a-liar-14nov",
+  "label": "Choco: thischocosfinity, el post \"Sanctuarium is not just a pathological liar…\" (14 nov, 1 post, con su captura, el gif y sus tags)",
+  "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
+  "pages": [
+   "choco-not-just-a-liar-14nov/index.html"
+  ]
+ },
+ {
   "name": "bruh-ppl-ask-14nov",
   "label": "Choco: thischocosfinity, el ask \"Bruh ppl have done nothing but start shit with you…\" (14 nov, 1 post, con sus tags)",
   "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
