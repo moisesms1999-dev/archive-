@@ -1,5 +1,13 @@
 [
  {
+  "name": "anti-chocos-back-again-ask-14nov",
+  "label": "Choco: thischocosfinity, el ask \"Anti chocos back again at pretending to be a good person…\" (14 nov, 1 post, con sus tags)",
+  "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
+  "pages": [
+   "choco-anti-chocos-back-again-ask-14nov/index.html"
+  ]
+ },
+ {
   "name": "known-liar-14nov",
   "label": "Choco: el post \"Funny how a known liar is lying again…\" (14 nov, 1 post, con sus imágenes y su tag)",
   "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
