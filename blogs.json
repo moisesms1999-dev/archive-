@@ -1,5 +1,13 @@
 [
  {
+  "name": "cult-ask-15nov",
+  "label": "Choco: thischocosfinity, el ask de itsarotten-waytodie \"its crazy how they accuse you of genuinely trying to start a cult…\" (15 nov, 1 post, con sus tags)",
+  "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
+  "pages": [
+   "choco-cult-ask-15nov/index.html"
+  ]
+ },
+ {
   "name": "historical-revisionism-ask-15nov",
   "label": "Choco: thischocosfinity, el ask \"Love the historical revisionism and convenient amnesia…\" (15 nov, 1 post, con sus tags)",
   "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
