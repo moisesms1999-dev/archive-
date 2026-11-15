@@ -1,5 +1,13 @@
 [
  {
+  "name": "historical-revisionism-ask-15nov",
+  "label": "Choco: thischocosfinity, el ask \"Love the historical revisionism and convenient amnesia…\" (15 nov, 1 post, con sus tags)",
+  "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
+  "pages": [
+   "choco-historical-revisionism-ask-15nov/index.html"
+  ]
+ },
+ {
   "name": "anti-harassment-ask-14nov",
   "label": "Choco: thischocosfinity, el ask \"Anti harassment is when faux Proshippers start stalking and harassment campaigns…\" (14 nov, 1 post, con sus tags)",
   "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
