@@ -147,4 +147,5 @@ exclude:
   - "choco-iron-will-ask-15nov/media"
   - "choco-pack-it-up-ask-16nov/media"
   - "choco-still-remember-ask-16nov/media"
+  - "choco-doesnt-matter-ask-16nov/media"
   - "shared.json"
