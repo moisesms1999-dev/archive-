@@ -1,5 +1,13 @@
 [
  {
+  "name": "choco-nsfw-account-reblog-16nov",
+  "label": "Choco: thischocosfinity, el reblog de su post \"The NSFW account you shared in my inbox twice…\" (16 nov, 1 post)",
+  "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
+  "pages": [
+   "choco-nsfw-account-reblog-16nov/index.html"
+  ]
+ },
+ {
   "name": "choco-concession-14nov",
   "label": "Choco: el reblog \"Considering you don't have any arguments or excuses left…\" (14 nov, 1 post, con toda la cadena)",
   "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
