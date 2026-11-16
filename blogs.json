@@ -1,5 +1,37 @@
 [
  {
+  "name": "choco-concession-14nov",
+  "label": "Choco: el reblog \"Considering you don't have any arguments or excuses left…\" (14 nov, 1 post, con toda la cadena)",
+  "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
+  "pages": [
+   "choco-concession-14nov/index.html"
+  ]
+ },
+ {
+  "name": "choco-trust-me-please-14nov",
+  "label": "Choco: el reblog \"From a troll who relies on trust me please…\" (14 nov, 1 post, con toda la cadena)",
+  "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
+  "pages": [
+   "choco-trust-me-please-14nov/index.html"
+  ]
+ },
+ {
+  "name": "choco-not-desperate-to-beg-14nov",
+  "label": "Choco: el reblog \"Yeah I also wouldn't expect someone like you…\" (14 nov, 1 post, con toda la cadena)",
+  "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
+  "pages": [
+   "choco-not-desperate-to-beg-14nov/index.html"
+  ]
+ },
+ {
+  "name": "choco-proof-you-sent-it-14nov",
+  "label": "Choco: el reblog \"Yeah I'll have the proof that you sent it…\" (14 nov, 1 post, con toda la cadena)",
+  "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
+  "pages": [
+   "choco-proof-you-sent-it-14nov/index.html"
+  ]
+ },
+ {
   "name": "choco-grave-comment-section-ask-16nov",
   "label": "Choco: thischocosfinity, el ask \"Love Sanctuarium trying to hide working with Grave…\" (16 nov, 1 post, con sus tags)",
   "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",

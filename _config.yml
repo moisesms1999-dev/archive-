@@ -151,4 +151,8 @@ exclude:
   - "choco-sanctuarium-ask-16nov/media"
   - "choco-torabisu-ask-16nov/media"
   - "choco-grave-comment-section-ask-16nov/media"
+  - "choco-proof-you-sent-it-14nov/media"
+  - "choco-not-desperate-to-beg-14nov/media"
+  - "choco-trust-me-please-14nov/media"
+  - "choco-concession-14nov/media"
   - "shared.json"
