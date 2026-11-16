@@ -1,5 +1,13 @@
 [
  {
+  "name": "choco-sanctuarium-ask-16nov",
+  "label": "Choco: thischocosfinity, el ask \"I love how Sanctuarium really went…\" (16 nov, 1 post, con sus tags)",
+  "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
+  "pages": [
+   "choco-sanctuarium-ask-16nov/index.html"
+  ]
+ },
+ {
   "name": "doesnt-matter-ask-16nov",
   "label": "Choco: thischocosfinity, el ask \"What you say think feel or want doesn't matter…\" (16 nov, 1 post, con sus tags)",
   "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
