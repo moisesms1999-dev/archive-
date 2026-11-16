@@ -1,5 +1,13 @@
 [
  {
+  "name": "choco-grave-comment-section-ask-16nov",
+  "label": "Choco: thischocosfinity, el ask \"Love Sanctuarium trying to hide working with Grave…\" (16 nov, 1 post, con sus tags)",
+  "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
+  "pages": [
+   "choco-grave-comment-section-ask-16nov/index.html"
+  ]
+ },
+ {
   "name": "choco-torabisu-ask-16nov",
   "label": "Choco: thischocosfinity, el ask \"Mayday’s new account is torabisu…\" (16 nov, 1 post, con sus tags)",
   "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",

@@ -150,4 +150,5 @@ exclude:
   - "choco-doesnt-matter-ask-16nov/media"
   - "choco-sanctuarium-ask-16nov/media"
   - "choco-torabisu-ask-16nov/media"
+  - "choco-grave-comment-section-ask-16nov/media"
   - "shared.json"
