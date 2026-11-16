@@ -1,5 +1,13 @@
 [
  {
+  "name": "pack-it-up-ask-16nov",
+  "label": "Choco: thischocosfinity, el ask \"Pack it up, we are at that point where it's a compliment…\" (16 nov, 1 post, con sus tags)",
+  "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
+  "pages": [
+   "choco-pack-it-up-ask-16nov/index.html"
+  ]
+ },
+ {
   "name": "iron-will-ask-15nov",
   "label": "Choco: thischocosfinity, el ask de itsarotten-waytodie \"syskid with an iron will and a sense of joy vs 100000 or so attention vampires\" (15 nov, 1 post, con sus tags)",
   "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
