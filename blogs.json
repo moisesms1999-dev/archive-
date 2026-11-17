@@ -1,5 +1,13 @@
 [
  {
+  "name": "choco-walking-fallacy-ask-17nov",
+  "label": "Choco: thischocosfinity, el ask \"Sanctuarium why don't you share with the class…\" (17 nov, 1 post, con sus tags)",
+  "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
+  "pages": [
+   "choco-walking-fallacy-ask-17nov/index.html"
+  ]
+ },
+ {
   "name": "choco-nsfw-account-reblog-16nov",
   "label": "Choco: thischocosfinity, el reblog de su post \"The NSFW account you shared in my inbox twice…\" (16 nov, 1 post)",
   "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
