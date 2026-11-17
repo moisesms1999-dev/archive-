@@ -1,5 +1,13 @@
 [
  {
+  "name": "choco-groomer-anon-reblog-17nov",
+  "label": "Choco: thischocosfinity, el reblog \"The Radqueer community bothers me a lot…\" con \"I'm going to address one particular anon…\" (17 nov, 1 post, sin tags)",
+  "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
+  "pages": [
+   "choco-groomer-anon-reblog-17nov/index.html"
+  ]
+ },
+ {
   "name": "choco-radqueer-bothers-ask-17nov",
   "label": "Choco: thischocosfinity, el ask \"The Radqueer community bothers me a lot…\" (17 nov, 1 post, con sus tags)",
   "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
