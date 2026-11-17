@@ -1,5 +1,13 @@
 [
  {
+  "name": "choco-radqueer-bothers-ask-17nov",
+  "label": "Choco: thischocosfinity, el ask \"The Radqueer community bothers me a lot…\" (17 nov, 1 post, con sus tags)",
+  "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
+  "pages": [
+   "choco-radqueer-bothers-ask-17nov/index.html"
+  ]
+ },
+ {
   "name": "choco-still-deflecting-ask-17nov",
   "label": "Choco: thischocosfinity, el ask \"Sanctuarium is still deflecting btw…\" (17 nov, 1 post, con sus tags)",
   "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
