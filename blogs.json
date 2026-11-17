@@ -1,5 +1,13 @@
 [
  {
+  "name": "choco-still-deflecting-ask-17nov",
+  "label": "Choco: thischocosfinity, el ask \"Sanctuarium is still deflecting btw…\" (17 nov, 1 post, con sus tags)",
+  "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
+  "pages": [
+   "choco-still-deflecting-ask-17nov/index.html"
+  ]
+ },
+ {
   "name": "choco-baffled-bombastic-ask-17nov",
   "label": "Choco: thischocosfinity, el ask \"I'm baffled Sanctuarium doesn't realize how bombastic they come across…\" (17 nov, 1 post, con sus tags)",
   "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
