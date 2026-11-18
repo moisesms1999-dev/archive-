@@ -167,4 +167,5 @@ exclude:
   - "choco-cant-dox-ask-18nov/media"
   - "choco-unhinged-ask-18nov/media"
   - "choco-perfect-doc-paris-18nov/media"
+  - "choco-last-word-ask-18nov/media"
   - "shared.json"

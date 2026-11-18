@@ -1,5 +1,13 @@
 [
  {
+  "name": "choco-last-word-ask-18nov",
+  "label": "Choco: thischocosfinity, el ask \"You'd think they'd realize the guilty verdict won't move…\" (18 nov, 1 post, con sus tags)",
+  "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
+  "pages": [
+   "choco-last-word-ask-18nov/index.html"
+  ]
+ },
+ {
   "name": "choco-perfect-doc-paris-18nov",
   "label": "Choco: el ask \"Your document was perfect.\" con lo nuevo sobre paris-philly (18 nov, 1 post, con sus tags)",
   "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
