@@ -1,5 +1,13 @@
 [
  {
+  "name": "choco-pack-it-up-ask-19nov",
+  "label": "Choco: thischocosfinity, el ask con los posts de gladlyspookyshade \"Holy cornball with the projection, Morphine…\" (19 nov, 1 post, con sus tags)",
+  "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
+  "pages": [
+   "choco-pack-it-up-ask-19nov/index.html"
+  ]
+ },
+ {
   "name": "choco-last-word-ask-18nov",
   "label": "Choco: thischocosfinity, el ask \"You'd think they'd realize the guilty verdict won't move…\" (18 nov, 1 post, con sus tags)",
   "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
