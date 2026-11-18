@@ -1,5 +1,13 @@
 [
  {
+  "name": "choco-cant-dox-ask-18nov",
+  "label": "Choco: thischocosfinity, el ask \"Still find it funny when anti Choco groomers babbled…\" (18 nov, 1 post, con sus tags)",
+  "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
+  "pages": [
+   "choco-cant-dox-ask-18nov/index.html"
+  ]
+ },
+ {
   "name": "choco-very-berry-ask-18nov",
   "label": "Choco: thischocosfinity, el ask \"ur genuinely so impressive w/ all the stuff u do…\" (18 nov, 1 post, con sus tags)",
   "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",

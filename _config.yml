@@ -164,4 +164,5 @@ exclude:
   - "choco-final-verdict-ask-17nov/media"
   - "choco-asks-to-yourselves-ask-18nov/media"
   - "choco-very-berry-ask-18nov/media"
+  - "choco-cant-dox-ask-18nov/media"
   - "shared.json"
