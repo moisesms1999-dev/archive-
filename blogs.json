@@ -1,5 +1,13 @@
 [
  {
+  "name": "choco-unhinged-ask-18nov",
+  "label": "Choco: thischocosfinity, el ask \"Bro is so unhinged about calling out these monsters…\" (18 nov, 1 post, con sus tags)",
+  "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
+  "pages": [
+   "choco-unhinged-ask-18nov/index.html"
+  ]
+ },
+ {
   "name": "choco-cant-dox-ask-18nov",
   "label": "Choco: thischocosfinity, el ask \"Still find it funny when anti Choco groomers babbled…\" (18 nov, 1 post, con sus tags)",
   "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
