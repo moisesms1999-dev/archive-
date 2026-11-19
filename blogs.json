@@ -1,5 +1,13 @@
 [
  {
+  "name": "choco-lmfaoooo-jay-ask-19nov",
+  "label": "Choco: thischocosfinity, el ask \"LMFAOOOO NO WAY THIS MOFO MADE A WHOLE ASS ACCOUNT…\" (19 nov, 1 post, con sus tags)",
+  "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
+  "pages": [
+   "choco-lmfaoooo-jay-ask-19nov/index.html"
+  ]
+ },
+ {
   "name": "choco-funny-as-hell-19nov",
   "label": "Choco: thischocosfinity, \"Funny as hell how chomos who sent porn to minors…\" (19 nov, 1 post, con sus tags)",
   "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
