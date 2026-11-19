@@ -1,5 +1,13 @@
 [
  {
+  "name": "choco-funny-as-hell-19nov",
+  "label": "Choco: thischocosfinity, \"Funny as hell how chomos who sent porn to minors…\" (19 nov, 1 post, con sus tags)",
+  "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
+  "pages": [
+   "choco-funny-as-hell-19nov/index.html"
+  ]
+ },
+ {
   "name": "choco-pack-it-up-ask-19nov",
   "label": "Choco: thischocosfinity, el ask con los posts de gladlyspookyshade \"Holy cornball with the projection, Morphine…\" (19 nov, 1 post, con sus tags)",
   "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
