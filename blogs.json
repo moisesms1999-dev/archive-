@@ -1,5 +1,13 @@
 [
  {
+  "name": "choco-bro-called-out-ask-19nov",
+  "label": "Choco: thischocosfinity, el ask \"Bro called out a grooming ring…\" (19 nov, 1 post, con sus tags)",
+  "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
+  "pages": [
+   "choco-bro-called-out-ask-19nov/index.html"
+  ]
+ },
+ {
   "name": "choco-thank-you-sanctuarium-ask-19nov",
   "label": "Choco: thischocosfinity, el ask \"Thank you for calling out Sanctuarium…\" (19 nov, 1 post, con sus tags)",
   "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
