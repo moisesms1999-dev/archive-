@@ -1,5 +1,13 @@
 [
  {
+  "name": "click-yall-embarassing-19nov",
+  "label": "Choco: clickityclackithee, \"Y'all so fucking obnoxious…\" (19 nov, 1 post, con sus tags)",
+  "match": "clickity|choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
+  "pages": [
+   "click-yall-embarassing-19nov/index.html"
+  ]
+ },
+ {
   "name": "choco-bro-called-out-ask-19nov",
   "label": "Choco: thischocosfinity, el ask \"Bro called out a grooming ring…\" (19 nov, 1 post, con sus tags)",
   "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
