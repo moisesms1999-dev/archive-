@@ -1,5 +1,13 @@
 [
  {
+  "name": "choco-tf-did-they-think-ask-19nov",
+  "label": "Choco: thischocosfinity, el ask \"tf did they think was gonna happen…\" (19 nov, 1 post, con sus tags)",
+  "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
+  "pages": [
+   "choco-tf-did-they-think-ask-19nov/index.html"
+  ]
+ },
+ {
   "name": "choco-boxing-ring-ask-19nov",
   "label": "Choco: thischocosfinity, el ask \"I'm sorry but I'd love to see every person you gave a reality check put into a boxing ring\" (19 nov, 1 post, con sus tags)",
   "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
