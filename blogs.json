@@ -1,5 +1,13 @@
 [
  {
+  "name": "choco-trust-your-guts-reblog-19nov",
+  "label": "Choco: el reblog de omegaversetheory \"Trust your guts. Protect yourself…\" (19 nov, 1 post)",
+  "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
+  "pages": [
+   "choco-trust-your-guts-reblog-19nov/index.html"
+  ]
+ },
+ {
   "name": "click-yall-embarassing-19nov",
   "label": "Choco: clickityclackithee, \"Y'all so fucking obnoxious…\" (19 nov, 1 post, con sus tags)",
   "match": "clickity|choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
