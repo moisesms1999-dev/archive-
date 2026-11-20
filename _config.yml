@@ -180,4 +180,5 @@ exclude:
   - "choco-vpn-ask-20nov/media"
   - "choco-gremlin-ask-20nov/media"
   - "choco-daily-reminders-20nov/media"
+  - "choco-forming-your-own-opinion-20nov/media"
   - "shared.json"
