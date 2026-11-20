@@ -1,5 +1,13 @@
 [
  {
+  "name": "choco-self-report-sandwich-20nov",
+  "label": "Choco: thischocosfinity, \"Another self-report sandwich from the grooming ring\" (20 nov, 1 post, con sus tags)",
+  "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
+  "pages": [
+   "choco-self-report-sandwich-20nov/index.html"
+  ]
+ },
+ {
   "name": "choco-forming-your-own-opinion-20nov",
   "label": "Choco: thischocosfinity, \"Forming your own opinion is when…\" (20 nov, 1 post, con sus tags)",
   "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
