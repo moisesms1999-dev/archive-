@@ -1,5 +1,13 @@
 [
  {
+  "name": "choco-daily-reminders-20nov",
+  "label": "Choco: thischocosfinity, \"Daily Reminders.\" (20 nov, 1 post, con sus tags)",
+  "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
+  "pages": [
+   "choco-daily-reminders-20nov/index.html"
+  ]
+ },
+ {
   "name": "choco-gremlin-ask-20nov",
   "label": "Choco: thischocosfinity, el ask \"The fact u stay cheeky and joyspitting makes me smile…\" (20 nov, 1 post, con sus tags)",
   "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
