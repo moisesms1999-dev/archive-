@@ -1,5 +1,13 @@
 [
  {
+  "name": "choco-vpn-ask-20nov",
+  "label": "Choco: thischocosfinity, el ask \"you use a fucking VPN…\" (20 nov, 1 post, con sus tags)",
+  "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
+  "pages": [
+   "choco-vpn-ask-20nov/index.html"
+  ]
+ },
+ {
   "name": "choco-tf-did-they-think-ask-19nov",
   "label": "Choco: thischocosfinity, el ask \"tf did they think was gonna happen…\" (19 nov, 1 post, con sus tags)",
   "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
