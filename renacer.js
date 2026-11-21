@@ -3,7 +3,8 @@ const ARCH='https://moisesms1999-dev.github.io/archive-/';const RAWB='https://ra
 {const old=document.getElementById('rnc');if(old)old.remove();}
 const LS={get:(k,d)=>{try{const v=localStorage.getItem(k);return v?JSON.parse(v):d;}catch(e){return d;}},set:(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}};
 let PAR=null,NODATE=false,SLOW=false;
-const ffetch=async p=>{for(const b of [RAWB,ARCH]){try{const r=await fetch(b+p,{cache:'no-store'});if(r.ok)return r;}catch(e){}}return fetch(ARCH+p);};
+let RAWS=null;const rawSha=async()=>{if(RAWS!==null)return RAWS;RAWS='';try{const r=await fetch('https://api.github.com/repos/moisesms1999-dev/archive-/commits/main',{headers:{Accept:'application/vnd.github.sha'},cache:'no-store'});const t=(await r.text()).trim();if(r.ok&&/^[0-9a-f]{40}$/.test(t))RAWS='https://raw.githubusercontent.com/moisesms1999-dev/archive-/'+t+'/';}catch(e){}return RAWS;};
+const ffetch=async p=>{const S0=await rawSha();for(const b of [S0,RAWB,ARCH].filter(Boolean)){try{const r=await fetch(b+p,{cache:'no-store'});if(r.ok)return r;}catch(e){}}return fetch(ARCH+p);};
 let LK=null;const links=async()=>{if(LK)return LK;try{LK=await (await ffetch('links.json?'+Date.now())).json();}catch(e){LK={t:{},k:{}};}return LK;};
 const TRX=/^https?:\/\/(?:www\.tumblr\.com\/([\w-]+)|([\w-]+)\.tumblr\.com\/post)\/(\d{15,})/;
 function relink(h,blog){const T=(LK&&LK.t)||{},M=(LS.get('rnc_links',{})[blog])||{};let n=0;
@@ -62,7 +63,7 @@ const hst=$('div',{style:'color:#9be59b;font-size:14px;min-height:1.2em;margin-t
 const hlist=$('div');const bH=$('button',{textContent:'🧾 Poner las hojas nuevas en mis posts',style:'display:block;width:100%;background:#ff9a3c;color:#1a120b;border:0;border-radius:12px;padding:13px;font-weight:800;margin:8px 0 0'});
 hbox.append($('b',{textContent:'🧾 Hojas de Sanctuarium',style:'color:#ffb066'}),$('p',{textContent:'Mira cada post marcado y le añade, en una fila nueva justo después de la última hoja que ya tenga, las hojas nuevas que le falten. No toca nada más: ni texto, ni tags, ni la cajita del ask.',style:'color:#f3c99a;margin:4px 0 6px;font-size:14px'}),hlist,bH,hst,hlog);box.append(hbox);
 let HM=null;const hchk={};
-(async()=>{for(const b of [RAWB,ARCH]){try{const r=await fetch(b+'sheets.json?'+Date.now(),{cache:'no-store'});if(r.ok){HM=await r.json();break;}}catch(e){}}if(!HM){hst.textContent='No pude leer la lista de hojas (ni de GitHub ni de la web). Vuelve a abrir el Renacer en un minuto.';return;}
+let HB=RAWB;(async()=>{const S0=await rawSha();for(const b of [S0,RAWB,ARCH].filter(Boolean)){try{const r=await fetch(b+'sheets.json?'+Date.now(),{cache:'no-store'});if(r.ok){HM=await r.json();HB=b===ARCH?RAWB:b;break;}}catch(e){}}if(!HM){hst.textContent='No pude leer la lista de hojas (ni de GitHub ni de la web). Vuelve a abrir el Renacer en un minuto.';return;}
   HM.posts.forEach(p=>{const c=$('input',{type:'checkbox',checked:LS.get('rnc_h_'+p.id,p.on)});c.onchange=()=>LS.set('rnc_h_'+p.id,c.checked);hchk[p.id]=c;const l=$('label',{style:'display:flex;gap:8px;align-items:center;margin:2px 0;font-size:14px'});l.append(c,$('span',{textContent:p.label}));hlist.append(l);});
   hst.textContent=HM.sheets.length+' hojas en la lista; la última: '+HM.sheets[HM.sheets.length-1].f.split('/').pop();})();
 bH.onclick=async()=>{if(!HM)return;bH.disabled=true;hlog.textContent='';const say=t=>{hlog.textContent+=t+'\n';hlog.scrollTop=1e9;};const blog=HM.blog;let done=0,same=0,bad=0;
@@ -74,7 +75,7 @@ bH.onclick=async()=>{if(!HM)return;bH.disabled=true;hlog.textContent='';const sa
     if(last<0){say('= '+p.label+': no encuentro ninguna hoja en el post, no lo toco');same++;continue;}
     const add=[];for(let k=last+1;k<HM.sheets.length;k++)if(!have.has(k))add.push(k);
     if(!add.length){say('= '+p.label+': ya tiene todas las hojas');same++;continue;}
-    const n=add.length,at=lastBlock+1;const NB=add.map(k=>({type:'image',media:[{url:RAWB+HM.sheets[k].f}]}));
+    const n=add.length,at=lastBlock+1;const NB=add.map(k=>({type:'image',media:[{url:HB+HM.sheets[k].f}]}));
     const content=C.slice(0,at).concat(NB,C.slice(at));const mv=j=>j>=at?j+n:j;
     const layout=(P.layout||[]).map(l=>{const L=JSON.parse(JSON.stringify(l));if(L.blocks)L.blocks=L.blocks.map(mv);if(L.truncate_after!=null&&L.truncate_after>=at)L.truncate_after+=n;
       if(L.type==='rows'&&L.display){L.display.forEach(r=>{r.blocks=r.blocks.map(mv);});let ri=L.display.findIndex(r=>r.blocks.includes(lastBlock));if(ri<0)ri=L.display.length-1;const rows=[];for(let k=0;k<n;k+=3)rows.push({blocks:NB.slice(k,k+3).map((_,q)=>at+k+q)});L.display.splice(ri+1,0,...rows);}
