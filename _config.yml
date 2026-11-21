@@ -186,4 +186,5 @@ exclude:
   - "choco-maga-quacks-ask-20nov/media"
   - "sheets/"
   - "choco-fan-behavior-ask-21nov/media"
+  - "choco-never-sleep-ask-21nov/media"
   - "shared.json"
