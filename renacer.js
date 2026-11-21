@@ -56,6 +56,34 @@ const bgl=$('label',{style:'display:flex;gap:8px;align-items:center;margin:8px 0
 const ovr=$('input',{type:'checkbox',checked:LS.get('rnc_ovr',true)});ovr.onchange=()=>LS.set('rnc_ovr',ovr.checked);
 const ovl=$('label',{style:'display:flex;gap:8px;align-items:center;margin:8px 0 0;color:#ffb066;font-weight:700;font-size:14px'});ovl.append(ovr,$('span',{textContent:'✏️ Si el post ya está en el blog elegido, lo sobrescribe con la versión del archivo en vez de publicar otro'}));const ovo=$('input',{type:'checkbox',checked:LS.get('rnc_ovo',true)});ovo.onchange=()=>LS.set('rnc_ovo',ovo.checked);const ovol=$('label',{style:'display:flex;gap:8px;align-items:center;margin:4px 0 0 22px;color:#e7b98a;font-size:13px'});ovol.append(ovo,$('span',{textContent:'…también en mis originales: les pone la versión del archivo (gramática corregida, también la de la cajita del ask, que sigue con el nombre de quien preguntó) y suma los tags, sin quitarles ningún enlace ni imagen'}));
 box.append(wbl,wbst,PAR,ovl,ovol,bgl,$('div',{style:'height:10px'}));
+const hbox=$('div',{style:'background:#2a1a0e;border:1px solid #ff9a3c;border-radius:12px;padding:10px;margin:0 0 12px'});
+const hst=$('div',{style:'color:#9be59b;font-size:14px;min-height:1.2em;margin-top:6px'});const hlog=$('div',{style:'font-size:13px;color:#e7b98a;white-space:pre-wrap;max-height:30vh;overflow:auto;margin-top:6px'});
+const hlist=$('div');const bH=$('button',{textContent:'🧾 Poner las hojas nuevas en mis posts',style:'display:block;width:100%;background:#ff9a3c;color:#1a120b;border:0;border-radius:12px;padding:13px;font-weight:800;margin:8px 0 0'});
+hbox.append($('b',{textContent:'🧾 Hojas de Sanctuarium',style:'color:#ffb066'}),$('p',{textContent:'Mira cada post marcado y le añade, en una fila nueva justo después de la última hoja que ya tenga, las hojas nuevas que le falten. No toca nada más: ni texto, ni tags, ni la cajita del ask.',style:'color:#f3c99a;margin:4px 0 6px;font-size:14px'}),hlist,bH,hst,hlog);box.append(hbox);
+let HM=null;const hchk={};
+(async()=>{try{HM=await (await fetch(ARCH+'sheets.json?'+Date.now())).json();}catch(e){hst.textContent='No pude leer la lista de hojas.';return;}
+  HM.posts.forEach(p=>{const c=$('input',{type:'checkbox',checked:LS.get('rnc_h_'+p.id,p.on)});c.onchange=()=>LS.set('rnc_h_'+p.id,c.checked);hchk[p.id]=c;const l=$('label',{style:'display:flex;gap:8px;align-items:center;margin:2px 0;font-size:14px'});l.append(c,$('span',{textContent:p.label}));hlist.append(l);});
+  hst.textContent=HM.sheets.length+' hojas en la lista; la última: '+HM.sheets[HM.sheets.length-1].f.split('/').pop();})();
+bH.onclick=async()=>{if(!HM)return;bH.disabled=true;hlog.textContent='';const say=t=>{hlog.textContent+=t+'\n';hlog.scrollTop=1e9;};const blog=HM.blog;let done=0,same=0,bad=0;
+  const big=b=>{const m=(b.media||[]).slice().sort((x,y)=>(y.width||0)-(x.width||0))[0]||{};return [m.width||0,m.height||0];};
+  const which=b=>{if(!b||b.type!=='image')return -1;const [w,h]=big(b);return HM.sheets.findIndex(s=>Math.abs(s.w-w)<=3&&Math.abs(s.h-h)<=3);};
+  for(const p of HM.posts){if(!hchk[p.id]||!hchk[p.id].checked)continue;
+    const P=await getPost(blog,p.id,3);if(!P||!P.content){say('✗ '+p.label+': no pude leerlo');bad++;continue;}
+    const C=P.content;let last=-1,lastBlock=-1;const have=new Set();C.forEach((b,i)=>{const k=which(b);if(k>=0){have.add(k);if(k>last)last=k;lastBlock=Math.max(lastBlock,i);}});
+    if(last<0){say('= '+p.label+': no encuentro ninguna hoja en el post, no lo toco');same++;continue;}
+    const add=[];for(let k=last+1;k<HM.sheets.length;k++)if(!have.has(k))add.push(k);
+    if(!add.length){say('= '+p.label+': ya tiene todas las hojas');same++;continue;}
+    const n=add.length,at=lastBlock+1;const NB=add.map(k=>({type:'image',media:[{url:RAWB+HM.sheets[k].f}]}));
+    const content=C.slice(0,at).concat(NB,C.slice(at));const mv=j=>j>=at?j+n:j;
+    const layout=(P.layout||[]).map(l=>{const L=JSON.parse(JSON.stringify(l));if(L.blocks)L.blocks=L.blocks.map(mv);if(L.truncate_after!=null&&L.truncate_after>=at)L.truncate_after+=n;
+      if(L.type==='rows'&&L.display){L.display.forEach(r=>{r.blocks=r.blocks.map(mv);});let ri=L.display.findIndex(r=>r.blocks.includes(lastBlock));if(ri<0)ri=L.display.length-1;const rows=[];for(let k=0;k<n;k+=3)rows.push({blocks:NB.slice(k,k+3).map((_,q)=>at+k+q)});L.display.splice(ri+1,0,...rows);}
+      return L;});
+    const body={content,layout,tags:(P.tags||[]).join(',')};
+    say('… '+p.label+': añado '+add.map(k=>HM.sheets[k].f.split('/').pop().replace(/^\d+_/,'').replace('.png','')).join(', '));
+    const r=await api('/blog/'+blog+'/posts/'+p.id,{method:'PUT',body},180000);
+    if(r&&r.error){say('✗ '+p.label+': Tumblr no dejó editarlo: '+why(r).trim());bad++;}else{say('✓ '+p.label+': hecho');done++;}
+    await sleep(3000);}
+  hst.textContent='Listo: '+done+' editados, '+same+' sin cambios'+(bad?', '+bad+' con error':'')+'.';bH.disabled=false;};
 const KA={on:0,ctx:null,osc:null,el:null,url:null,
 start(){if(!bgon.checked)return;this.on++;if(this.on>1){this.poke();return;}
 try{const C=window.AudioContext||window.webkitAudioContext;if(C){const c=new C(),o=c.createOscillator(),g=c.createGain();o.type='sine';o.frequency.value=40;g.gain.value=0.0015;o.connect(g);g.connect(c.destination);o.start();this.ctx=c;this.osc=o;if(c.state!=='running')c.resume().catch(()=>{});}}catch(e){}
