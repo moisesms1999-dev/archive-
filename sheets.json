@@ -95,9 +95,13 @@
    "h": 3072
   },
   {
-   "f": "sheets/11_guilty_still_no_words_distorted_2.png",
-   "w": 1109,
-   "h": 3072
+   "f": "sheets/11_guilty_distorted_round_10.png",
+   "w": 1132,
+   "h": 3072,
+   "old": {
+    "w": 1109,
+    "h": 3072
+   }
   },
   {
    "f": "sheets/12_guilty_still_no_words_10.png",
@@ -105,9 +109,13 @@
    "h": 3072
   },
   {
-   "f": "sheets/13_guilty_still_no_answers_distorted_3.png",
-   "w": 1900,
-   "h": 3048
+   "f": "sheets/13_guilty_distorted_round_11.png",
+   "w": 1940,
+   "h": 3048,
+   "old": {
+    "w": 1900,
+    "h": 3048
+   }
   },
   {
    "f": "sheets/14_guilty_still_no_words_11.png",
@@ -115,9 +123,13 @@
    "h": 3072
   },
   {
-   "f": "sheets/15_guilty_still_no_answers_distorted_4.png",
-   "w": 1671,
-   "h": 3072
+   "f": "sheets/15_guilty_distorted_round_12.png",
+   "w": 1706,
+   "h": 3072,
+   "old": {
+    "w": 1671,
+    "h": 3072
+   }
   },
   {
    "f": "sheets/16_guilty_still_no_words_12.png",
@@ -125,9 +137,13 @@
    "h": 3072
   },
   {
-   "f": "sheets/17_guilty_still_no_answers_distorted_5.png",
-   "w": 1168,
-   "h": 3072
+   "f": "sheets/17_guilty_distorted_round_13.png",
+   "w": 1192,
+   "h": 3072,
+   "old": {
+    "w": 1168,
+    "h": 3072
+   }
   },
   {
    "f": "sheets/18_guilty_still_no_words_13.png",
@@ -135,9 +151,13 @@
    "h": 3072
   },
   {
-   "f": "sheets/19_guilty_still_no_answers_distorted_14.png",
-   "w": 1379,
-   "h": 3072
+   "f": "sheets/19_guilty_distorted_round_14.png",
+   "w": 1408,
+   "h": 3072,
+   "old": {
+    "w": 1379,
+    "h": 3072
+   }
   },
   {
    "f": "sheets/20_guilty_still_no_words_15.png",
@@ -145,9 +165,13 @@
    "h": 3072
   },
   {
-   "f": "sheets/21_guilty_still_no_answers_distorted_15.png",
-   "w": 1461,
-   "h": 3072
+   "f": "sheets/21_guilty_distorted_round_15.png",
+   "w": 1492,
+   "h": 3072,
+   "old": {
+    "w": 1461,
+    "h": 3072
+   }
   },
   {
    "f": "sheets/22_guilty_still_no_words_16.png",
@@ -157,6 +181,11 @@
   {
    "f": "sheets/23_guilty_still_no_answers_distorted_16.png",
    "w": 1036,
+   "h": 3072
+  },
+  {
+   "f": "sheets/24_guilty_still_no_answers_distorted_17.png",
+   "w": 1022,
    "h": 3072
   }
  ]

@@ -68,20 +68,20 @@ let HB=RAWB;(async()=>{const S0=await rawSha();for(const b of [S0,RAWB,ARCH].fil
   hst.textContent=HM.sheets.length+' hojas en la lista; la última: '+HM.sheets[HM.sheets.length-1].f.split('/').pop();})();
 bH.onclick=async()=>{if(!HM)return;bH.disabled=true;hlog.textContent='';const say=t=>{hlog.textContent+=t+'\n';hlog.scrollTop=1e9;};const blog=HM.blog;let done=0,same=0,bad=0;
   const big=b=>{const m=(b.media||[]).slice().sort((x,y)=>(y.width||0)-(x.width||0))[0]||{};return [m.width||0,m.height||0];};
-  const which=b=>{if(!b||b.type!=='image')return -1;const [w,h]=big(b);return HM.sheets.findIndex(s=>Math.abs(s.w-w)<=3&&Math.abs(s.h-h)<=3);};
+  const near=(s,w,h)=>s&&Math.abs(s.w-w)<=3&&Math.abs(s.h-h)<=3;const which=b=>{if(!b||b.type!=='image')return -1;const [w,h]=big(b);let k=HM.sheets.findIndex(s=>near(s,w,h));if(k<0)k=HM.sheets.findIndex(s=>near(s.old,w,h));return k;};const isOld=b=>{const [w,h]=big(b);return HM.sheets.some(s=>near(s.old,w,h)&&!near(s,w,h));};
   for(const p of HM.posts){if(!hchk[p.id]||!hchk[p.id].checked)continue;
     const P=await getPost(blog,p.id,3);if(!P||!P.content){say('✗ '+p.label+': no pude leerlo');bad++;continue;}
     const C=P.content;let last=-1,lastBlock=-1;const have=new Set();C.forEach((b,i)=>{const k=which(b);if(k>=0){have.add(k);if(k>last)last=k;lastBlock=Math.max(lastBlock,i);}});
     if(last<0){say('= '+p.label+': no encuentro ninguna hoja en el post, no lo toco');same++;continue;}
     const add=[];for(let k=last+1;k<HM.sheets.length;k++)if(!have.has(k))add.push(k);
-    if(!add.length){say('= '+p.label+': ya tiene todas las hojas');same++;continue;}
+    const sw=[];C.forEach((b,i)=>{if(which(b)>=0&&isOld(b))sw.push(i);});if(!add.length&&!sw.length){say('= '+p.label+': ya tiene todas las hojas');same++;continue;}
     const n=add.length,at=lastBlock+1;const NB=add.map(k=>({type:'image',media:[{url:HB+HM.sheets[k].f}]}));
-    const content=C.slice(0,at).concat(NB,C.slice(at));const mv=j=>j>=at?j+n:j;
+    const C2=C.map((b,i)=>sw.includes(i)?{type:'image',media:[{url:HB+HM.sheets[which(b)].f}]}:b);const content=C2.slice(0,at).concat(NB,C2.slice(at));const mv=j=>j>=at?j+n:j;
     const layout=(P.layout||[]).map(l=>{const L=JSON.parse(JSON.stringify(l));if(L.blocks)L.blocks=L.blocks.map(mv);if(L.truncate_after!=null&&L.truncate_after>=at)L.truncate_after+=n;
       if(L.type==='rows'&&L.display){L.display.forEach(r=>{r.blocks=r.blocks.map(mv);});let ri=L.display.findIndex(r=>r.blocks.includes(lastBlock));if(ri<0)ri=L.display.length-1;const rows=[];for(let k=0;k<n;k+=3)rows.push({blocks:NB.slice(k,k+3).map((_,q)=>at+k+q)});L.display.splice(ri+1,0,...rows);}
       return L;});
     const body={content,layout,tags:(P.tags||[]).join(',')};
-    say('… '+p.label+': añado '+add.map(k=>HM.sheets[k].f.split('/').pop().replace(/^\d+_/,'').replace('.png','')).join(', '));
+    if(sw.length)say('… '+p.label+': cambio '+sw.length+' hoja(s) por la versión con el número de ronda');if(add.length)say('… '+p.label+': añado '+add.map(k=>HM.sheets[k].f.split('/').pop().replace(/^\d+_/,'').replace('.png','')).join(', '));
     const r=await api('/blog/'+blog+'/posts/'+p.id,{method:'PUT',body},180000);
     if(r&&r.error){say('✗ '+p.label+': Tumblr no dejó editarlo: '+why(r).trim());bad++;}else{say('✓ '+p.label+': hecho');done++;}
     await sleep(3000);}
