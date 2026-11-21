@@ -1,5 +1,13 @@
 [
  {
+  "name": "choco-maga-quacks-ask-20nov",
+  "label": "Choco: thischocosfinity, the ask \"Love how the cult's now open about supporting MAGA\" (20 nov, 1 post, con sus tags)",
+  "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
+  "pages": [
+   "choco-maga-quacks-ask-20nov/index.html"
+  ]
+ },
+ {
   "name": "choco-tf-did-they-think-reblog-21nov",
   "label": "Choco: thischocosfinity, reblog of \"tf did they think was gonna happen\" with \"Yeah, I'm not surprised…\" (21 nov, 1 post)",
   "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
