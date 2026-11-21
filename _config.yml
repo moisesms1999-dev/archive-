@@ -184,4 +184,5 @@ exclude:
   - "choco-self-report-sandwich-20nov/media"
   - "choco-tf-did-they-think-reblog-21nov/media"
   - "choco-maga-quacks-ask-20nov/media"
+  - "sheets"
   - "shared.json"
