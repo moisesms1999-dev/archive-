@@ -1,5 +1,13 @@
 [
  {
+  "name": "choco-mayday-admits-ban-evasion-21nov",
+  "label": "Choco: thischocosfinity, \"What's this? Known filthy predator and chronic liar Mayday admits to evading Tumblr bans\" (21 nov, 1 post, con sus tags)",
+  "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
+  "pages": [
+   "choco-mayday-admits-ban-evasion-21nov/index.html"
+  ]
+ },
+ {
   "name": "choco-never-sleep-ask-21nov",
   "label": "Choco: thischocosfinity, the ask \"Choco, do you never sleep or get tired?\" (21 nov, 1 post, con sus tags)",
   "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
