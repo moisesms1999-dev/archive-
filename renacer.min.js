@@ -71,15 +71,18 @@ bH.onclick=async()=>{if(!HM)return;bH.disabled=true;hlog.textContent='';const sa
   const near=(s,w,h)=>s&&Math.abs(s.w-w)<=3&&Math.abs(s.h-h)<=3;const which=b=>{if(!b||b.type!=='image')return -1;const [w,h]=big(b);let k=HM.sheets.findIndex(s=>near(s,w,h));if(k<0)k=HM.sheets.findIndex(s=>near(s.old,w,h));return k;};const isOld=b=>{const [w,h]=big(b);return HM.sheets.some(s=>near(s.old,w,h)&&!near(s,w,h));};
   for(const p of HM.posts){if(!hchk[p.id]||!hchk[p.id].checked)continue;
     const P=await getPost(blog,p.id,3);if(!P||!P.content){say('✗ '+p.label+': no pude leerlo');bad++;continue;}
-    const C=P.content;let last=-1,lastBlock=-1;const have=new Set();C.forEach((b,i)=>{const k=which(b);if(k>=0){have.add(k);if(k>last)last=k;lastBlock=Math.max(lastBlock,i);}});
+    const C=P.content;const DR=HM.drop||[];const isDrop=b=>{if(!b||b.type!=='image')return false;const [w,h]=big(b);return DR.some(d=>near(d,w,h));};const drop=new Set();C.forEach((b,i)=>{if(isDrop(b))drop.add(i);});
+    let last=-1,lastBlock=-1;const have=new Set();C.forEach((b,i)=>{if(drop.has(i))return;const k=which(b);if(k>=0){have.add(k);if(k>last)last=k;lastBlock=Math.max(lastBlock,i);}});
     if(last<0){say('= '+p.label+': no encuentro ninguna hoja en el post, no lo toco');same++;continue;}
     const add=[];for(let k=last+1;k<HM.sheets.length;k++)if(!have.has(k))add.push(k);
-    const sw=[];C.forEach((b,i)=>{if(which(b)>=0&&isOld(b))sw.push(i);});if(!add.length&&!sw.length){say('= '+p.label+': ya tiene todas las hojas');same++;continue;}
-    const n=add.length,at=lastBlock+1;const NB=add.map(k=>({type:'image',media:[{url:HB+HM.sheets[k].f}]}));
-    const C2=C.map((b,i)=>sw.includes(i)?{type:'image',media:[{url:HB+HM.sheets[which(b)].f}]}:b);const content=C2.slice(0,at).concat(NB,C2.slice(at));const mv=j=>j>=at?j+n:j;
-    const layout=(P.layout||[]).map(l=>{const L=JSON.parse(JSON.stringify(l));if(L.blocks)L.blocks=L.blocks.map(mv);if(L.truncate_after!=null&&L.truncate_after>=at)L.truncate_after+=n;
-      if(L.type==='rows'&&L.display){L.display.forEach(r=>{r.blocks=r.blocks.map(mv);});let ri=L.display.findIndex(r=>r.blocks.includes(lastBlock));if(ri<0)ri=L.display.length-1;const rows=[];for(let k=0;k<n;k+=3)rows.push({blocks:NB.slice(k,k+3).map((_,q)=>at+k+q)});L.display.splice(ri+1,0,...rows);}
+    const sw=[];C.forEach((b,i)=>{if(!drop.has(i)&&which(b)>=0&&isOld(b))sw.push(i);});if(!add.length&&!sw.length&&!drop.size){say('= '+p.label+': ya tiene todas las hojas');same++;continue;}
+    const NB=add.map(k=>({type:'image',media:[{url:HB+HM.sheets[k].f}]}));const content=[];const m=[];let at=-1;
+    C.forEach((b,i)=>{if(drop.has(i)){m[i]=-1;}else{m[i]=content.length;content.push(sw.includes(i)?{type:'image',media:[{url:HB+HM.sheets[which(b)].f}]}:b);}if(i===lastBlock){at=content.length;NB.forEach(x=>content.push(x));}});
+    const nimgs=content.filter(x=>x&&x.type==='image').length;if(nimgs>30){say('✗ '+p.label+': quedaría con '+nimgs+' imágenes y Tumblr solo deja 30 por post; no lo toco');bad++;continue;}
+    const mp=j=>m[j];const layout=(P.layout||[]).map(l=>{const L=JSON.parse(JSON.stringify(l));if(L.blocks)L.blocks=L.blocks.map(mp).filter(j=>j>=0);if(L.truncate_after!=null){let t=L.truncate_after;while(t>=0&&m[t]<0)t--;L.truncate_after=t>=0?m[t]:L.truncate_after;}
+      if(L.type==='rows'&&L.display){let ri=L.display.findIndex(r=>r.blocks.includes(lastBlock));L.display.forEach(r=>{r.blocks=r.blocks.map(mp).filter(j=>j>=0);});const rows=[];for(let k=0;k<NB.length;k+=3)rows.push({blocks:NB.slice(k,k+3).map((_,q)=>at+k+q)});if(ri<0)ri=L.display.length-1;L.display.splice(ri+1,0,...rows);L.display=L.display.filter(r=>r.blocks.length);}
       return L;});
+    if(drop.size)say('… '+p.label+': quito '+drop.size+' hoja(s) repetida(s) de una versión anterior');
     const body={content,layout,tags:(P.tags||[]).join(',')};
     if(sw.length)say('… '+p.label+': cambio '+sw.length+' hoja(s) por la versión con el número de ronda');if(add.length)say('… '+p.label+': añado '+add.map(k=>HM.sheets[k].f.split('/').pop().replace(/^\d+_/,'').replace('.png','')).join(', '));
     const r=await api('/blog/'+blog+'/posts/'+p.id,{method:'PUT',body},180000);
