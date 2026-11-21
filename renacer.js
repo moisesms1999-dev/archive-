@@ -76,6 +76,7 @@ bH.onclick=async()=>{if(!HM)return;bH.disabled=true;hlog.textContent='';const sa
     if(last<0){say('= '+p.label+': no encuentro ninguna hoja en el post, no lo toco');same++;continue;}
     const add=[];for(let k=last+1;k<HM.sheets.length;k++)if(!have.has(k))add.push(k);
     const sw=[];C.forEach((b,i)=>{if(!drop.has(i)&&which(b)>=0&&isOld(b))sw.push(i);});if(!add.length&&!sw.length&&!drop.size){say('= '+p.label+': ya tiene todas las hojas');same++;continue;}
+    {const cur=C.filter((b,i)=>b&&b.type==='image'&&!drop.has(i)).length;const room=30-cur;if(add.length>room){const left=add.splice(Math.max(0,room));say('⚠ '+p.label+': solo caben '+Math.max(0,room)+' hoja(s) más (tope de 30 imágenes de Tumblr); se quedan fuera: '+left.map(k=>HM.sheets[k].f.split('/').pop().replace(/^\d+_/,'').replace('.png','')).join(', '));}if(!add.length&&!sw.length&&!drop.size){say('= '+p.label+': está lleno (30 imágenes), no le cabe ninguna hoja más');same++;continue;}}
     const NB=add.map(k=>({type:'image',media:[{url:HB+HM.sheets[k].f}]}));const content=[];const m=[];let at=-1;
     C.forEach((b,i)=>{if(drop.has(i)){m[i]=-1;}else{m[i]=content.length;content.push(sw.includes(i)?{type:'image',media:[{url:HB+HM.sheets[which(b)].f}]}:b);}if(i===lastBlock){at=content.length;NB.forEach(x=>content.push(x));}});
     const nimgs=content.filter(x=>x&&x.type==='image').length;if(nimgs>30){say('✗ '+p.label+': quedaría con '+nimgs+' imágenes y Tumblr solo deja 30 por post; no lo toco');bad++;continue;}
