@@ -1,5 +1,13 @@
 [
  {
+  "name": "choco-fan-behavior-ask-21nov",
+  "label": "Choco: thischocosfinity, the ask \"Aww they're a fan\" (21 nov, 1 post, con sus tags)",
+  "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
+  "pages": [
+   "choco-fan-behavior-ask-21nov/index.html"
+  ]
+ },
+ {
   "name": "choco-maga-quacks-ask-20nov",
   "label": "Choco: thischocosfinity, the ask \"Love how the cult's now open about supporting MAGA\" (20 nov, 1 post, con sus tags)",
   "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
