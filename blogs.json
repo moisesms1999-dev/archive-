@@ -1,6 +1,14 @@
 [
  {
   "name": "Choco",
+  "label": "Choco: \"You proved exactly my point…\" (23 nov, 1 post, con sus tags)",
+  "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
+  "pages": [
+   "choco-proved-exactly-my-point-23nov/index.html"
+  ]
+ },
+ {
+  "name": "Choco",
   "label": "Choco: \"More bullshit.\" (23 nov, 1 post, con sus tags)",
   "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
   "pages": [
