@@ -1,6 +1,14 @@
 [
  {
   "name": "Choco",
+  "label": "Choco: reblog \"Okay, wait for it, everybody…\" (22 nov, 1 post, con sus tags)",
+  "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
+  "pages": [
+   "choco-wait-for-it-reblog-22nov/index.html"
+  ]
+ },
+ {
+  "name": "Choco",
   "label": "Choco: \"And the Christian mosquito is back…\" (22 nov, 1 post, con sus tags)",
   "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
   "pages": [
