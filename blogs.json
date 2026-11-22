@@ -1,6 +1,14 @@
 [
  {
   "name": "Choco",
+  "label": "Choco: ask on clown-named-choco \"Not knowing most of what's happened with Froggo…\" (22 nov, 1 post, con sus tags)",
+  "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
+  "pages": [
+   "choco-clown-named-choco-ask-22nov/index.html"
+  ]
+ },
+ {
+  "name": "Choco",
   "label": "Choco: ask \"Choco be so fr with us…\" (22 nov, 1 post, con sus tags)",
   "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
   "pages": [
