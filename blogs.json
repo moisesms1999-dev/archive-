@@ -1,6 +1,14 @@
 [
  {
   "name": "Choco",
+  "label": "Choco: \"More bullshit.\" (23 nov, 1 post, con sus tags)",
+  "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
+  "pages": [
+   "choco-more-bullshit-23nov/index.html"
+  ]
+ },
+ {
+  "name": "Choco",
   "label": "Choco: \"You and your mental gymnastics…\" (22 nov, 1 post, con sus tags)",
   "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
   "pages": [
