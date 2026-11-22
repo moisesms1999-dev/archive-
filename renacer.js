@@ -237,7 +237,29 @@ async function runReply(E,btn){const blog=sel.value;if(!blog)return;btn.disabled
       say((r&&!r.error&&!(r.meta&&r.meta.status>=400))?'✓ '+nm+' bloqueado en '+blog:'✗ '+nm+': '+why(r||{}));await sleep(800);}
     rst.textContent='Hecho en '+blog+'. Mira abajo cada paso.';
   }finally{btn.disabled=false;}}
-ffetch('respuestas.json?'+Date.now()).then(r=>r.json()).then(L=>{L.forEach(E=>{const b=$('button',{textContent:'💬 '+E.label,style:bstyle});b.onclick=()=>runReply(E,b);rin.append(b);});}).catch(()=>{rst.textContent='No pude cargar las respuestas fijas.';});
+async function delMyReplies(E,btn){const blog=sel.value;if(!blog)return;const P=E.post;if(!confirm('🗑 ¿Borrar todas las respuestas de '+blog+' en el post de '+P.blog+'?'))return;btn.disabled=true;rlog.textContent='';const say=t=>{rlog.textContent+=t+'\n';rlog.scrollTop=1e9;};
+  try{const nm=x=>String((x&&(x.blog_name||x.blogName||(x.blog&&x.blog.name)||(x.tumblelog&&x.tumblelog.name)))||'').toLowerCase();const rid=x=>String((x&&(x.reply_id||x.replyId||x.id))||'');
+    const list=async()=>{const out=[];const seen=new Set();const walk=a=>{(a||[]).forEach(x=>{if(!x||typeof x!=='object')return;if(nm(x)===blog.toLowerCase()&&rid(x)&&!seen.has(rid(x))){seen.add(rid(x));out.push(x);}walk(x.children&&x.children.elements);walk(x.replies&&x.replies.elements);});};
+      let path='/blog/'+P.blog+'/post/'+P.id+'/replies';for(let k=0;k<15&&path;k++){const q=await api(path);const Q=q&&(q.response||q);const T=Q&&(Q.timeline||Q);walk(T&&T.elements);const nx=T&&T.links&&T.links.next&&T.links.next.href;path=nx?String(nx).replace(/^\/?(api\/)?v2/,''):null;}
+      if(!out.length){const q=await api('/blog/'+P.blog+'/notes?id='+P.id+'&mode=conversation');const Q=q&&(q.response||q);walk(((Q&&Q.notes)||[]).filter(n=>n&&n.type==='reply'));}
+      return out;};
+    rst.textContent='Buscando tus respuestas desde '+blog+'…';let M=await list();if(!M.length){rst.textContent='No encuentro ninguna respuesta de '+blog+' en ese post (¿ya borradas?).';return;}
+    say('Encontradas '+M.length+' respuesta(s) de '+blog+'.');const KW='rnc_repdel_way';let ways=[
+      x=>['/blog/'+P.blog+'/post/'+P.id+'/replies/'+rid(x),{method:'DELETE'}],
+      x=>['/user/post/reply/delete',{method:'POST',body:{post_id:P.id,tumblelog:P.blog,reply_id:rid(x),reply_as:blog}}],
+      x=>['/user/post/reply',{method:'DELETE',body:{post_id:P.id,tumblelog:P.blog,reply_id:rid(x),reply_as:blog}}],
+      x=>['/blog/'+P.blog+'/post/'+P.id+'/replies/'+rid(x)+'/delete',{method:'POST',body:{}}],
+      x=>['/blog/'+blog+'/post/'+P.id+'/replies/'+rid(x),{method:'DELETE'}]];
+    const w0=LS.get(KW,null);if(w0!==null&&ways[w0]){ways=[ways[w0]].concat(ways.filter((_,i)=>i!==w0));}
+    let gone=0;for(const x of M){const id=rid(x);let ok=false;
+      const lk=[];const scan=o=>{if(!o||typeof o!=='object')return;for(const [k,v] of Object.entries(o)){if(typeof v==='string'&&/delete/i.test(k+v)&&/^\/?(api\/)?v2\//.test(v))lk.push(v);else if(typeof v==='object')scan(v);}};scan(x);
+      const tries=lk.map(h=>()=>[String(h).replace(/^\/?(api\/)?v2/,''),{method:'DELETE'}]).concat(ways.map(f=>()=>f(x)));
+      for(let i=0;i<tries.length&&!ok;i++){const [p,o]=tries[i]();const r=await api(p,o);await sleep(1200);const L2=await list();if(!L2.some(y=>rid(y)===id)){ok=true;gone++;say('✓ respuesta '+id+' borrada');}else if(r&&r.error)say('  · '+o.method+' '+p+' → '+why(r).trim());}
+      if(!ok)say('✗ no pude borrar la respuesta '+id+': Tumblr no aceptó ninguna forma. Bórrala a mano: toca tu respuesta en las notas del post → Borrar.');}
+    E.replies.forEach(R=>LS.set('rnc_rep_'+blog+'_'+(R.id||R.target||R.thread_of||'post'),false));
+    rst.textContent=gone===M.length?'Hecho: '+gone+' respuesta(s) de '+blog+' borradas del post de '+P.blog+'.':'Borradas '+gone+' de '+M.length+'. Mira abajo.';
+  }finally{btn.disabled=false;}}
+ffetch('respuestas.json?'+Date.now()).then(r=>r.json()).then(L=>{L.forEach(E=>{const b=$('button',{textContent:'💬 '+E.label,style:bstyle});b.onclick=()=>{if(!confirm('💬 ¿Responder desde '+sel.value+' en el post de '+E.post.blog+(E.block&&E.block.length?' y bloquear a '+E.block.join(', '):'')+'?'))return;runReply(E,b);};const d=$('button',{textContent:'🗑 Borrar mis respuestas de este post (desde el blog elegido)',style:bstyle+';background:#5a1e1e;color:#ffd0d0;font-size:13px'});d.onclick=()=>delMyReplies(E,d);rin.append(b,d);});}).catch(()=>{rst.textContent='No pude cargar las respuestas fijas.';});
 const abox=$('div',{style:'background:#2a1a0e;border:1px solid #5a3a1e;border-radius:12px;padding:10px;margin:0 0 12px'});
 const bA=$('button',{textContent:'🎨 Cabecera y foto de perfil',style:'display:block;width:100%;text-align:left;background:#5a3a1e;color:#ffd9b0;border:0;border-radius:10px;padding:11px;font-weight:700'});
 const ain=$('div');abox.append(bA,ain);box.append(abox);
