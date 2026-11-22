@@ -1,5 +1,13 @@
 [
  {
+  "name": "Choco, So I feel like yapping (22 nov)",
+  "label": "Choco: \"So. I feel like yapping for a bit…\" (22 nov, 1 post, con sus tags)",
+  "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
+  "pages": [
+   "choco-yapping-part-2-22nov/index.html"
+  ]
+ },
+ {
   "name": "Choco, clickityclackithee, The mental quadratics (22 nov)",
   "label": "Choco: clickityclackithee, \"The mental quadratics…\" (22 nov, 1 post, con sus tags)",
   "match": "clickity|choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
