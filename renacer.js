@@ -375,7 +375,7 @@ async function findExisting(blog,key,sg){const ids=((LK&&LK.k)||{})[key]||[];con
     for(const p of P){if(!p||!p.content||(p.trail&&p.trail.length)||p.parent_post_id)continue;if(USED.has(String(p.id_string||p.id)))continue;if(sameSig(sg,sigC(p.content)))return {id:String(p.id_string||p.id),key:p.reblog_key||null,bySig:true,orig:ORIG.has(String(p.id_string||p.id))};}
     if(P.length<20)break;}}
   return null;}
-let UPON=false;
+let UPON=false,FORCEUP=false;
 async function fixLinks(blog,oldId,newUrl){let n=0;const src='https?:\\/\\/(?:www\\.)?(?:tumblr\\.com\\/'+blog+'|'+blog+'\\.tumblr\\.com\\/post)\\/'+oldId+'(?:\\/[^\\s"<>?#]*)?(?:\\?[^\\s"<>#]*)?(?:#[^\\s"<>]*)?';const hit=u=>new RegExp('^'+src+'$').test(String(u||''));const cp=(t,i)=>Array.from(t.slice(0,i)).length;
   const fixB=b=>{let ch=false;if(!b||typeof b!=='object')return false;if(b.url&&hit(b.url)){b.url=newUrl;if(b.display_url)b.display_url=newUrl;ch=true;}(b.formatting||[]).forEach(f=>{if(f&&f.url&&hit(f.url)){f.url=newUrl;ch=true;}});
     if(typeof b.text==='string'){const R=new RegExp(src,'g');const t=b.text;let out='',last=0,m;const sh=[];while((m=R.exec(t))){out+=t.slice(last,m.index)+newUrl;sh.push([cp(t,m.index),Array.from(m[0]).length,Array.from(newUrl).length]);last=m.index+m[0].length;}
@@ -556,7 +556,7 @@ function showPosts(it,D,TAGS,labs,TG){
     if(chk.checked){const first=checks.findIndex(c=>c.checked&&!c.disabled);if(first<0){st.textContent='Marca desde cuál empezar.';return;}picks=checks.slice(first).filter(c=>!c.disabled);}
     else picks=checks.filter(c=>c.checked&&!c.disabled);
     if(!picks.length){st.textContent='No hay nada marcado.';return;}
-    UPON=upr.checked;if(UPON&&picks.length>3&&!confirm('🔝 Subir arriba está activado y hay '+picks.length+' posts marcados: los que ya estén en el blog se publican otra vez y pierden sus likes. ¿Seguro?')){UPON=false;return;}
+    UPON=upr.checked||FORCEUP;FORCEUP=false;if(UPON&&picks.length>3&&!confirm('🔝 Subir arriba está activado y hay '+picks.length+' posts marcados: los que ya estén en el blog se publican otra vez y pierden sus likes. ¿Seguro?')){UPON=false;return;}
     pub.disabled=true;await links();const TS=Date.now();
     let uuid=null;if(chk.checked){const bi=await api('/blog/'+blog+'/info');const BI=bi&&(bi.response||bi);uuid=BI&&BI.blog&&BI.blog.uuid;}
     let prev=null;try{prev=JSON.parse(localStorage.getItem(KEY())||'null');}catch(e){}
@@ -568,6 +568,8 @@ function showPosts(it,D,TAGS,labs,TG){
           if(checks[x.i+1]&&!checks[x.i+1].disabled)checks[x.i+1].checked=true;}});
     st.textContent='Tanda hecha: '+ok+' de '+picks.length+' en '+secs(Date.now()-TS)+(ok?' ('+secs((Date.now()-TS)/ok)+' por post)':'')+'.'+(chk.checked?' La cadena sigue donde lo dejaste: vuelve a pulsar para la siguiente tanda.':'');pub.disabled=false;
   };
-  list.append(pub);
+  const upb=$('button',{textContent:'🔝 Subir arriba en los tags los marcados',style:'display:block;width:100%;background:#c0392b;color:#fff;border:0;border-radius:12px;padding:15px;font-weight:800;margin:0 0 4px'});
+  upb.onclick=()=>{if(pub.disabled)return;FORCEUP=true;pub.onclick();};
+  list.append(pub,upb,$('p',{textContent:'Si ya está en el blog, lo publica otra vez (sale el primero en los tags), le pone la fecha de cuando se publicó, borra el de antes (se pierden sus likes) y cambia al nuevo los enlaces que le apuntaban en tus otros posts. Si no está, lo publica normal.',style:'font-size:12px;color:#e7b98a;margin:0 0 10px'}));
 }
 })();
