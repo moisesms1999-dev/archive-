@@ -199,4 +199,5 @@ exclude:
   - "choco-clown-named-choco-ask-22nov/media"
   - "choco-christian-mosquito-22nov/media"
   - "choco-wait-for-it-reblog-22nov/media"
+  - "choco-run-on-reblog-22nov/media"
   - "shared.json"
