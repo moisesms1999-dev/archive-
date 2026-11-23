@@ -208,4 +208,5 @@ exclude:
   - "choco-morphine-oh-lookie-23nov/media"
   - "choco-darkship-ironic-ask-23nov/media"
   - "choco-opps-cult-ask-23nov/media"
+  - "choco-no-debate-ask-23nov/media"
   - "shared.json"
