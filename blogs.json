@@ -1,5 +1,13 @@
 [
  {
+  "name": "choco-opps-cult-ask-23nov",
+  "label": "Choco: 23 Nov, the anon ask on \"opponents\" and the cult",
+  "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
+  "pages": [
+   "choco-opps-cult-ask-23nov/index.html"
+  ]
+ },
+ {
   "name": "choco-darkship-ironic-ask-23nov",
   "label": "Choco: 23 Nov, the anon ask \"Extremely ironic that someone who has a darkship account…\"",
   "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
