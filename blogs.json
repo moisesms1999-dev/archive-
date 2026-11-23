@@ -1,5 +1,13 @@
 [
  {
+  "name": "choco-saddest-thing-23nov",
+  "label": "Choco: 23 Nov, The saddest thing is you're so full of yourself (Sanctuarium, 10 points)",
+  "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
+  "pages": [
+   "choco-saddest-thing-23nov/index.html"
+  ]
+ },
+ {
   "name": "choco-no-debate-ask-23nov",
   "label": "Choco: 23 Nov, the anon ask on clown-named-choco's \"I don't need to have any words\"",
   "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
