@@ -1,5 +1,13 @@
 [
  {
+  "name": "choco-still-no-words-5-23nov",
+  "label": "Choco: 23 Nov, Still no words ⑤ and ⑥ (silent post)",
+  "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
+  "pages": [
+   "choco-still-no-words-5-23nov/index.html"
+  ]
+ },
+ {
   "name": "Choco",
   "label": "Choco: \"You proved exactly my point…\" (23 nov, 1 post, con sus tags)",
   "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
