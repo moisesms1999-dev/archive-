@@ -1,5 +1,13 @@
 [
  {
+  "name": "choco-always-ppl-who-like-kids-ask-23nov",
+  "label": "Choco: 23 Nov, the anon ask \"Why is it always ppl who like kids\"",
+  "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
+  "pages": [
+   "choco-always-ppl-who-like-kids-ask-23nov/index.html"
+  ]
+ },
+ {
   "name": "choco-saddest-thing-23nov",
   "label": "Choco: 23 Nov, The saddest thing is you're so full of yourself (Sanctuarium, 10 points)",
   "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
