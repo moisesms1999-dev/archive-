@@ -78,6 +78,18 @@
    "n": 284,
    "label": "284 · You proved exactly my point",
    "on": true
+  },
+  {
+   "id": "834049037388873728",
+   "n": 285,
+   "label": "285 · The saddest thing (10 puntos)",
+   "on": true
+  },
+  {
+   "id": "834074817494941696",
+   "n": 289,
+   "label": "289 · Ask \"I don't need to have any words\"",
+   "on": true
   }
  ],
  "sheets": [
@@ -246,9 +258,13 @@
    "h": 2558
   },
   {
-   "f": "sheets/28_guilty_still_no_words_not_knowing_1.png",
-   "w": 1478,
-   "h": 3072
+   "f": "sheets/28_guilty_still_no_words_19.png",
+   "w": 1455,
+   "h": 3072,
+   "old": {
+    "w": 1478,
+    "h": 3072
+   }
   },
   {
    "f": "sheets/29_guilty_moving_the_goalposts.png",
@@ -261,9 +277,13 @@
    "h": 2192
   },
   {
-   "f": "sheets/31_guilty_still_no_words_not_knowing_2.png",
-   "w": 839,
-   "h": 3072
+   "f": "sheets/31_guilty_still_no_words_20.png",
+   "w": 814,
+   "h": 3072,
+   "old": {
+    "w": 839,
+    "h": 3072
+   }
   },
   {
    "f": "sheets/32_make_up_your_mind_logic_f.png",
@@ -271,12 +291,12 @@
    "h": 1314
   },
   {
-   "f": "sheets/33_guilty_still_no_words_3.png",
+   "f": "sheets/33_guilty_still_no_words_21.png",
    "w": 1781,
-   "h": 2758,
+   "h": 2818,
    "old": {
-    "w": 1064,
-    "h": 1645
+    "w": 1781,
+    "h": 2758
    }
   },
   {
@@ -285,9 +305,13 @@
    "h": 1485
   },
   {
-   "f": "sheets/35_guilty_still_no_words_4.png",
-   "w": 1758,
-   "h": 3072
+   "f": "sheets/35_guilty_still_no_words_22.png",
+   "w": 1724,
+   "h": 3072,
+   "old": {
+    "w": 1758,
+    "h": 3072
+   }
   },
   {
    "f": "sheets/36_proved_my_point_logic_f.png",
@@ -315,9 +339,13 @@
    "h": 3072
   },
   {
-   "f": "sheets/41_guilty_still_no_words_5.png",
-   "w": 1186,
-   "h": 3072
+   "f": "sheets/41_guilty_still_no_words_23.png",
+   "w": 1127,
+   "h": 3072,
+   "old": {
+    "w": 1186,
+    "h": 3072
+   }
   },
   {
    "f": "sheets/42_guilty_ted_talk_exhibit_b.png",
@@ -335,8 +363,27 @@
    "h": 3072
   },
   {
-   "f": "sheets/45_guilty_still_no_words_6.png",
-   "w": 1169,
+   "f": "sheets/45_guilty_still_no_words_24.png",
+   "w": 1153,
+   "h": 3072,
+   "old": {
+    "w": 1169,
+    "h": 3072
+   }
+  },
+  {
+   "f": "sheets/46_guilty_no_debate_own_words.png",
+   "w": 1890,
+   "h": 2455
+  },
+  {
+   "f": "sheets/47_clown-named-choco_no_debate_post_full_8.png",
+   "w": 605,
+   "h": 3072
+  },
+  {
+   "f": "sheets/48_guilty_still_no_words_25.png",
+   "w": 1298,
    "h": 3072
   }
  ],
