@@ -1,5 +1,13 @@
 [
  {
+  "name": "choco-morphine-oh-lookie-23nov",
+  "label": "Choco: 23 Nov, Oh lookie! The cult member is back (morphine-rip)",
+  "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
+  "pages": [
+   "choco-morphine-oh-lookie-23nov/index.html"
+  ]
+ },
+ {
   "name": "choco-still-no-words-5-23nov",
   "label": "Choco: 23 Nov, Still no words ⑤ and ⑥ (silent post)",
   "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
