@@ -96,6 +96,12 @@
    "n": 291,
    "label": "291 · When copycats get so bashful (memes + Fan behavior x2)",
    "on": true
+  },
+  {
+   "id": "834165449058041856",
+   "n": 293,
+   "label": "293 · Oops! Guess my fan got caught lying again (5 a.m.)",
+   "on": true
   }
  ],
  "sheets": [
@@ -416,6 +422,21 @@
    "f": "sheets/53_guilty_fan_behavior_x2.png",
    "w": 1864,
    "h": 3072
+  },
+  {
+   "f": "sheets/54_guilty_still_no_words_27.png",
+   "w": 913,
+   "h": 3072
+  },
+  {
+   "f": "sheets/55_guilty_fan_behavior_5am.png",
+   "w": 1800,
+   "h": 2676
+  },
+  {
+   "f": "sheets/56_meme_ronald_5am.png",
+   "w": 1870,
+   "h": 1420
   }
  ],
  "drop": [

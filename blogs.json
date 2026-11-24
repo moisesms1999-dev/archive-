@@ -1,5 +1,13 @@
 [
  {
+  "name": "choco-fan-caught-lying-24nov",
+  "label": "Choco: 24 Nov, Oops! Guess my fan got caught lying again",
+  "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
+  "pages": [
+   "choco-fan-caught-lying-24nov/index.html"
+  ]
+ },
+ {
   "name": "choco-bashful-copycat-fans-24nov",
   "label": "Choco: 24 Nov, When copycats who follow your blog get so bashful",
   "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
