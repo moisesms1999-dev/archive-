@@ -73,20 +73,25 @@ bH.onclick=async()=>{if(!HM)return;bH.disabled=true;hlog.textContent='';const sa
   for(const p of HM.posts){if(!hchk[p.id]||!hchk[p.id].checked)continue;
     const P=await getPost(blog,p.id,3);if(!P||!P.content){say('✗ '+p.label+': no pude leerlo');bad++;continue;}
     const C=P.content;const DR=HM.drop||[];const isDrop=b=>{if(!b||b.type!=='image')return false;const [w,h]=big(b);return DR.some(d=>near(d,w,h));};const drop=new Set();C.forEach((b,i)=>{if(isDrop(b))drop.add(i);});
-    let last=-1,lastBlock=-1;const have=new Set();C.forEach((b,i)=>{if(drop.has(i))return;const k=which(b);if(k>=0){have.add(k);if(k>last)last=k;lastBlock=Math.max(lastBlock,i);}});
+    const TL=new Set((p.tail||[]).map(f=>HM.sheets.findIndex(s=>s.f===f)).filter(k=>k>=0));const mv=[];C.forEach((b,i)=>{if(!drop.has(i)&&TL.has(which(b)))mv.push(i);});
+    const keep=C.map((b,i)=>i).filter(i=>!drop.has(i));const needMove=mv.length>0&&mv.join()!==keep.slice(-mv.length).join();const mvS=new Set(needMove?mv:[]);
+    let last=-1,lastBlock=-1;const have=new Set();C.forEach((b,i)=>{if(drop.has(i))return;const k=which(b);if(k>=0){have.add(k);if(k>last)last=k;if(!mvS.has(i))lastBlock=Math.max(lastBlock,i);}});
     if(last<0){say('= '+p.label+': no encuentro ninguna hoja en el post, no lo toco');same++;continue;}
     const add=[];for(let k=last+1;k<HM.sheets.length;k++)if(!have.has(k))add.push(k);
-    const sw=[];C.forEach((b,i)=>{if(!drop.has(i)&&which(b)>=0&&isOld(b))sw.push(i);});if(!add.length&&!sw.length&&!drop.size){say('= '+p.label+': ya tiene todas las hojas');same++;continue;}
-    {const cur=C.filter((b,i)=>b&&b.type==='image'&&!drop.has(i)).length;const room=30-cur;if(add.length>room){const left=add.splice(Math.max(0,room));say('⚠ '+p.label+': solo caben '+Math.max(0,room)+' hoja(s) más (tope de 30 imágenes de Tumblr); se quedan fuera: '+left.map(k=>HM.sheets[k].f.split('/').pop().replace(/^\d+_/,'').replace('.png','')).join(', '));}if(!add.length&&!sw.length&&!drop.size){say('= '+p.label+': está lleno (30 imágenes), no le cabe ninguna hoja más');same++;continue;}}
+    const sw=[];C.forEach((b,i)=>{if(!drop.has(i)&&which(b)>=0&&isOld(b))sw.push(i);});if(!add.length&&!sw.length&&!drop.size&&!needMove){say('= '+p.label+': ya tiene todas las hojas');same++;continue;}
+    {const cur=C.filter((b,i)=>b&&b.type==='image'&&!drop.has(i)).length;const room=30-cur;if(add.length>room){const left=add.splice(Math.max(0,room));say('⚠ '+p.label+': solo caben '+Math.max(0,room)+' hoja(s) más (tope de 30 imágenes de Tumblr); se quedan fuera: '+left.map(k=>HM.sheets[k].f.split('/').pop().replace(/^\d+_/,'').replace('.png','')).join(', '));}if(!add.length&&!sw.length&&!drop.size&&!needMove){say('= '+p.label+': está lleno (30 imágenes), no le cabe ninguna hoja más');same++;continue;}}
     const NB=add.map(k=>({type:'image',media:[{url:HB+HM.sheets[k].f}]}));const content=[];const m=[];let at=-1;
-    C.forEach((b,i)=>{if(drop.has(i)){m[i]=-1;}else{m[i]=content.length;content.push(sw.includes(i)?{type:'image',media:[{url:HB+HM.sheets[which(b)].f}]}:b);}if(i===lastBlock){at=content.length;NB.forEach(x=>content.push(x));}});
+    const put=(b,i)=>{m[i]=content.length;content.push(sw.includes(i)?{type:'image',media:[{url:HB+HM.sheets[which(b)].f}]}:b);};
+    C.forEach((b,i)=>{if(drop.has(i)){m[i]=-1;}else if(!mvS.has(i)){put(b,i);}if(i===lastBlock){at=content.length;NB.forEach(x=>content.push(x));}});
+    if(at<0&&NB.length){at=content.length;NB.forEach(x=>content.push(x));}
+    mv.forEach(i=>{if(mvS.has(i))put(C[i],i);});
     const nimgs=content.filter(x=>x&&x.type==='image').length;if(nimgs>30){say('✗ '+p.label+': quedaría con '+nimgs+' imágenes y Tumblr solo deja 30 por post; no lo toco');bad++;continue;}
     const mp=j=>m[j];const layout=(P.layout||[]).map(l=>{const L=JSON.parse(JSON.stringify(l));if(L.blocks)L.blocks=L.blocks.map(mp).filter(j=>j>=0);if(L.truncate_after!=null){let t=L.truncate_after;while(t>=0&&m[t]<0)t--;L.truncate_after=t>=0?m[t]:L.truncate_after;}
-      if(L.type==='rows'&&L.display){let ri=L.display.findIndex(r=>r.blocks.includes(lastBlock));L.display.forEach(r=>{r.blocks=r.blocks.map(mp).filter(j=>j>=0);});const rows=[];for(let k=0;k<NB.length;k+=3)rows.push({blocks:NB.slice(k,k+3).map((_,q)=>at+k+q)});if(ri<0)ri=L.display.length-1;L.display.splice(ri+1,0,...rows);L.display=L.display.filter(r=>r.blocks.length);}
+      if(L.type==='rows'&&L.display){let ri=L.display.findIndex(r=>r.blocks.includes(lastBlock));L.display.forEach(r=>{r.blocks=r.blocks.filter(j=>!mvS.has(j)).map(mp).filter(j=>j>=0);});const rows=[];for(let k=0;k<NB.length;k+=3)rows.push({blocks:NB.slice(k,k+3).map((_,q)=>at+k+q)});if(ri<0)ri=L.display.length-1;L.display.splice(ri+1,0,...rows);mv.forEach(i=>{if(mvS.has(i))L.display.push({blocks:[m[i]]});});L.display=L.display.filter(r=>r.blocks.length);}
       return L;});
     if(drop.size)say('… '+p.label+': quito '+drop.size+' hoja(s) repetida(s) de una versión anterior');
     const body={content,layout,tags:(P.tags||[]).join(',')};
-    if(sw.length)say('… '+p.label+': cambio '+sw.length+' hoja(s) por la versión con el número de ronda');if(add.length)say('… '+p.label+': añado '+add.map(k=>HM.sheets[k].f.split('/').pop().replace(/^\d+_/,'').replace('.png','')).join(', '));
+    if(sw.length)say('… '+p.label+': cambio '+sw.length+' hoja(s) por la versión con el número de ronda');if(needMove)say('… '+p.label+': pongo '+mv.length+' hoja(s) al final, debajo del texto al que contestan');if(add.length)say('… '+p.label+': añado '+add.map(k=>HM.sheets[k].f.split('/').pop().replace(/^\d+_/,'').replace('.png','')).join(', '));
     const r=await api('/blog/'+blog+'/posts/'+p.id,{method:'PUT',body},180000);
     if(r&&r.error){say('✗ '+p.label+': Tumblr no dejó editarlo: '+why(r).trim());bad++;}else{say('✓ '+p.label+': hecho');done++;}
     await sleep(3000);}
