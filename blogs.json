@@ -1,5 +1,13 @@
 [
  {
+  "name": "choco-bashful-copycat-fans-24nov",
+  "label": "Choco: 24 Nov, When copycats who follow your blog get so bashful",
+  "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
+  "pages": [
+   "choco-bashful-copycat-fans-24nov/index.html"
+  ]
+ },
+ {
   "name": "choco-fantasies-mister-morbid-ask-24nov",
   "label": "Choco: 24 Nov, the anon ask on mister-morbid's \"Fantasies are just fantasies\"",
   "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
