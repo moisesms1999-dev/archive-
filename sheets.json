@@ -521,8 +521,8 @@
   },
   {
    "f": "sheets/70_gravekandy_answered_line_by_line_5.png",
-   "w": 2048,
-   "h": 2804
+   "w": 1840,
+   "h": 3072
   },
   {
    "f": "sheets/71_gravekandy_answered_line_by_line_6.png",
@@ -542,7 +542,27 @@
   {
    "f": "sheets/74_gravekandy_answered_course_of_conduct_3.png",
    "w": 2048,
-   "h": 2106
+   "h": 2608
+  },
+  {
+   "f": "sheets/75_gravekandy_answered_false_accusations_1.png",
+   "w": 2048,
+   "h": 2484
+  },
+  {
+   "f": "sheets/76_gravekandy_answered_false_accusations_2.png",
+   "w": 1544,
+   "h": 3072
+  },
+  {
+   "f": "sheets/77_gravekandy_answered_false_accusations_3.png",
+   "w": 2048,
+   "h": 2973
+  },
+  {
+   "f": "sheets/78_gravekandy_answered_false_accusations_4.png",
+   "w": 2048,
+   "h": 1511
   }
  ],
  "drop": [
