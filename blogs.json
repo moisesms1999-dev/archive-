@@ -1,5 +1,13 @@
 [
  {
+  "name": "choco-civility-reblog-25nov",
+  "label": "Choco: reblog \"Yeah Chance was just the pedo I wanted to use as an example…\" (25 nov, 1 post)",
+  "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
+  "pages": [
+   "choco-civility-reblog-25nov/index.html"
+  ]
+ },
+ {
   "name": "choco-buddhism-ask-25nov",
   "label": "Choco: 25 Nov, the anon ask: Choco what's your opinion on Buddhism?",
   "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
