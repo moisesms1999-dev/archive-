@@ -1,5 +1,29 @@
 [
  {
+  "name": "choco-civility-reblog-alts-25nov",
+  "label": "Choco: reblog \"Anon asked for the Predator's alts to report.\" (25 nov, 1 post)",
+  "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
+  "pages": [
+   "choco-civility-reblog-alts-25nov/index.html"
+  ]
+ },
+ {
+  "name": "choco-objectively-right-reblog-25nov",
+  "label": "Choco: reblog of pukicho \"The burden of being objectively right all the time...\" (25 nov, 1 post)",
+  "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
+  "pages": [
+   "choco-objectively-right-reblog-25nov/index.html"
+  ]
+ },
+ {
+  "name": "choco-crimes-and-punishment-25nov",
+  "label": "Choco: reblog \"Back in late 2025, they'd made an empty section called crimes and punishment…\" (25 nov, 1 post)",
+  "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
+  "pages": [
+   "choco-crimes-and-punishment-25nov/index.html"
+  ]
+ },
+ {
   "name": "choco-least-privileged-25nov",
   "label": "Choco: 25 Nov, \"Least Privileged Dollarmerican white Christian Sanctuarium.\"",
   "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
