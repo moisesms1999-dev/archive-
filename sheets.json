@@ -486,13 +486,18 @@
   },
   {
    "f": "sheets/63_guilty_gonna_get_me_crucified.png",
-   "w": 1747,
+   "w": 1691,
    "h": 3072
   },
   {
    "f": "sheets/64_guilty_a_cult_by_their_own_record.png",
    "w": 2004,
-   "h": 2594
+   "h": 2666
+  },
+  {
+   "f": "sheets/65_overruled_false_accusations_history.png",
+   "w": 1500,
+   "h": 2819
   }
  ],
  "drop": [
