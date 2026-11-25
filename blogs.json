@@ -1,5 +1,13 @@
 [
  {
+  "name": "choco-most-serious-25nov",
+  "label": "Choco: 25 Nov, \"Most serious\"",
+  "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
+  "pages": [
+   "choco-most-serious-25nov/index.html"
+  ]
+ },
+ {
   "name": "choco-5am-boring-25nov",
   "label": "Choco: 25 Nov, \"You're 5 am boring.\"",
   "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
