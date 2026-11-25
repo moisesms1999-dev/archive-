@@ -1,5 +1,29 @@
 [
  {
+  "name": "choco-buddhism-ask-25nov",
+  "label": "Choco: 25 Nov, the anon ask: Choco what's your opinion on Buddhism?",
+  "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
+  "pages": [
+   "choco-buddhism-ask-25nov/index.html"
+  ]
+ },
+ {
+  "name": "choco-choconlyfans-ask-24nov",
+  "label": "Choco: 24 Nov, the anon ask: ChocOnlyFans",
+  "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
+  "pages": [
+   "choco-choconlyfans-ask-24nov/index.html"
+  ]
+ },
+ {
+  "name": "choco-spaghetti-ask-24nov",
+  "label": "Choco: 24 Nov, the anon ask: When did u first have spaghetti?",
+  "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
+  "pages": [
+   "choco-spaghetti-ask-24nov/index.html"
+  ]
+ },
+ {
   "name": "choco-civility-ask-25nov",
   "label": "Choco: 25 Nov, the anon ask: Choco doesn't owe anyone civility",
   "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
