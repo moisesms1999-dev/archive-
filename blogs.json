@@ -1,5 +1,13 @@
 [
  {
+  "name": "choco-civility-ask-25nov",
+  "label": "Choco: 25 Nov, the anon ask: Choco doesn't owe anyone civility",
+  "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
+  "pages": [
+   "choco-civility-ask-25nov/index.html"
+  ]
+ },
+ {
   "name": "choco-dust-particle-25nov",
   "label": "Choco: 25 Nov, You're neither here nor do you exist",
   "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
