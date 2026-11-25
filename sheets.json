@@ -104,7 +104,7 @@
   {
    "id": "834165449058041856",
    "n": 295,
-   "label": "295 · Oops! Guess my fan got caught lying again (5 a.m.)",
+   "label": "295 · Oops! Guess my fan got caught lying again (5 a.m. + round 28)",
    "on": true
   },
   {
@@ -462,6 +462,16 @@
    "f": "sheets/59_clown-named-choco_no_debate_post_full_12.png",
    "w": 505,
    "h": 3072
+  },
+  {
+   "f": "sheets/60_guilty_still_no_words_29.png",
+   "w": 1980,
+   "h": 1936
+  },
+  {
+   "f": "sheets/61_guilty_lying_about_5am.png",
+   "w": 1800,
+   "h": 2813
   }
  ],
  "drop": [
