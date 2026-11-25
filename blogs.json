@@ -1,5 +1,13 @@
 [
  {
+  "name": "choco-local-kkkristian-25nov",
+  "label": "Choco: 25 Nov, \"Local KKKristian cleans up…\"",
+  "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
+  "pages": [
+   "choco-local-kkkristian-25nov/index.html"
+  ]
+ },
+ {
   "name": "choco-civility-reblog-alts-25nov",
   "label": "Choco: reblog \"Anon asked for the Predator's alts to report.\" (25 nov, 1 post)",
   "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
