@@ -1,5 +1,13 @@
 [
  {
+  "name": "choco-5am-boring-25nov",
+  "label": "Choco: 25 Nov, \"You're 5 am boring.\"",
+  "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
+  "pages": [
+   "choco-5am-boring-25nov/index.html"
+  ]
+ },
+ {
   "name": "choco-civility-reblog-25nov",
   "label": "Choco: reblog \"Yeah Chance was just the pedo I wanted to use as an example…\" (25 nov, 1 post)",
   "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
