@@ -1,5 +1,13 @@
 [
  {
+  "name": "choco-least-privileged-25nov",
+  "label": "Choco: 25 Nov, \"Least Privileged Dollarmerican white Christian Sanctuarium.\"",
+  "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
+  "pages": [
+   "choco-least-privileged-25nov/index.html"
+  ]
+ },
+ {
   "name": "choco-most-serious-25nov",
   "label": "Choco: 25 Nov, \"Most serious\"",
   "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",

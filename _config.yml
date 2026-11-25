@@ -222,4 +222,5 @@ exclude:
   - "choco-civility-reblog-25nov/media"
   - "choco-5am-boring-25nov/media"
   - "choco-most-serious-25nov/media"
+  - "choco-least-privileged-25nov/media"
   - "shared.json"

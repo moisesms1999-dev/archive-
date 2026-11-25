@@ -124,6 +124,12 @@
    "n": 301,
    "label": "301 · Most serious (round 30 + Ghosted, \"with answers\")",
    "on": true
+  },
+  {
+   "id": "834289369033687040",
+   "n": 302,
+   "label": "302 · Least Privileged (Excellent meme)",
+   "on": true
   }
  ],
  "sheets": [
@@ -618,6 +624,16 @@
   {
    "f": "sheets/88_meme_burns_college_excellent.png",
    "w": 1260,
+   "h": 3072
+  },
+  {
+   "f": "sheets/89_guilty_still_no_words_33.png",
+   "w": 1980,
+   "h": 2958
+  },
+  {
+   "f": "sheets/90_meme_ronald_eleven_minutes.png",
+   "w": 1371,
    "h": 3072
   }
  ],
