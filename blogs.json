@@ -1,5 +1,13 @@
 [
  {
+  "name": "choco-dumb-r4bbit-ask-26nov",
+  "label": "Choco: 26 Nov, anon ask \"@dumb-r4bbit is being weird btw…\"",
+  "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
+  "pages": [
+   "choco-dumb-r4bbit-ask-26nov/index.html"
+  ]
+ },
+ {
   "name": "choco-local-kkkristian-25nov",
   "label": "Choco: 25 Nov, \"Local KKKristian cleans up…\"",
   "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
