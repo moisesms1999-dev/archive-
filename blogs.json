@@ -1,5 +1,13 @@
 [
  {
+  "name": "choco-buddhism-reblog-27nov",
+  "label": "Choco: reblog \"And just as Genuinely you better address…\" (27 nov, 1 post)",
+  "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
+  "pages": [
+   "choco-buddhism-reblog-27nov/index.html"
+  ]
+ },
+ {
   "name": "choco-dumb-r4bbit-ask-26nov",
   "label": "Choco: 26 Nov, anon ask \"@dumb-r4bbit is being weird btw…\"",
   "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
