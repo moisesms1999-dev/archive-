@@ -1,5 +1,13 @@
 [
  {
+  "name": "choco-grave-left-tumblr-ask-27nov",
+  "label": "Choco: 27 Nov, anon ask \"dude. grave left tumblr. give it a fucking rest.\"",
+  "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
+  "pages": [
+   "choco-grave-left-tumblr-ask-27nov/index.html"
+  ]
+ },
+ {
   "name": "choco-ban-20-accounts-ask-27nov",
   "label": "Choco: 27 Nov, anon ask \"DID YOU JUST BAN LIKE 20 OF THEIR ACCOUNTS…\"",
   "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
