@@ -48,6 +48,7 @@ else{box.append($('p',{textContent:'No pude leer tus blogs: '+JSON.stringify(u).
 const sel=$('select',{style:'width:100%;padding:11px;border-radius:10px;background:#1a120b;color:#ffd9b0;border:1px solid #5a3a1e;margin-bottom:12px'});
 blogs.forEach(b=>sel.append($('option',{value:b.name,textContent:b.name})));
 box.append(sel);
+const topbox=$('div',{style:'display:none;background:#2a1a0e;border:2px solid #ff9a3c;border-radius:14px;padding:12px;margin:0 0 14px'});const tst=$('div',{style:'color:#9be59b;font-size:16px;min-height:1.2em;margin-top:10px'});topbox.append(tst);box.append(topbox);
 const wbon=$('input',{type:'checkbox',checked:LS.get('rnc_wbon',true)});wbon.onchange=()=>LS.set('rnc_wbon',wbon.checked);
 const wbst=$('div',{style:'font-size:12px;color:#a58a6a;margin:2px 0 0 28px;min-height:1em'});
 const wbl=$('label',{style:'display:flex;gap:8px;align-items:center;margin:0 0 2px;color:#ffb066;font-weight:700;font-size:14px'});wbl.append(wbon,$('span',{textContent:'🗄 Guardar cada post nuevo en el Wayback Machine, para que sus enlaces no mueran'}));
@@ -581,10 +582,10 @@ bD.onclick=async()=>{const blog=sel.value;bD.disabled=true;dst.textContent='Cont
   dst.textContent='Hecho: '+done+' posts borrados de '+blog+(fail?', '+fail+' no se pudieron':'')+'. El progreso de los botones de blog entero para este blog se ha puesto a cero.';bD.disabled=false;};
 const wbox=$('div',{style:'background:#2a1a0e;border:1px solid #5a3a1e;border-radius:12px;padding:10px;margin:0 0 12px'});
 wbox.append($('b',{textContent:'🔁 Blog entero, de un toque',style:'color:#ffb066'}),$('p',{textContent:'Cada botón publica un blog caído completo en el blog elegido arriba, en el orden en que se postearon los originales: lo más viejo primero y lo último al final, así el último que se publica es justo el último que se posteó y queda arriba. Como va en orden, cuando un post enlaza a otro anterior, ese ya está republicado y el enlace apunta a la copia nueva. Las cadenas de reblogs van juntas, cada trozo rebloguea el anterior, como estaban. Todo de una vez, de uno en uno, al ritmo elegido arriba; sigue donde lo dejaste.',style:'font-size:13px;color:#e7b98a;margin:6px 0 8px'}));
-const wst=$('div',{style:'color:#9be59b;font-size:14px;min-height:1.2em;margin-top:6px'});const wlist=$('div');wbox.append(wlist,wst);box.append(wbox);
+const wst0=$('div',{style:'color:#9be59b;font-size:14px;min-height:1.2em;margin-top:6px'});const wlist=$('div');wbox.append(wlist,wst0);box.append(wbox);
 (async()=>{let BL=[];try{BL=await (await ffetch('blogs.json?'+Date.now())).json();}catch(e){}
   const dkey=h=>{const t=h.replace(/<[^>]+>/g,' ').replace(/&[a-z#0-9]+;/g,' ').toLowerCase().replace(/[^a-z0-9]/g,'');const n=(h.match(/<img /g)||[]).length;if(t.length>=60)return t.slice(0,120);return t+'|'+n+'|'+(h.match(/(?:src|href|data-url)="[^"]*"/g)||[]).join('');};
-  for(const bl of BL){const b=$('button',{textContent:'🔁 '+bl.label,style:bstyle});wlist.append(b);
+  for(const bl of BL){const TOP=!!bl.top;const b=$('button',{textContent:TOP?(bl.big||bl.label):'🔁 '+bl.label,style:TOP?'display:block;width:100%;text-align:center;background:#ff9a3c;color:#1a120b;border:0;border-radius:14px;padding:22px 14px;font-weight:900;font-size:22px;line-height:1.25':bstyle});const wst=TOP?tst:wst0;const wl=TOP?topbox:wlist;if(TOP){topbox.style.display='block';topbox.insertBefore(b,tst);}else wlist.append(b);
     b.onclick=async()=>{const blog=sel.value;b.disabled=true;wst.textContent='Leyendo '+bl.pages.length+' página(s)…';await links();await fuera();
       let IX=[];try{IX=await (await ffetch('index.json?'+Date.now())).json();}catch(e){}const CH=new Set(IX.filter(x=>x.chain).map(x=>x.path));let ORD={};try{ORD=await (await ffetch('order.json?'+Date.now())).json();}catch(e){}
       const M=new Map();const skipped={dup:0,big:0,other:0,moved:0,sup:0,junk:0};const all=[];let seq=0;const OWN=new RegExp(BL.map(x=>x.match).filter(Boolean).join('|'),'i');
@@ -602,7 +603,7 @@ const wst=$('div',{style:'color:#9be59b;font-size:14px;min-height:1.2em;margin-t
       const nch=groups.reduce((a,g)=>a+g.items.length,0);
       wst.textContent=bl.label+': '+order.length+' posts, en el orden en que se postearon'+(nch?' ('+nch+' en cadena de reblogs)':'')+', '+done.size+' ya publicados aquí'+(nHere?' ('+nHere+' ya estaban en el blog por otro botón, como el pinned: no se repiten)':'')+', '+todo.length+' por publicar.'+(skipped.dup?' '+skipped.dup+' repetidos omitidos (de cada post repetido queda la versión con más capturas).':'')+(skipped.big?' '+skipped.big+' de más de 30 imágenes omitidos (van por trozos, en cadena).':'')+(skipped.other?' '+skipped.other+' reblogs de posts ajenos fuera.':'')+(skipped.moved?' '+skipped.moved+' que eran de otro blog van en el botón de ese blog.':'')+(skipped.sup?' '+skipped.sup+' con una versión más nueva en el archivo: va la nueva.':'')+(skipped.junk?' '+skipped.junk+' de morralla fuera (reblogs de otros blogs sin texto tuyo, lo del blog payaso, lo de Sanctuarium y lo de otros blogs).':'');
       if(!todo.length){b.disabled=false;wst.textContent+=' Nada pendiente.';return;}
-      const go=$('button',{textContent:'Publicar todo lo que falta ('+todo.length+' de '+order.length+') en '+blog+' · lo que ya esté en el blog se salta, sin tocarlo',style:'display:block;width:100%;background:#ff9a3c;color:#1a120b;border:0;border-radius:12px;padding:13px;font-weight:800;margin:8px 0'});
+      const go=$('button',{textContent:'Publicar todo lo que falta ('+todo.length+' de '+order.length+') en '+blog+' · lo que ya esté en el blog se salta, sin tocarlo',style:'display:block;width:100%;background:#ff9a3c;color:#1a120b;border:0;border-radius:12px;padding:'+(TOP?'20px 14px;font-size:20px':'13px')+';font-weight:800;margin:8px 0'});
       const reset=$('button',{textContent:'Empezar de cero en este blog (olvidar lo publicado)',style:bstyle+';font-size:13px'});reset.onclick=()=>{LS.set(PK,[]);groups.forEach(g=>LS.set('rnc_chain_'+g.path+'_'+blog,null));{const L2=LS.get('rnc_links',{});if(L2[blog]){delete L2[blog];LS.set('rnc_links',L2);}}wst.textContent='Progreso borrado. Vuelve a pulsar el botón del blog.';go.remove();reset.remove();b.disabled=false;};
       go.onclick=async()=>{go.disabled=true;UPON=false;SOLO=true;const batch=todo.slice(0);let uuid=null;const TS=Date.now();
         if(batch.some(x=>x.chain)){const bi=await api('/blog/'+blog+'/info');const BI=bi&&(bi.response||bi);uuid=BI&&BI.blog&&BI.blog.uuid;}
@@ -612,7 +613,7 @@ const wst=$('div',{style:'color:#9be59b;font-size:14px;min-height:1.2em;margin-t
           (it,res)=>{const x=it.x;const d=LS.get(PK,[]);if(!d.includes(x.key))d.push(x.key);LS.set(PK,d);if(x.chain)LS.set('rnc_chain_'+x.path+'_'+blog,{id:String(res.id),key:res.key,next:x.i+1});});
         SOLO=false;const left=order.filter(x=>!new Set(LS.get(PK,[])).has(x.key)).length;
         wst.textContent='Tanda hecha: '+ok+' publicados'+(HADN?' y '+HADN+' que ya estaban (sin tocar)':'')+' de '+batch.length+' en '+secs(Date.now()-TS)+(ok?' ('+secs((Date.now()-TS)/ok)+' por post)':'')+'. Quedan '+left+'.'+(left?' Vuelve a pulsar el botón del blog para la siguiente tanda.':' Blog entero publicado.');go.remove();reset.remove();b.disabled=false;};
-      wlist.append(go,reset);};}
+      wl.append(go,reset);};}
 })();
 let items=[];
 try{items=await (await ffetch('index.json?'+Date.now())).json();}catch(e){list.append($('p',{textContent:'No pude leer el archivo.'}));}

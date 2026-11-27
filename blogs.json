@@ -1166,7 +1166,9 @@
   "pages": [
    "choco-export-27oct-plus/index.html"
   ],
-  "strict": true
+  "strict": true,
+  "top": true,
+  "big": "🍪 EXPORT GORDO · publicar solo lo que falta"
  },
  {
   "name": "copium-loser-3nov",
