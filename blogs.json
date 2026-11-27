@@ -1,5 +1,13 @@
 [
  {
+  "name": "choco-ban-20-accounts-ask-27nov",
+  "label": "Choco: 27 Nov, anon ask \"DID YOU JUST BAN LIKE 20 OF THEIR ACCOUNTS…\"",
+  "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
+  "pages": [
+   "choco-ban-20-accounts-ask-27nov/index.html"
+  ]
+ },
+ {
   "name": "choco-buddhism-reblog-27nov",
   "label": "Choco: reblog \"And just as Genuinely you better address…\" (27 nov, 1 post)",
   "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
