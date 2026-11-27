@@ -1,5 +1,13 @@
 [
  {
+  "name": "choco-gourdknight-cw-label-ask-27nov",
+  "label": "Choco: 27 Nov, ask from gourdknight \"Grave Kandy should find another way…\"",
+  "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
+  "pages": [
+   "choco-gourdknight-cw-label-ask-27nov/index.html"
+  ]
+ },
+ {
   "name": "choco-grave-left-tumblr-ask-27nov",
   "label": "Choco: 27 Nov, anon ask \"dude. grave left tumblr. give it a fucking rest.\"",
   "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
