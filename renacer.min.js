@@ -17,17 +17,22 @@ const copy=async s=>{try{await navigator.clipboard.writeText(s);return true;}cat
 const dl=async(url,name)=>{try{const b=await (await fetch(url)).blob();const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=name;document.body.append(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},5000);return true;}catch(e){window.open(url,'_blank');return false;}};
 const $=(t,p={},...k)=>{const e=document.createElement(t);Object.assign(e,p);if(p.style)e.setAttribute('style',p.style);k.flat().forEach(c=>e.append(c));return e;};
 const html=document.documentElement.innerHTML;
-const TOK=(html.match(/"API_TOKEN":"([^"]+)"/)||[])[1];
-const CSRF=(html.match(/"csrfToken":"([^"]+)"/)||[])[1];
+let TOK=(html.match(/"API_TOKEN":"([^"]+)"/)||[])[1];
+let CSRF=(html.match(/"csrfToken":"([^"]+)"/)||[])[1];
+let TOKN=0;const refreshTok=async()=>{for(const u of [location.href,'/dashboard']){try{const r=await fetch(u,{credentials:'include',cache:'no-store'});const h=await r.text();const t=(h.match(/"API_TOKEN":"([^"]+)"/)||[])[1],c=(h.match(/"csrfToken":"([^"]+)"/)||[])[1];if(t||c){if(t)TOK=t;if(c)CSRF=c;TOKN++;return true;}}catch(e){}}return false;};
 const snk=o=>Array.isArray(o)?o.map(snk):(o&&typeof o==='object'&&Object.getPrototypeOf(o)===Object.prototype)?Object.fromEntries(Object.entries(o).map(([k,v])=>[k.replace(/[A-Z]/g,c=>'_'+c.toLowerCase()),snk(v)])):o;
 const api0=async(path,opts={})=>{
   if(window.tumblr&&typeof window.tumblr.apiFetch==='function'){
     const o={method:opts.method||'GET'};if(opts.body)o.body=opts.body;if(opts.headers)o.headers=opts.headers;
     try{return snk(await window.tumblr.apiFetch('/v2'+path,o));}catch(e){return {error:String(e&&(e.message||e)),body:e&&e.body};}
   }
-  const form=opts.body instanceof FormData;const hd={'Authorization':'Bearer '+TOK,'X-Version':'redpop/3/0//redpop/','X-CSRF':CSRF||''};if(!form)hd['Content-Type']='application/json';
-  const r=await fetch('/api/v2'+path,{method:opts.method||'GET',credentials:'include',headers:hd,body:opts.body?(form?opts.body:JSON.stringify(opts.body)):undefined});
-  let j=null;try{j=await r.json();}catch(e){}return j&&r.ok?j:{error:'HTTP '+r.status,detail:j};
+  const form=opts.body instanceof FormData;
+  const call=async()=>{const hd={'Authorization':'Bearer '+TOK,'X-Version':'redpop/3/0//redpop/','X-CSRF':CSRF||''};if(!form)hd['Content-Type']='application/json';
+    const r=await fetch('/api/v2'+path,{method:opts.method||'GET',credentials:'include',headers:hd,body:opts.body?(form?opts.body:JSON.stringify(opts.body)):undefined});
+    try{const nc=r.headers&&r.headers.get&&r.headers.get('x-csrf');if(nc)CSRF=nc;}catch(e){}let j=null;try{j=await r.json();}catch(e){}return {r,j};};
+  let {r,j}=await call();
+  if(!r.ok&&(r.status===401||(r.status===403&&/authoriz|csrf/i.test(JSON.stringify(j||{}))))&&await refreshTok()){({r,j}=await call());}
+  return j&&r.ok?j:{error:'HTTP '+r.status,detail:j};
 };
 const apiT=(path,opts,ms)=>new Promise(res=>{let done=false;const t=setTimeout(()=>{if(!done){done=true;res({error:'timeout',timeout:true});}},ms);api0(path,opts||{}).then(r=>{if(!done){done=true;clearTimeout(t);res(r);}},e=>{if(!done){done=true;clearTimeout(t);res({error:String(e&&(e.message||e))});}});});
 const api=(path,opts={},ms)=>apiT(path,opts,ms||((opts.method&&opts.method!=='GET')?180000:45000));
