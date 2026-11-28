@@ -1,5 +1,13 @@
 [
  {
+  "name": "choco-verdict-new-predator-28nov",
+  "label": "Choco: 28 Nov, \"And that's the verdict on today's new predator…\"",
+  "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
+  "pages": [
+   "choco-verdict-new-predator-28nov/index.html"
+  ]
+ },
+ {
   "name": "choco-new-predator-reblog-28nov",
   "label": "Choco: 28 Nov, reblog \"Did I not say there's a new predator in the grooming ring…\"",
   "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
