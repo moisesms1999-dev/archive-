@@ -1,5 +1,13 @@
 [
  {
+  "name": "victim-against-abusers-calling-out-28nov",
+  "label": "victim-against-abusers: 28 Nov, \"Calling out this blog's first abuser for the blocklist…\"",
+  "match": "victim",
+  "pages": [
+   "victim-against-abusers-calling-out-28nov/index.html"
+  ]
+ },
+ {
   "name": "choco-gourdknight-cw-label-ask-27nov",
   "label": "Choco: 27 Nov, ask from gourdknight \"Grave Kandy should find another way…\"",
   "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
