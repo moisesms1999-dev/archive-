@@ -1,5 +1,13 @@
 [
  {
+  "name": "choco-it-gets-better-28nov",
+  "label": "Choco: 28 Nov, reblog \"Oh but op it gets better!\"",
+  "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
+  "pages": [
+   "choco-it-gets-better-28nov/index.html"
+  ]
+ },
+ {
   "name": "victims-against-abusers-phroggz-28nov",
   "label": "victims-against-abusers: 28 Nov, \"Wasn't phroggz also an abuser…\", the discourse pet receipts",
   "match": "victim",
