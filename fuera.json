@@ -105,7 +105,10 @@
   305,
   306,
   311,
-  314
+  314,
+  316,
+  317,
+  318
  ],
  "grupos": {
   "choco-export-27oct-plus/index.html": {
@@ -153,16 +156,6 @@
     234,
     235,
     236
-   ],
-   "otros blogs (clickityclackithee, mpreg, purelyswiftsight, victim-against-abusers)": [
-    253,
-    269,
-    271,
-    272,
-    273,
-    274,
-    312,
-    315
    ],
    "Sanctuarium / clown-named-choco en el principal": [
     204,
@@ -223,6 +216,19 @@
     266,
     292,
     307
+   ],
+   "otros blogs (clickityclackithee, mpreg, purelyswiftsight, victim-against-abusers, victims-against-abusers)": [
+    253,
+    269,
+    271,
+    272,
+    273,
+    274,
+    312,
+    315,
+    317,
+    318,
+    319
    ]
   }
  }

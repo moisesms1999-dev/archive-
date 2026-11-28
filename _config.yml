@@ -237,4 +237,7 @@ exclude:
   - "choco-verdict-new-predator-28nov/media"
   - "victim-against-abusers-real-predators-28nov/media"
   - "choco-beg-your-pardon-28nov/media"
+  - "victims-against-abusers-ironic-28nov/media"
+  - "victims-against-abusers-domineering-28nov/media"
+  - "victims-against-abusers-salfisher-28nov/media"
   - "shared.json"
