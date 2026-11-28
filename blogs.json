@@ -1,5 +1,13 @@
 [
  {
+  "name": "choco-new-predator-reblog-28nov",
+  "label": "Choco: 28 Nov, reblog \"Did I not say there's a new predator in the grooming ring…\"",
+  "match": "choco|finity|infinit|survivor|choclship|shippity|in-finite|shipchoco",
+  "pages": [
+   "choco-new-predator-reblog-28nov/index.html"
+  ]
+ },
+ {
   "name": "victim-against-abusers-calling-out-28nov",
   "label": "victim-against-abusers: 28 Nov, \"Calling out this blog's first abuser for the blocklist…\"",
   "match": "victim",
